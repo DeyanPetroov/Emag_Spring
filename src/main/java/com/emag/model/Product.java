@@ -20,13 +20,12 @@ public class Product {
 
 	private long product_id;
 	private int category_id;
-	private String name;
 	private String brand;
 	private String model;
 	private String description;
 	private String productImageURL;
 	private double price;
-	private int availability;
+	private boolean availability;
 	private int discountPercent;
 	private Date discountExpiration;
 
@@ -34,7 +33,7 @@ public class Product {
 	// ==============GETTERS=====================
 
 	public Product(int category_id, String brand, String model, String description,
-			String productImageURL, double price, int availability, int discountPercent, Date discountExpiration) {
+			String productImageURL, double price, boolean availability, int discountPercent, Date discountExpiration) {
 		this.category_id = category_id;
 		this.brand = brand;
 		this.model = model;
@@ -74,7 +73,7 @@ public class Product {
 		return productImageURL;
 	}
 
-	public int getAvailability() {
+	public boolean getAvailability() {
 		return availability;
 	}
 

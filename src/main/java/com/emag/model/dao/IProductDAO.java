@@ -1,5 +1,6 @@
 package com.emag.model.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.emag.model.Product;
@@ -11,4 +12,5 @@ public interface IProductDAO {
 	void updateProduct(Product product) throws Exception;
 	Product getProductById(long product_id) throws Exception;
 	List<Product> getProductsByCategory(int category_id) throws Exception;
+	
 }

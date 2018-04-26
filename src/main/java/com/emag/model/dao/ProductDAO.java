@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.emag.model.*;
@@ -15,6 +16,9 @@ import com.emag.model.Product.Category;
 
 @Component
 public class ProductDAO implements IProductDAO {
+	
+	@Autowired
+	private CategoryDAO categoryDAO;
 	
 	private static final String INSERT_PRODUCT = "INSERT INTO products(brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, cateogory_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_PRODUCT_BY_ID = 
@@ -24,6 +28,7 @@ public class ProductDAO implements IProductDAO {
 	private static final String UPDATE_PRODUCT = "UPDATE products SET brand = ?, price = ?, availability = ?, model = ?, description = ?, discount_percent = ?, discount_expiration = ?, product_picture = ?, category_id = ?";
 	private static final String DELETE_PRODUCT_BY_ID = "DELETE FROM products WHERE product_id = ?";
 	private static final String GET_ALL_BY_CATEGORY = "SELECT product_id, brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, category_id FROM products WHERE category_id = ?";
+	private static final String GET_ALL_CATEGORIES = "SELECT category_name FROM categories";
 	
 	private Connection connection;
 	
@@ -31,12 +36,16 @@ public class ProductDAO implements IProductDAO {
 		connection = DBManager.getInstance().getConnection();
 	}
 	
+	public CategoryDAO getCategoryDAO() {
+		return categoryDAO;
+	}
+	
 	@Override
 	public void addProduct(Product product) throws SQLException {
 		try(PreparedStatement p = connection.prepareStatement(INSERT_PRODUCT);) {
 			p.setString(1, product.getBrand());
 			p.setDouble(2, product.getPrice());
-			p.setInt(3, product.getAvailability());
+			p.setBoolean(3, product.getAvailability());
 			p.setString(4, product.getModel());
 			p.setString(5, product.getDescription());
 			p.setInt(6, product.getDiscountPercent());
@@ -59,7 +68,7 @@ public class ProductDAO implements IProductDAO {
 		try(PreparedStatement p = connection.prepareStatement(UPDATE_PRODUCT);){
 			p.setString(1, product.getBrand());
 			p.setDouble(2, product.getPrice());
-			p.setInt(3, product.getAvailability());
+			p.setBoolean(3, product.getAvailability());
 			p.setString(4, product.getModel());
 			p.setString(5, product.getDescription());
 			p.setInt(6, product.getDiscountPercent());
@@ -92,11 +101,8 @@ public class ProductDAO implements IProductDAO {
 		
 		try(PreparedStatement p = connection.prepareStatement(GET_ALL_BY_CATEGORY);){
 			p.setInt(1, category_id);
-			System.out.println("vliza");
-			try{
-				System.out.println("vliza1");
+			try{				
 				resultSet = p.executeQuery();
-				System.out.println("vliza2");
 				while (resultSet.next()) {
 					System.out.println(resultSet.getMetaData());
 					product = new Product(							
@@ -106,18 +112,20 @@ public class ProductDAO implements IProductDAO {
 							resultSet.getString("description"),
 							resultSet.getString("product_picture"),
 							resultSet.getDouble("price"),
-							resultSet.getInt("availability"),
+							resultSet.getBoolean("availability"),
 							resultSet.getInt("discount_percent"),
 							(java.util.Date) resultSet.getObject("discount_expiration")
 							);
 					sameCategoryProducts.add(product);
-				}
-				resultSet.close();
+				}				
 			}
 			finally {
+				resultSet.close();
 			}
 		}
 		System.out.println("size:" + sameCategoryProducts.size());
 		return sameCategoryProducts;
 	}
+
+		
 }
