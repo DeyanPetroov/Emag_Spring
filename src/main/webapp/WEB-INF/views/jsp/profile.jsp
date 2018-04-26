@@ -6,11 +6,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>eMAG</title>
 </head>
 <body>
 	<c:if test="${sessionScope.user != null}">
-		<table>
+		<table align="center">
 			<tr>
 				<td>${user.firstName}</td>
 				<td>${user.lastName}</td>
@@ -23,7 +23,7 @@
 	</c:if>
 	
 	<c:if test="${sessionScope.user == null}">
-		<h3>Please log in!</h3>
+		<h3>Please <a href="login">log in</a>!</h3>
 	</c:if>
 	
 </body>

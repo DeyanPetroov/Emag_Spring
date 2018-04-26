@@ -87,12 +87,19 @@ public class ProductDAO implements IProductDAO {
 	public List<Product> getProductsByCategory(int category_id) throws SQLException {
 		System.out.println("===================================================================");
 		List<Product> sameCategoryProducts = new ArrayList<>();
+		ResultSet resultSet = null;
+		Product product = null;
+		
 		try(PreparedStatement p = connection.prepareStatement(GET_ALL_BY_CATEGORY);){
 			p.setInt(1, category_id);
-			try(ResultSet resultSet = p.executeQuery();){
+			System.out.println("vliza");
+			try{
+				System.out.println("vliza1");
+				resultSet = p.executeQuery();
+				System.out.println("vliza2");
 				while (resultSet.next()) {
 					System.out.println(resultSet.getMetaData());
-					Product product = new Product(
+					product = new Product(							
 							resultSet.getInt("category_id"),
 							resultSet.getString("brand"),
 							resultSet.getString("model"),
@@ -103,9 +110,11 @@ public class ProductDAO implements IProductDAO {
 							resultSet.getInt("discount_percent"),
 							(java.util.Date) resultSet.getObject("discount_expiration")
 							);
-					System.out.println("tammmmmm");
 					sameCategoryProducts.add(product);
 				}
+				resultSet.close();
+			}
+			finally {
 			}
 		}
 		System.out.println("size:" + sameCategoryProducts.size());

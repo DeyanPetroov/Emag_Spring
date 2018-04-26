@@ -9,37 +9,32 @@
 </head>
 
 <body>
-	<div id="login-box">
-		<div class="left">
+	<c:if test="${ requestScope.error != null }">
+		<h4 align="center" style="color: red">${error}</h4>
+		</c:if>
+	
+		<div align="center">
 			<h1>Sign up</h1>
 			<form action="register" method="POST">
 				<input type="text" name="first_name" placeholder="First name"
 					required pattern="^[a-zA-Z'-]{3,31}$"
-					title="From 3 to 31 lower and uppercase characters. ' and - are also allowed" />
+					title="From 3 to 31 lower and uppercase characters. ' and - are also allowed" /> <br>
 				<input type="text" name="last_name" placeholder="Last name" required
 					pattern="^[a-zA-Z'-]{3,31}$"
-					title="From 3 to 31 lower and uppercase characters. ' and - are also allowed" />
+					title="From 3 to 31 lower and uppercase characters. ' and - are also allowed" /> <br>
 				<input type="text" name="username" placeholder="Username" required
 					pattern="^[a-z0-9_-]{3,15}$"
-					title="From 3 to 15 characters. Numbers, _ and - allowed" /> 
-				<input type="email" name="email" placeholder="E-mail" required title="Enter valid а email" />
+					title="From 3 to 15 characters. Numbers, _ and - allowed" />  <br>
+				<input type="email" name="email" placeholder="E-mail" required title="Enter valid а email" /> <br>
 				<input type="password" name="password" placeholder="Password" required
-			 	pattern=".{5,20}" title="Between 5 and 20 characters" /> 
-			 	<input type="number" name="age" placeholder="Age" min=14 title="You must be 14 or older" required />
-			 	<input type="submit" name="signup_submit" value="Sign me up" />
-			 	<a href="login"><input type="button" value="Already have an account? Sign in!" class="login-button" /></a> <br>
+			 	pattern=".{5,20}" title="Between 5 and 20 characters" /> <br>
+			 	<input type="number" name="age" placeholder="Age" min=14 title="You must be 14 or older" required /> <br> <br>
+			 	<input type="submit" name="signup_submit" value="Sign me up" /> <br> <br>
+			 	<a href="login"><input type="button" value="Already have an account? Sign in!" class="login-button" /></a>
 			 	
 			</form>
 		</div>
-		<div class="right">
-			<span class="loginwith">Sign in with<br />social network
-			</span>
-			<button class="social-signin facebook">Log in with facebook</button>
-			<button class="social-signin twitter">Log in with Twitter</button>
-			<button class="social-signin google">Log in with Google+</button>
-		</div>
-		<div class="or">OR</div>
-	</div>
+	
 </body>
 
 </html>

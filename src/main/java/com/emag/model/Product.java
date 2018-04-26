@@ -20,6 +20,7 @@ public class Product {
 
 	private long product_id;
 	private int category_id;
+	private String name;
 	private String brand;
 	private String model;
 	private String description;

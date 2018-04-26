@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>  
+ 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -8,16 +9,7 @@
 <title>eMAG</title>
 </head>
 <body>
-	<h1 align="center">Welcome to eMAG</h1>
-	<div align="center">
-		<a href="login">Login</a><br>
-		<a href="register">Register</a> <br>
-		<c:if test="${sessionScope.user != null }">
-			<a href="logout">Logout</a> <br>
-		</c:if>
-		<a href = "profile">My account</a>
-	</div>
-	
-
+<h1 align="center"> Oops, something went wrong!</h1>
+<h2 align="center">Why not go to our <a href="index">main page?</a></h2>
 </body>
 </html>

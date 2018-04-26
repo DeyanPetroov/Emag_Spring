@@ -18,11 +18,16 @@ import com.emag.model.dao.UserDAO;
 public class UserController {
 
 	@Autowired
-	UserDAO userDAO;
+	private UserDAO userDAO;
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET )
 	public String login(HttpServletRequest request) {
 		return "login";
+	}
+	
+	@RequestMapping(value = "/errorPage", method = RequestMethod.GET)
+	public String error(HttpServletRequest request) {
+		return "errorPage";
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.GET )
@@ -77,6 +82,7 @@ public class UserController {
 		try {
 			String existingUserParameter = userDAO.userExists(username, email);
 			if (existingUserParameter != null) {
+				model.addAttribute("error", "Username and/or email might be taken, try again!");
 				return "register";
 			} 
 			else {
@@ -86,7 +92,7 @@ public class UserController {
 					u.setPassword(u.hashPassword());
 				} catch (SQLException e) {
 					e.getMessage();
-					return "register";
+					return "errorPage";
 				}
 
 				u = this.userDAO.getExistingUser(username, password);
@@ -102,7 +108,7 @@ public class UserController {
 		}
 		//TODO make an abstract exception handler		
 		catch (SQLException e) {
-			e.printStackTrace();
+			e.getMessage();
 			return "register";
 		}
 		

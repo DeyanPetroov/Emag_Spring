@@ -6,18 +6,28 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>eMAG</title>
 </head>
 <body>
-	<table>
+	<table align="center">
+	<tr>
+		<th align="center">Brand</th>
+		<th align="center">Model</th>
+		<th align="center">Description</th>
+		<th align="center">Price</th>
+		<th align="center">Discount percent</th>
+		<th align="center">Discount expiration date</th>
+		<th align="center">Profile picture</th>
+	</tr>
 		<c:forEach var="product" items="${products}">
 			<tr>			
-				<td>${product.brand}</td>
-				<td>${product.model}</td>
-				<td>${product.description}</td>
-				<td>${product.discountPercent}</td>
-				<td>${product.discountExpiration}</td>
-				<td>${product.productImageURL}</td>
+				<td align="center">${product.brand}</td>
+				<td align="center">${product.model}</td>
+				<td align="center">${product.description}</td>
+				<td align="center">${product.price} BGN</td>
+			 	<td align="center">${product.discountPercent}</td>	
+			 	<td align="center">${product.discountExpiration}</td>			
+				<td align="center">${product.productImageURL}</td>
 			</tr>
 		</c:forEach>
 	</table>
