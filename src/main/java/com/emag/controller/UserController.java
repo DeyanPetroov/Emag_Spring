@@ -51,7 +51,7 @@ public class UserController {
 				return "index";
 			}	
 			else {
-				request.setAttribute("error", "Invalid username or password");
+				model.addAttribute("error", "Invalid username or password");
 				//throw new WrongUserDataException();
 				return "login";
 			}
@@ -107,17 +107,36 @@ public class UserController {
 		}
 		
 		return "index";		
-	}	
+	}
 	
-	@RequestMapping(value = "/logout")
+	@RequestMapping(value = "/user/account", method = RequestMethod.GET)
+	public String getProfile(Model model, HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		if (user != null) {
+			model.addAttribute(user.getFirstName());
+			model.addAttribute(user.getLastName());
+			model.addAttribute(user.getEmail());
+			model.addAttribute(user.getAddress());
+			model.addAttribute(user.getPhone());
+			model.addAttribute(user.getProfilePictureURL());
+			return "profile";
+		}
+		return "index";
+	}
+	
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "index";
 	}
 	
+	@RequestMapping(value = "/profile", method = RequestMethod.GET)
+	public String profile(HttpSession session) {
+		return "profile";
+	}
+	
 	//get all
 	//get existing user	
-	//view profile
 	//profile pic pri editing profile
 	//add to favourites	
 }

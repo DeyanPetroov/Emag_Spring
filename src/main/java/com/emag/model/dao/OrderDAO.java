@@ -4,8 +4,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.stereotype.Component;
+
 import com.emag.model.*;
 
+@Component
 public class OrderDAO implements IOrderDAO {
 	
 	private static final String UPDATE_ORDER_STATUS_FOR_USER = "UPDATE orders SET status_id = ? WHERE user_id = ?";
@@ -24,15 +27,7 @@ public class OrderDAO implements IOrderDAO {
 			"JOIN orders as o" + 
 			"WHERE o.order_id = ?";
 	
-	private static OrderDAO instance;
 	private Connection connection;
-	
-	public static synchronized OrderDAO getInstance() {
-		if(instance == null) {
-			instance = new OrderDAO();
-		}
-		return instance;
-	}
 	
 	private OrderDAO() {
 		connection = DBManager.getInstance().getConnection();

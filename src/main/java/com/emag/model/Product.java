@@ -19,8 +19,7 @@ public class Product {
 	}
 
 	private long product_id;
-	private Category category;
-	private String name;
+	private int category_id;
 	private String brand;
 	private String model;
 	private String description;
@@ -30,84 +29,21 @@ public class Product {
 	private int discountPercent;
 	private Date discountExpiration;
 
-	// ==============BUILDER DESIGN PATTERN===================
-
-	public Product withModel(String model) {
-		if (model != null && !model.isEmpty()) {
-			this.model = model;
-		}
-		return this;
-	}
-
-	public Product withBrand(String brand) {
-		if (brand != null && !brand.isEmpty()) {
-			this.brand = brand;
-		}
-		return this;
-	}
-
-	public Product withDescription(String description) {
-		if (description != null && !description.isEmpty()) {
-			this.description = description;
-		}
-		return this;
-	}
-
-	public Product withName(String name) {
-		if (name != null && !name.isEmpty()) {
-			this.name = name;
-		}
-		return this;
-	}
 	
-	public Product withProductId(long product_id) {
-		if (product_id >= 0) {
-			this.product_id = product_id;
-		}
-		return this;
-	}
-
-	public Product withCategory(Category category) {
-		if (category != null) {
-			this.category = category;
-		}
-		return this;
-	}
-
-	public Product withProductImageURL(String productImageURL) {
-		if (productImageURL != null && !productImageURL.isEmpty()) {
-			this.productImageURL = productImageURL;
-		}
-		return this;
-	}
-
-	public Product withPrice(double price) {
-		if (price >= 0) {
-			this.price = price;
-		}
-		return this;
-	}
-
-	public Product withAvailability(int availability) {
-		if (availability >= 0) {
-			this.availability = availability;
-		}
-		return this;
-	}
-
-	public Product withDiscountPercent(int discountPercent) {
-		if (discountPercent >= 0) {
-			this.discountPercent = discountPercent;
-		}
-		return this;
-	}
-
-	public Product withDiscountExpiration(Date discountExpiration) {
-		this.discountExpiration = discountExpiration;
-		return this;
-	}
-
 	// ==============GETTERS=====================
+
+	public Product(int category_id, String brand, String model, String description,
+			String productImageURL, double price, int availability, int discountPercent, Date discountExpiration) {
+		this.category_id = category_id;
+		this.brand = brand;
+		this.model = model;
+		this.description = description;
+		this.productImageURL = productImageURL;
+		this.price = price;
+		this.availability = availability;
+		this.discountPercent = discountPercent;
+		this.discountExpiration = discountExpiration;
+	}
 
 	public String getModel() {
 		return model;
@@ -121,10 +57,6 @@ public class Product {
 		return price;
 	}
 
-	public String getName() {
-		return name;
-	}
-
 	public long getProduct_id() {
 		return product_id;
 	}
@@ -133,8 +65,8 @@ public class Product {
 		return description;
 	}
 
-	public Category getCategory() {
-		return category;
+	public int getCategory_id() {
+		return category_id;
 	}
 	
 	public String getProductImageURL() {
@@ -152,18 +84,5 @@ public class Product {
 	public Date getDiscountExpiration() {
 		return discountExpiration;
 	}
-
-//	public static Category getCategoryById(int category_id) {
-//		switch (category_id) {
-//		case 1:
-//			return Category.PHONES;
-//		case 2:
-//			return Category.COMPUTERS;
-//		case 3:
-//			return Category.TV;
-//		case 4:
-//			return Category.PHOTO;
-//		}
-//		return null;
-//	}
+	
 }

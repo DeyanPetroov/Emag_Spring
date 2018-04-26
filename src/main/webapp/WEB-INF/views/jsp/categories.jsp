@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>  
+    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -8,14 +9,17 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>Welcome to eMAG</h1>
-	<a href="login">Login</a><br>
-	<a href="register">Register</a> <br>
-	<c:if test="${sessionScope.user != null }">
-		<a href="logout">Logout</a> <br>
-	</c:if>
-	<a href = "profile">My account</a>
-	
-
+	<table>
+		<c:forEach var="product" items="${products}">
+			<tr>			
+				<td>${product.brand}</td>
+				<td>${product.model}</td>
+				<td>${product.description}</td>
+				<td>${product.discountPercent}</td>
+				<td>${product.discountExpiration}</td>
+				<td>${product.productImageURL}</td>
+			</tr>
+		</c:forEach>
+	</table>
 </body>
 </html>

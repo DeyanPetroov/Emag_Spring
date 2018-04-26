@@ -8,8 +8,11 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.TreeMap;
 
+import org.springframework.stereotype.Component;
+
 import com.emag.model.Review;
 
+@Component
 public class ReviewDAO implements IReviewDAO {
 	
 	private static final String ADD_REVIEW = "INSERT INTO reviews(raiting, date, review_text, user_id, product_id) VALUES (?, ?, ?, ?, ?)";
@@ -27,15 +30,7 @@ public class ReviewDAO implements IReviewDAO {
 		    +"JOIN users AS u" 
 			+"ON u.user_id = r.user_id AND product_id = ?";
 	
-	private static ReviewDAO instance;
 	private Connection connection;
-	
-	public static synchronized ReviewDAO getInstance() {
-		if(instance == null) {
-			instance = new ReviewDAO();
-		}
-		return instance;
-	}
 	
 	private ReviewDAO() {
 		connection = DBManager.getInstance().getConnection();

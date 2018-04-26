@@ -14,7 +14,7 @@
 
 <body>
 	<c:if test="${ requestScope.error != null }">
-	<h4 style="color: red">${requestScope.error }</h4>
+	<h4 style="color: red">${error}</h4>
 	</c:if>
 	<div class="login" style="position: relative; down: 50px; top: 70px;">
 		<div class="login-header">

@@ -29,18 +29,10 @@ public class UserDAO implements IUserDAO {
 	private static final String INSERT_PRODUCT_INTO_FAVOURITES = "INSERT INTO favouriteproducts (user_id, product_id) VALUES (?,?)";
 	private static final String REMOVE_FROM_FAVOURITES = "DELETE FROM favouriteproducts WHERE user_id = ? AND product_id = ?";
 
-	private static UserDAO instance;
 	private Connection connection;
 	private static final HashMap<String, User> allUsers = new HashMap<>();
 
-	public static synchronized UserDAO getInstance() {
-		if (instance == null) {
-			instance = new UserDAO();
-		}
-		return instance;
-	}
-
-	private UserDAO() {
+	public UserDAO() {
 		connection = DBManager.getInstance().getConnection();
 	}
 
