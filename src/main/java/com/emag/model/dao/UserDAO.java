@@ -66,8 +66,9 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public void saveUser(User u) throws SQLException {
 		try (PreparedStatement s = connection.prepareStatement(INSERT_USER);) {
+			String hashedPassword = u.hashPassword(u.getPassword());
 			s.setString(1, u.getUsername());
-			s.setString(2, u.hashPassword());
+			s.setString(2, hashedPassword);
 			s.setString(3, u.getFirstName());
 			s.setString(4, u.getLastName());
 			s.setString(5, u.getEmail());
@@ -135,15 +136,14 @@ public class UserDAO implements IUserDAO {
 		return allUsers;
 	}
 
-	//change password of user
+	// change password of user
 	@Override
-	public void changePassword(User u, String password) throws SQLException{
-		if (getExistingUser(u.getUsername(), password) != null) {
-			try (PreparedStatement changePass = connection.prepareStatement(CHANGE_PASSWORD);) {
-				changePass.setString(1, u.getUsername());
-				changePass.setString(2, password);
-				changePass.executeUpdate();
-			}
+	public void changePassword(User u, String password) throws SQLException {
+		try (PreparedStatement changePass = connection.prepareStatement(CHANGE_PASSWORD);) {
+			String hashedPass = u.hashPassword(password);
+			changePass.setString(1, hashedPass);
+			changePass.setLong(2, u.getId());
+			changePass.executeUpdate();
 		}
 	}
 
@@ -176,7 +176,7 @@ public class UserDAO implements IUserDAO {
 
 	//search for an existing user in the database
 	@Override
-	public String userExists(String username, String email) throws SQLException {
+	public String usernameExists(String username) throws SQLException {
 		try(PreparedStatement usernameExists = connection.prepareStatement(GET_EXISTING_USER_BY_USERNAME);){
 			usernameExists.setString(1, username);
 			try(ResultSet result = usernameExists.executeQuery()){
@@ -185,10 +185,15 @@ public class UserDAO implements IUserDAO {
 				}
 			}
 		}
-		try(PreparedStatement emailExists = connection.prepareStatement(GET_EXISTING_USER_BY_EMAIL);){
+		return null;
+	}
+	
+	@Override
+	public String emailExists(String email) throws SQLException {
+		try (PreparedStatement emailExists = connection.prepareStatement(GET_EXISTING_USER_BY_EMAIL);) {
 			emailExists.setString(1, email);
-			try(ResultSet result = emailExists.executeQuery()){
-				if(result.next()) {
+			try (ResultSet result = emailExists.executeQuery()) {
+				if (result.next()) {
 					return email;
 				}
 			}

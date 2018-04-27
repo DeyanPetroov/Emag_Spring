@@ -10,16 +10,28 @@
 </head>
 <body>
 	<c:if test="${sessionScope.user != null}">
-		<table align="center">
+		<table>
 			<tr>
-				<td>${user.firstName}</td>
-				<td>${user.lastName}</td>
-				<td>${user.address}</td>
-				<td>${user.email}</td>
-				<td>${user.phone}</td>
+				<td>First name: ${user.firstName}</td>
+			</tr>
+			<tr>
+				<td>Last name: ${user.lastName}</td>
+			</tr>
+			<tr>
+				<td>Address: ${user.address}</td>
+			</tr>
+			<tr>
+				<td>Email: ${user.email}</td>
+			</tr>
+			<tr>
+				<td>Phone: ${user.phone}</td>
+			</tr>
+			<tr>
 				<td>${user.profilePictureURL}</td>
 			</tr>
 		</table>
+		<a href="editProfile"><input type="button" value="Edit profile"/></a>
+		<a href="changePassword"><input type="button" value="Change password"/></a>	
 	</c:if>
 	
 	<c:if test="${sessionScope.user == null}">

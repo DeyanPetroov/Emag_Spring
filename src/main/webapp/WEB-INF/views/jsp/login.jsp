@@ -22,8 +22,8 @@
 		</div>
 		<div class="login-form">
 			<form action = "login" method="POST">
-				<input type="text" name="username" placeholder="Username" required /> <br> 
-				<input type="password" name="password" placeholder="Password" required /> <br>
+				<input type="text" name="username" placeholder="Username" value = "nadyapetrova" required /> <br> 
+				<input type="password" name="password" placeholder="Password" value = "123456" required /> <br>
 				 <input type="submit" value="Login" class="login-button" /> <br> <br> 
 				 <a href="register"><input type="button" value="Don't have an account? Sign up!" class="register-button" /></a>
 				<br>

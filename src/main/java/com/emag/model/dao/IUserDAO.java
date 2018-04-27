@@ -7,7 +7,8 @@ import com.emag.model.*;
 public interface IUserDAO {
 
 	User getByID(long id) throws Exception;
-	String userExists(String username, String email) throws Exception;
+	String usernameExists(String username) throws Exception;
+	String emailExists(String email) throws Exception;
 	void saveUser(User u) throws Exception;
 	void updateUser(User u) throws Exception;
 	void changePassword(User u, String password) throws Exception;

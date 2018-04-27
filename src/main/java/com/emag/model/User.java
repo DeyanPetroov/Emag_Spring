@@ -33,6 +33,7 @@ public class User {
 		this.user_id = id;
 		this.profilePictureURL = profilePicture;
 		this.address = address;
+		this.phone = phone;
 	}
 
 	//used for registration
@@ -159,6 +160,12 @@ public class User {
 			//TODO else throw exception
 		}
 	}
+	
+	public void setAddress(String address) {
+		if (UserValidations.isValidStr(address)) {
+			this.address = address;
+		}
+	}
 
 	// -------------METHODS-----------
 
@@ -170,43 +177,23 @@ public class User {
 		cart.removeFromCart(product, quantity);
 	}
 	
-	public String hashPassword() {
-		return BCrypt.hashpw(this.password, BCrypt.gensalt());
+	public String hashPassword(String password) {
+		return BCrypt.hashpw(password, BCrypt.gensalt());
 	}
-
-//	public void changePassword() {
-//		System.out.println("Input your password: ");
-//		Scanner sc = new Scanner(System.in);
-//		String oldPassword = sc.nextLine();
-//
-//		String newPassword = null;
-//		if (oldPassword.equals(this.password)) {
-//			System.out.println("Input a new password: ");
-//			newPassword = sc.nextLine();
-//			if (!newPassword.isEmpty()) {
-//				setPassword(newPassword);
-//			}
-//		}
-//	}
-
-//	public void order() {
-//		String answer = null;
-//		Scanner sc = new Scanner(System.in);
-//		System.out.println("Do you want to finalize the order?");
-//		answer = sc.next();
-//		sc.close();
-//
-//		switch (answer) {
-//		case "yes":
-//			this.order = new Order();
-//			// move products from cart to order
-//			Map<Product, Integer> products = cart.getProducts();
-//			order.setProducts(products);
-//			// remove all products from cart
-//			cart.emptyCart();
-//			orderHistory.add(order);
-//		}
-//	}
+	
+	public void updateUser(long id, String username, String password, String first_name, String last_name, String email, String phone, int age, String profilePicture, String address) {
+		this.user_id = id;
+		setUsername(username);
+		setPassword(password);
+		setFirstName(first_name);
+		setLastName(last_name);
+		setEmail(email);
+		setPhone(phone);
+		setAge(age);
+		setProfilePictureURL(profilePicture);
+		setAddress(address);
+		this.cart.setUser(this);
+	}
 
 	public void addToFavourites(Product product) {
 		if (!this.favouriteProducts.contains(product)) {
