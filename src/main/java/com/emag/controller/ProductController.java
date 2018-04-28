@@ -33,5 +33,5 @@ public class ProductController {
 		catch (SQLException e) {
 			return "errorPage";
 		}
-	}	
+	}
 }

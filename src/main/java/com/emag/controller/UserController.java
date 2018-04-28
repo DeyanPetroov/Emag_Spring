@@ -36,11 +36,6 @@ public class UserController {
 		return "register";	
 	}
 	
-	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public String index(HttpServletRequest request, HttpSession session) {
-		return "index";	
-	}
-	
 	@RequestMapping(value = "/login", method = RequestMethod.POST )
 	public String login(Model model, HttpSession session, HttpServletRequest request) {
 		String username = request.getParameter("username");
@@ -172,6 +167,10 @@ public class UserController {
 				return "changePassword";
 			}
 			else {
+				if(newPassword.equals(oldPassword)) {
+					model.addAttribute("noChange", "The new password is the same as the old one");
+					return "changePassword";
+				}
 				try {
 					userDAO.changePassword(user, newPassword);
 					user.setPassword(user.hashPassword(newPassword));

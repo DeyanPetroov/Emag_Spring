@@ -17,9 +17,6 @@ import com.emag.model.Product.Category;
 @Component
 public class ProductDAO implements IProductDAO {
 	
-	@Autowired
-	private CategoryDAO categoryDAO;
-	
 	private static final String INSERT_PRODUCT = "INSERT INTO products(brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, cateogory_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_PRODUCT_BY_ID = 
 			"SELECT p.product_id, p.brand, p.price, p.model, p.availability, p.description, p.discount_percent, p.discount_expiration, p.product_picture, c.category_name FROM products AS p" + 
@@ -28,16 +25,11 @@ public class ProductDAO implements IProductDAO {
 	private static final String UPDATE_PRODUCT = "UPDATE products SET brand = ?, price = ?, availability = ?, model = ?, description = ?, discount_percent = ?, discount_expiration = ?, product_picture = ?, category_id = ?";
 	private static final String DELETE_PRODUCT_BY_ID = "DELETE FROM products WHERE product_id = ?";
 	private static final String GET_ALL_BY_CATEGORY = "SELECT product_id, brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, category_id FROM products WHERE category_id = ?";
-	private static final String GET_ALL_CATEGORIES = "SELECT category_name FROM categories";
 	
 	private Connection connection;
 	
 	private ProductDAO() {
 		connection = DBManager.getInstance().getConnection();
-	}
-	
-	public CategoryDAO getCategoryDAO() {
-		return categoryDAO;
 	}
 	
 	@Override

@@ -13,9 +13,12 @@
 </head>
 
 <body>
-	<c:if test="${ requestScope.error != null }">
+
+	<c:if test="${ requestScope.error != null}">
 	<h4 style="color: red">${error}</h4>
 	</c:if>
+	
+	<c:if test="${sessionScope.user == null}">
 	<div class="login" style="position: relative; down: 50px; top: 70px;">
 		<div class="login-header">
 			<h2>Login</h2>
@@ -23,7 +26,7 @@
 		<div class="login-form">
 			<form action = "login" method="POST">
 				<input type="text" name="username" placeholder="Username" value = "nadyapetrova" required /> <br> 
-				<input type="password" name="password" placeholder="Password" value = "123456" required /> <br>
+				<input type="password" name="password" placeholder="Password" value = "12345" required /> <br>
 				 <input type="submit" value="Login" class="login-button" /> <br> <br> 
 				 <a href="register"><input type="button" value="Don't have an account? Sign up!" class="register-button" /></a>
 				<br>
@@ -31,6 +34,7 @@
 			</form>
 		</div>
 	</div>
+	</c:if>
 <!-- <script
 		src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 	<script
