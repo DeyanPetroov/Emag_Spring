@@ -21,8 +21,12 @@ public class UserController {
 	@Autowired
 	private UserDAO userDAO;
 	
-	@RequestMapping(value = "/login", method = RequestMethod.GET )
-	public String login(HttpServletRequest request) {
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login(HttpSession session, Model model) {
+		if(session.getAttribute("user") != null) {
+			model.addAttribute("loggedUser", "You are already logged in. Please log out to use another account.");
+			return "index";
+		}
 		return "login";
 	}
 	
@@ -32,7 +36,11 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.GET )
-	public String register(HttpServletRequest request) {
+	public String register(Model model, HttpSession session) {
+		if(session.getAttribute("user") != null) {
+			model.addAttribute("loggedUser", "You are already logged in. Please log out to use another account.");
+			return "index";
+		}
 		return "register";	
 	}
 	
@@ -44,7 +52,6 @@ public class UserController {
 		User user = null;
 		try {
 			user = this.userDAO.getExistingUser(username, password);
-			
 			if(user!=null) {
 				session.setAttribute("user", user);
 				session.setAttribute("logged", true);
@@ -68,6 +75,7 @@ public class UserController {
 	public String register(Model model, HttpSession session, HttpServletRequest request) {
 		
 		String username = request.getParameter("username");
+
 		String password = request.getParameter("password");
 		String first_name = request.getParameter("first_name");
 		String last_name = request.getParameter("last_name");

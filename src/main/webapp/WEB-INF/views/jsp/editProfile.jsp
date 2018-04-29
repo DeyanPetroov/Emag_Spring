@@ -15,8 +15,10 @@
 	<c:if test="${sessionScope.user != null}">
 		<form action="editProfile" method="POST">
 			Profile picture: <input type="img" name="image" value="${user.profilePictureURL}" /> <br>
-			First name: <input type="text" name="firstname" value="${user.firstName}" /><br>
-			Last name: <input type="text" name="lastname" value="${user.lastName}" /> <br> 
+			First name: <input type="text" name="firstname" value="${user.firstName}" pattern="^[a-zA-Z'-]{3,31}$"
+					title="From 3 to 31 lower and uppercase characters. ' and - are also allowed" /><br>
+			Last name: <input type="text" name="lastname" value="${user.lastName}" pattern="^[a-zA-Z'-]{3,31}$"
+					title="From 3 to 31 lower and uppercase characters. ' and - are also allowed" /> <br> 
 			Email: <input type="email" name="email" value="${user.email}" /> <br> 
 			Address: <input type="text" name="address" value="${user.address}" /> <br>
 			Phone: <input type="text" name="phone" value="${user.phone}" /> <br>		

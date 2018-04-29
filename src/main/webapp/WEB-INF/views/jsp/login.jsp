@@ -18,7 +18,6 @@
 	<h4 style="color: red">${error}</h4>
 	</c:if>
 	
-	<c:if test="${sessionScope.user == null}">
 	<div class="login" style="position: relative; down: 50px; top: 70px;">
 		<div class="login-header">
 			<h2>Login</h2>
@@ -34,7 +33,6 @@
 			</form>
 		</div>
 	</div>
-	</c:if>
 <!-- <script
 		src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 	<script

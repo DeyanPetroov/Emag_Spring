@@ -25,13 +25,13 @@ public class CategoryDAO implements ICategoryDAO {
 	}
 	
 	@Override
-	public HashMap<String, ArrayList<Category>> allCategories() throws SQLException {
-		HashMap<String, ArrayList<Category>> allCategories = new HashMap<>();
+	public HashMap<Category, ArrayList<Category>> allCategories() throws SQLException {
+		HashMap<Category, ArrayList<Category>> allCategories = new HashMap<>();
 		
 		try(PreparedStatement parentCategories = connection.prepareStatement(GET_ALL_MAIN_CATEGORIES);) {
 			try(ResultSet result = parentCategories.executeQuery()){
 				while (result.next()) {
-					allCategories.put(result.getString("category_name"), new ArrayList<Category>(getSubCategoriesByParentID(result.getInt("category_id"))));
+					allCategories.put(new Category(result.getInt("category_id"),result.getString("category_name")), new ArrayList<Category>(getSubCategoriesByParentID(result.getInt("category_id"))));
 				}
 			}
 		}

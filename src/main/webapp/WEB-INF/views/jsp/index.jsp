@@ -11,21 +11,30 @@
 <body>
 	<h1 align="center">Welcome to eMAG</h1>
 	<div align="center">
-		<a href="login">Login</a><br> 
-		<a href="register">Register</a> <br>
+		<c:if test="${requestScope.loggedUser != null }">
+			<h4>${loggedUser}</h4>
+		</c:if>
+ 		<c:if test="${sessionScope.user == null }">
+			<a href="login">Login</a>
+			<br>
+			<a href="register">Register</a>
+			<br>
+		</c:if>
 		<c:if test="${sessionScope.user != null }">
 			<a href="logout">Logout</a>
 			<br>
 		</c:if>
-		<a href="profile">My account</a>		
+		<a href="profile">My account</a>
 	</div>
-	
-	<h2>Categories</h2>
-	<c:forEach var="map" items="${categories}">
-				*${map.key} <br>
-		<c:forEach var="category" items="${map.value}">
-				--->${category.categoryName} <br>
+
+
+	<c:if test="${applicationScope.categories != null}">
+		<c:forEach items="${applicationScope['categories']}" var="entry">
+			<a href="category/${entry.getKey().categoryID}">*${entry.getKey().categoryName} </a><br>
+			<c:forEach items="${entry.getValue()}" var="subcategory">
+				<a href="category/${subcategory.categoryID}">--->${subcategory.categoryName}</a><br>
+			</c:forEach>
 		</c:forEach>
-	</c:forEach>
+	</c:if>
 </body>
 </html>

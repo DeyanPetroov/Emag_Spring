@@ -20,15 +20,13 @@
 	<c:if test="${ requestScope.passwordsMissmatch != null }">
 		<h4 style="color: red">${passwordsMissmatch}</h4>
 	</c:if>
-	
-	
-	
+		
 	<!-- TODO should be validated -->
 	<c:if test="${sessionScope.user != null}">
 		<form action="changePassword" method="POST">
-			<input type="password" name="oldPassword" placeholder = "Old password" required /><br>
-			<input type="password" name="newPassword" placeholder = "New password" required/> <br>
-			<input type="password" name="confirmedNewPassword" placeholder = "Confirm the new password" required/> <br>	
+			<input type="password" name="oldPassword" placeholder = "Old password" required pattern=".{5,20}" title="Between 5 and 20 characters" /><br>
+			<input type="password" name="newPassword" placeholder = "New password" required pattern=".{5,20}" title="Between 5 and 20 characters"/> <br>
+			<input type="password" name="confirmedNewPassword" placeholder = "Confirm the new password" required pattern=".{5,20}" title="Between 5 and 20 characters"/> <br>	
 			<input type="submit" value="Submit"/> <br> <br> 		
 		</form>
 	</c:if>
