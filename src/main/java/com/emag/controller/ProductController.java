@@ -26,9 +26,8 @@ public class ProductController {
 	public String getProductsByCategory(Model model, @PathVariable("category_id") Integer category_id, HttpServletRequest request){
 		try {
 			ArrayList<Product> productsByCategory = (ArrayList<Product>) productDAO.getProductsByCategory(category_id);
-			System.out.println( "products: " + productsByCategory.size());
 			model.addAttribute("products", productsByCategory);
-			return "categories";
+			return "products";
 		} 
 		catch (SQLException e) {
 			return "errorPage";

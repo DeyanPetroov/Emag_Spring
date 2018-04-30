@@ -50,15 +50,14 @@ public class AdminController {
         double price = Double.valueOf(request.getParameter("price"));
         boolean availability = Boolean.parseBoolean(request.getParameter("availability"));        
         //TODO: add category_id or name from form choice -> here to add successfully
-        Product product = new Product(category_id, brand, model, description, productImageURL, price, availability, 0, null);
-        try {
-			this.productDAO.addProduct(product);
+        Product product = new Product(category_id, brand, model, description, productImageURL, price, availability, 0, null);        try {
+		this.productDAO.addProduct(product);
         }
         catch(Exception e) {
         	return new ModelAndView("forward:/errorPage/");
         }        
                 
-        return new ModelAndView("forward:/viewProduct/" + product.getProduct_id());
+        return new ModelAndView("forward:/viewProduct/" + product.getProductID());
     }
 	
 	

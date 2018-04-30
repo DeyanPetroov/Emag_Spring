@@ -206,7 +206,7 @@ public class UserDAO implements IUserDAO {
 	public void addProductToFavourites(User user, Product product) throws SQLException {
 		try (PreparedStatement addToFav = connection.prepareStatement(INSERT_PRODUCT_INTO_FAVOURITES);) {
 			addToFav.setLong(1, user.getId());
-			addToFav.setLong(1, product.getProduct_id());
+			addToFav.setLong(1, product.getProductID());
 			addToFav.executeUpdate();
 		}
 	}
@@ -216,7 +216,7 @@ public class UserDAO implements IUserDAO {
 	public void removeProductFromFavourites(User user, Product product) throws SQLException {
 		try(PreparedStatement removeFromFav= connection.prepareStatement(REMOVE_FROM_FAVOURITES);){
 			removeFromFav.setLong(1, user.getId());
-			removeFromFav.setLong(2, product.getProduct_id());
+			removeFromFav.setLong(2, product.getProductID());
 			removeFromFav.executeUpdate();
 		}
 	}
