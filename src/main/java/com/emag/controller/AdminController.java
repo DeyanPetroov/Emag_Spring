@@ -42,14 +42,14 @@ public class AdminController {
 	@RequestMapping(value = "/addProduct", method = RequestMethod.POST)
     public ModelAndView addProduct(HttpServletRequest request, HttpServletResponse response) {
         
+		//TODO: add category_id or name from form choice -> here to add successfully
 		int category_id = Integer.valueOf(request.getParameter("category_id"));
 		String brand = request.getParameter("brand");
         String model = request.getParameter("model");
         String description = request.getParameter("description");
         String productImageURL = request.getParameter("productImageURL");
         double price = Double.valueOf(request.getParameter("price"));
-        boolean availability = Boolean.parseBoolean(request.getParameter("availability"));        
-        //TODO: add category_id or name from form choice -> here to add successfully
+        boolean availability = Boolean.parseBoolean(request.getParameter("availability"));         	 	 	
         Product product = new Product(category_id, brand, model, description, productImageURL, price, availability, 0, null);
         try {
 			this.productDAO.addProduct(product);

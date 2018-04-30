@@ -33,7 +33,7 @@
 					
 				Select product category: <select name="category_name">
 					<c:forEach items="${ categories }" var="category">
-						 <option>${category.category_name}</option>
+						 <option>${category.categoryName}</option>
 					</c:forEach>				    
 			    </select> <br>
 					
