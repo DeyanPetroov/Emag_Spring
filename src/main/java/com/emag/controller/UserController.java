@@ -1,6 +1,7 @@
 package com.emag.controller;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -8,11 +9,15 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.emag.hashing.BCrypt;
+import com.emag.model.Cart;
+import com.emag.model.Product;
 import com.emag.model.User;
+import com.emag.model.dao.ProductDAO;
 import com.emag.model.dao.UserDAO;
 
 @Controller
@@ -20,9 +25,15 @@ public class UserController {
 
 	@Autowired
 	private UserDAO userDAO;
+	@Autowired
+	private ProductDAO productDAO;
 	
-	@RequestMapping(value = "/login", method = RequestMethod.GET )
-	public String login(HttpServletRequest request) {
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login(HttpSession session, Model model) {
+		if(session.getAttribute("user") != null) {
+			model.addAttribute("loggedUser", "You are already logged in. Please log out to use another account.");
+			return "index";
+		}
 		return "login";
 	}
 	
@@ -32,7 +43,11 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.GET )
-	public String register(HttpServletRequest request) {
+	public String register(Model model, HttpSession session) {
+		if(session.getAttribute("user") != null) {
+			model.addAttribute("loggedUser", "You are already logged in. Please log out to use another account.");
+			return "index";
+		}
 		return "register";	
 	}
 	
@@ -44,10 +59,9 @@ public class UserController {
 		User user = null;
 		try {
 			user = this.userDAO.getExistingUser(username, password);
-			
 			if(user!=null) {
 				session.setAttribute("user", user);
-				session.setAttribute("logged", true);
+				session.setAttribute("cart", user.getCart());
 				session.setMaxInactiveInterval(60*60);
 				return "index";
 			}	
@@ -68,6 +82,7 @@ public class UserController {
 	public String register(Model model, HttpSession session, HttpServletRequest request) {
 		
 		String username = request.getParameter("username");
+
 		String password = request.getParameter("password");
 		String first_name = request.getParameter("first_name");
 		String last_name = request.getParameter("last_name");
@@ -211,6 +226,40 @@ public class UserController {
 			return "errorPage";
 		}
 		return "profile";
+	}
+	
+	@RequestMapping(value = "/category/cart", method = RequestMethod.GET)
+	public String addToCart(HttpSession session, Model model) {
+		return "cart";
+	}
+	
+	@RequestMapping(value = "/cart", method = RequestMethod.GET)
+	public String viewCart(HttpSession session, Model model) {
+		Cart cart =  (Cart) session.getAttribute("cart");
+		model.addAttribute("cart", cart);
+		return "cart";
+	}
+
+	@RequestMapping(value = "/category/cart", method = RequestMethod.POST)
+	public String addToCart(Model model, HttpServletRequest request, HttpSession session) {
+		if(session.getAttribute("user") == null) {
+			model.addAttribute("invalidSession", "Please log in to add items to your cart.");
+			return "products";
+		}
+		
+		Long productID = Long.valueOf(request.getParameter("orderedProduct"));
+		System.out.println(productID);
+		Cart cart =  (Cart) session.getAttribute("cart");
+		
+		try {
+			Product product = productDAO.getProductById(productID);
+			cart.addToCart(product, 1);
+			model.addAttribute("cart", cart);
+			return "cart";
+		} 
+		catch (SQLException e) {
+			return "errorPage";
+		}
 	}
 
 	

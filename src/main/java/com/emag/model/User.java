@@ -23,7 +23,7 @@ public class User {
 	private boolean isAdmin;
 	
 	private Cart cart = new Cart();
-	private Order order;
+	private Order order = new Order(this);
 	
 	private ArrayList<Order> orderHistory = new ArrayList<>();
 	private HashSet<Product> favouriteProducts = new HashSet<>();
@@ -168,6 +168,10 @@ public class User {
 	}
 
 	// -------------METHODS-----------
+	
+	public void addToHistory(Order order) {
+		orderHistory.add(order);
+	}
 
 	public void addToCart(Product product, int quantity) {
 		cart.addToCart(product, quantity);

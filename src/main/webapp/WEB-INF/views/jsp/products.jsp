@@ -9,6 +9,39 @@
 <title>eMAG</title>
 </head>
 <body>
-
+	<c:if test="${invalidSession != null }">
+		<h4>${invalidSession}</h4>
+	</c:if>
+	<c:if test="${invalidSession == null }">
+	<table>
+		<tr>
+			<th>Brand</th>
+			<th>Model</th>
+			<th>Description</th>
+			<th>Discount percent</th>
+			<th>Discount expiration</th>
+			<th>Image</th>
+			<th>Availability</th>
+		</tr>
+		<c:forEach var="product" items="${products}">
+			<tr>
+				<td align="center">${product.brand}</td>
+				<td align="center">${product.model}</td>
+				<td align="center">${product.description}</td>
+				<td align="center">${product.price}BGN</td>
+				<td align="center">${product.discountPercent}</td>
+				<td align="center">${product.discountExpiration}</td>
+				<td align="center">${product.productImageURL}</td>
+				<td align="center">${product.availability}</td>
+				<td>
+					<form action="cart" method="POST">
+						<input type="hidden" name="orderedProduct" value="${product.productID}"> 
+						<input type="submit" value="Order">
+					</form>
+				</td>
+			</tr>
+		</c:forEach>
+	</table>
+	</c:if>
 </body>
 </html>

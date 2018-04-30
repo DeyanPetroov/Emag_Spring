@@ -23,7 +23,6 @@ public class Cart {
 		// TODO: validate (ako ima nalichnost)
 		// TODO: fix
 		if (this.products.containsKey(p)) {
-			System.out.println("contains");
 			this.products.put(p, products.get(p) + quantity);
 		} 
 		else {
@@ -48,5 +47,9 @@ public class Cart {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	public User getUser() {
+		return user;
 	}
 }

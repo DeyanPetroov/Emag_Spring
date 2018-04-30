@@ -9,5 +9,5 @@ public interface ICategoryDAO {
 	
 	ArrayList<Category> getAllCategories() throws Exception;
 	ArrayList<Category> getSubCategoriesByParentID(int parentID) throws Exception;
-	HashMap<String, ArrayList<Category>> allCategories() throws Exception;
+	HashMap<Category, ArrayList<Category>> allCategories() throws Exception;
 }

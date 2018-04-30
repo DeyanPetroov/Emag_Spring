@@ -4,22 +4,7 @@ import java.util.Date;
 
 public class Product {
 
-	public enum Category {
-		PHONES(1), COMPUTERS(2), TV(3), PHOTO(4);
-
-		private int category_id;
-
-		private Category(int id) {
-			this.category_id = id;
-		}
-
-		public int getCategory_id() {
-			return category_id;
-		}
-	}
-
-	private long product_id;
-	private int category_id;
+	private long productID;
 	private String brand;
 	private String model;
 	private String description;
@@ -28,13 +13,14 @@ public class Product {
 	private boolean availability;
 	private int discountPercent;
 	private Date discountExpiration;
+	private Category category = new Category();
 
 	
 	// ==============GETTERS=====================
-
-	public Product(int category_id, String brand, String model, String description,
-			String productImageURL, double price, boolean availability, int discountPercent, Date discountExpiration) {
-		this.category_id = category_id;
+	
+	
+	public Product(String brand, String model, String description, String productImageURL, double price,
+			boolean availability, int discountPercent, Date discountExpiration) {
 		this.brand = brand;
 		this.model = model;
 		this.description = description;
@@ -43,6 +29,25 @@ public class Product {
 		this.availability = availability;
 		this.discountPercent = discountPercent;
 		this.discountExpiration = discountExpiration;
+	}
+
+	public Product(long productID, int categoryID, String brand, String model, String description,
+			String productImageURL, double price, boolean availability, int discountPercent, Date discountExpiration) {
+		this(brand, model, description, productImageURL, price, availability, discountPercent, discountExpiration);
+		this.productID = productID;
+		this.category.setCategoryID(categoryID);
+	}
+
+	public Product(long productID, String brand, String model, String description, String productImageURL, double price,
+			boolean availability, int discountPercent, Date discountExpiration, String categoryName) {
+		this(brand, model, description, productImageURL, price, availability, discountPercent, discountExpiration);
+		this.productID = productID;
+		this.category.setCategoryName(categoryName);
+	}
+	
+	public Product(int categoryID, String brand, String model, String description, String productImageURL, double price, boolean availability, int discountPercent, Date discountExpiration) {
+		this(brand, model, description, productImageURL, price, availability, discountPercent, discountExpiration);
+		this.category.setCategoryID(categoryID);
 	}
 
 	public String getModel() {
@@ -57,18 +62,14 @@ public class Product {
 		return price;
 	}
 
-	public long getProduct_id() {
-		return product_id;
+	public long getProductID() {
+		return productID;
 	}
 
 	public String getDescription() {
 		return description;
 	}
 
-	public int getCategory_id() {
-		return category_id;
-	}
-	
 	public String getProductImageURL() {
 		return productImageURL;
 	}
@@ -85,4 +86,7 @@ public class Product {
 		return discountExpiration;
 	}
 	
+	public Category getCategory() {
+		return category;
+	}
 }
