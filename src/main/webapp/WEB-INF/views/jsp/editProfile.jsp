@@ -13,8 +13,11 @@
 		<h4 style="color: red">${error}</h4>
 	</c:if>
 	<c:if test="${sessionScope.user != null}">
+		<form action = "uploadProfilePicture" method = "POST" enctype="multipart/form-data">
+			<input type = "file" name = "image"><br>
+			<input type = "submit" value = "Change picture">
+		</form>
 		<form action="editProfile" method="POST">
-			Profile picture: <input type="img" name="image" value="${user.profilePictureURL}" /> <br>
 			First name: <input type="text" name="firstname" value="${user.firstName}" pattern="^[a-zA-Z'-]{3,31}$"
 					title="From 3 to 31 lower and uppercase characters. ' and - are also allowed" /><br>
 			Last name: <input type="text" name="lastname" value="${user.lastName}" pattern="^[a-zA-Z'-]{3,31}$"

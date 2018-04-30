@@ -12,6 +12,9 @@
 	<c:if test="${sessionScope.user != null}">
 		<table>
 			<tr>
+				<td><img src="download/${profilePicture}"></td>
+			</tr>
+			<tr>
 				<td>First name: ${user.firstName}</td>
 			</tr>
 			<tr>
@@ -25,9 +28,6 @@
 			</tr>
 			<tr>
 				<td>Phone: ${user.phone}</td>
-			</tr>
-			<tr>
-				<td>${user.profilePictureURL}</td>
 			</tr>
 		</table>
 		<a href="editProfile"><input type="button" value="Edit profile"/></a>

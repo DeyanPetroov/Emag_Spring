@@ -207,7 +207,6 @@ public class UserController {
 		String address = request.getParameter("address").trim();
 		String email = request.getParameter("email").trim();
 		String phone = request.getParameter("phone").trim();
-		String imageURL = request.getParameter("image").trim();
 		
 		try {
 			if (!oldEmail.equals(email) && userDAO.emailExists(email) != null) {
@@ -215,9 +214,9 @@ public class UserController {
 				return "editProfile";
 			} 
 			else {
-				User userNewData = new User(user.getId(), user.getUsername(), user.getPassword(), firstName, lastName, email, phone, user.getAge(), imageURL, address);
+				User userNewData = new User(user.getId(), user.getUsername(), user.getPassword(), firstName, lastName, email, phone, user.getAge(), user.getProfilePictureURL(), address);
 				userDAO.updateUser(userNewData);
-				user.updateUser(user.getId(), user.getUsername(), user.getPassword(), firstName, lastName, email, phone, user.getAge(), imageURL, address);
+				user.updateUser(user.getId(), user.getUsername(), user.getPassword(), firstName, lastName, email, phone, user.getAge(), user.getProfilePictureURL(), address);
 			}
 		}
 		//TODO make an abstract exception handler		

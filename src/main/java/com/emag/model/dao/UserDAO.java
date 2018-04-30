@@ -28,7 +28,8 @@ public class UserDAO implements IUserDAO {
 	private static final String GET_ORDERS_FOR_USER = "SELECT date, total_cost, status_id FROM orders WHERE user_id = ?";
 	private static final String INSERT_PRODUCT_INTO_FAVOURITES = "INSERT INTO favouriteproducts (user_id, product_id) VALUES (?,?)";
 	private static final String REMOVE_FROM_FAVOURITES = "DELETE FROM favouriteproducts WHERE user_id = ? AND product_id = ?";
-
+	private static final String CHANGE_PROFILE_PICTURE = "UPDATE users SET profile_picture = ? WHERE user_id = ?";
+	
 	private Connection connection;
 	private static final HashMap<String, User> allUsers = new HashMap<>();
 
@@ -219,5 +220,13 @@ public class UserDAO implements IUserDAO {
 			removeFromFav.setLong(2, product.getProductID());
 			removeFromFav.executeUpdate();
 		}
+	}
+
+	public void changeProfilePicture(String profilePicture, long id) throws SQLException {
+		try(PreparedStatement changePicture = connection.prepareStatement(CHANGE_PROFILE_PICTURE);) {
+			changePicture.setString(1, profilePicture);
+			changePicture.setLong(2, id);
+			changePicture.executeUpdate();
+		}	
 	}
 }
