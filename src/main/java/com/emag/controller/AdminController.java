@@ -40,29 +40,30 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/addProduct", method = RequestMethod.POST)
-    public ModelAndView addProduct(HttpServletRequest request, HttpServletResponse response) {
+    public String addProduct(HttpServletRequest request, HttpServletResponse response) {
         
-		//TODO: add category_id or name from form choice -> here to add successfully
-		int category_id = Integer.valueOf(request.getParameter("category_id"));
 		String brand = request.getParameter("brand");
         String model = request.getParameter("model");
         String description = request.getParameter("description");
         String productImageURL = request.getParameter("productImageURL");
         double price = Double.valueOf(request.getParameter("price"));
         boolean availability = Boolean.parseBoolean(request.getParameter("availability"));        
-        //TODO: add category_id or name from form choice -> here to add successfully
-        Product product = new Product(category_id, brand, model, description, productImageURL, price, availability, 0, null);        try {
-		this.productDAO.addProduct(product);
+        Product product = null;               
+        
+        try {
+        	int category_id = this.categoryDAO.getCategoryID(request.getParameter("categoryName"));
+            product = new Product(category_id, brand, model, description, productImageURL, price, availability, 0, null);
+        	this.productDAO.addProduct(product);        	
         }
         catch(Exception e) {
-        	return new ModelAndView("forward:/errorPage/");
+        	return ("errorPage");
         }        
                 
-        return new ModelAndView("forward:/viewProduct/" + product.getProductID());
+        return "forward:/viewProduct/" + product.getProductID();
     }
 	
 	
-	@RequestMapping(value = "/viewProduct", method = RequestMethod.GET)
+	@RequestMapping(value = "/viewProduct/{productId}", method = RequestMethod.GET)
 	public String viewProduct(@PathVariable long productId, Model model){
 		Product product;
 		try {
