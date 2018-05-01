@@ -31,7 +31,7 @@
 				<input type="radio" id="No" name="availability" placeholder="Availability"
 					required title="Is the product available?"/> <label for="Yes">No</label> <br>
 					
-				Select product category: <select name="category_name">
+				Select product category: <select name="categoryName">
 					<c:forEach items="${ categories }" var="category">
 						 <option>${category.categoryName}</option>
 					</c:forEach>				    

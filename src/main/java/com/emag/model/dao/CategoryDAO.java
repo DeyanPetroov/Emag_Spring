@@ -76,7 +76,9 @@ public class CategoryDAO implements ICategoryDAO {
 		try(PreparedStatement getID = connection.prepareStatement(GET_ID_OF_CATEGORY);){
 			getID.setString(1, categoryName);
 			try(ResultSet result = getID.executeQuery()){
-				id = result.getInt("category_id");
+				if(result.next()) {
+					id = result.getInt("category_id");
+				}
 			}
 		}
 		return id;

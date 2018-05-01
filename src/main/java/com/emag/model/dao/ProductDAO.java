@@ -41,6 +41,7 @@ public class ProductDAO implements IProductDAO {
 			p.setObject(7, product.getDiscountExpiration());
 			p.setString(8, product.getProductImageURL());
 			p.setInt(9, product.getCategory().getCategoryID());
+			p.executeUpdate();
 		}
 	}
 
