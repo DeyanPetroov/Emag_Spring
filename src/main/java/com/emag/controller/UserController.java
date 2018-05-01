@@ -268,7 +268,7 @@ public class UserController {
 	public String viewFavourites(HttpSession session, Model model) {
 		Set<Product> products = null;
 		try {
-			//products = this.userDAO.viewFavouriteProducts((User) session.getAttribute("user"));
+			products = this.userDAO.viewFavouriteProducts((User) session.getAttribute("user"));
 		} catch (Exception e) {
 			 return "errorPage";
 		}
@@ -282,7 +282,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/category/favourite", method = RequestMethod.POST)
-	public String addToFavourites(@RequestParam("favouriteProduct") Long productID, HttpSession session, Model model, HttpServletRequest request) {
+	public String addOrRemoveFavourite(@RequestParam("favouriteProduct") Long productID, HttpSession session, Model model, HttpServletRequest request) {
 		if(session.getAttribute("user") == null) {
 			model.addAttribute("invalidSession", "Please log in to add favourite items.");
 			return "products";
@@ -301,7 +301,6 @@ public class UserController {
 		
 		Set<Product> favouriteProducts = user.getFavouriteProducts();
 		model.addAttribute("favourites", favouriteProducts);
-		//session.setAttribute("favourites", favouriteProducts);
 		return "favourites";
 	}
 

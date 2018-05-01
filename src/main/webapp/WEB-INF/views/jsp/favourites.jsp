@@ -15,7 +15,7 @@
 			${product.brand}, 
 			${product.model},
 			${product.price},
-			<form action="removeFromFavourites" method="POST">
+			<form action="favourite" method="POST">
 						<input type="hidden" name="favouriteProduct" value="${product.productID}"> 
 						<input type="submit" value="Remove">
 			</form>
