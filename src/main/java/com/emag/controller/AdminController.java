@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,8 +17,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.emag.model.Category;
 import com.emag.model.Product;
+import com.emag.model.User;
 import com.emag.model.dao.CategoryDAO;
 import com.emag.model.dao.ProductDAO;
+import com.emag.model.dao.UserDAO;
 
 @Controller
 public class AdminController {
@@ -26,9 +29,27 @@ public class AdminController {
 	private CategoryDAO categoryDAO;	
 	@Autowired
 	private ProductDAO productDAO;
+	@Autowired
+	private UserDAO userDAO;
 	
 	@RequestMapping(value = "/addProduct", method = RequestMethod.GET)
-	public String addProductPage(Model m){
+	public String addProductPage(Model m, HttpSession session){
+		
+		
+		if(session.getAttribute("user") == null) {
+			m.addAttribute("invalidSession", "Please log in to view this page.");
+			return "products";
+		}	
+
+		try {
+			if(!this.userDAO.isAdmin((User) session.getAttribute("user"))){
+				m.addAttribute("invalidSession", "You do not have the authority to view this page. Sorry!");
+				return "index";
+			}
+		} catch (SQLException e1) {
+			return "errorPage";
+		}
+		
 		ArrayList<Category> categories=null;
 		try {
 			categories = this.categoryDAO.getAllCategories();
@@ -40,8 +61,22 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/addProduct", method = RequestMethod.POST)
-    public String addProduct(HttpServletRequest request, HttpServletResponse response) {
-        
+    public String addProduct(HttpServletRequest request, HttpServletResponse response, HttpSession session, Model m) {
+		
+		try {
+			if(!this.userDAO.isAdmin((User) session.getAttribute("user"))){
+				m.addAttribute("invalidSession", "You do not have the authority to view this page. Sorry!");
+				return "index";
+			}
+		} catch (SQLException e1) {
+			return "errorPage";
+		}
+		
+		if(session.getAttribute("user") == null) {
+			m.addAttribute("invalidSession", "Please log in to view this page.");
+			return "products";
+		}	
+		
 		String brand = request.getParameter("brand");
         String model = request.getParameter("model");
         String description = request.getParameter("description");

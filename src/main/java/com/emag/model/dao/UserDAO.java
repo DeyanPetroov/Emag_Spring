@@ -34,6 +34,7 @@ public class UserDAO implements IUserDAO {
 	private static final String CHANGE_PROFILE_PICTURE = "UPDATE users SET profile_picture = ? WHERE user_id = ?";
 	private static final String GET_FAVOURITE_BY_USER_ID = "SELECT user_id, product_id FROM favourite_products WHERE user_id = ? AND product_id = ?";
 	private static final String VIEW_FAVOURITE_PRODUCTS = "SELECT product_id FROM favourite_products WHERE user_id = ?";
+	private static final String CHECK_IF_IS_ADMIN = "SELECT is_admin FROM users WHERE username = ?";
 		
 	private Connection connection;
 	@Autowired
@@ -68,6 +69,25 @@ public class UserDAO implements IUserDAO {
 		}
 		resultSet.close();
 		return user;
+	}
+	
+	@Override
+	public boolean isAdmin(User user) throws SQLException {
+		ResultSet result = null;
+		String username = null;
+		try (PreparedStatement s = connection.prepareStatement(CHECK_IF_IS_ADMIN);) {			
+			username = this.usernameExists(user.getUsername());
+			s.setString(1, username);
+			result = s.executeQuery();
+			if(result.next()) {
+				if(result.getInt("is_admin")==1) {
+					return true;
+				}
+				return false;
+			}
+			return false;			
+		}
+		
 	}
 
 	// insert user in the database -------> maybe synchronized ?

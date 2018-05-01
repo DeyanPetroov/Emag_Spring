@@ -1,4 +1,5 @@
 package com.emag.model.dao;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -20,4 +21,5 @@ public interface IUserDAO {
 	HashMap<String, User> getAllUsers() throws Exception;
 	User getExistingUser(String username, String password) throws Exception;
 	Set<Product> viewFavouriteProducts(User user) throws Exception;
+	boolean isAdmin(User user) throws Exception;
 }
