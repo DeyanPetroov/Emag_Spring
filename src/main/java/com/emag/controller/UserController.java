@@ -268,7 +268,7 @@ public class UserController {
 	public String viewFavourites(HttpSession session, Model model) {
 		Set<Product> products = null;
 		try {
-			//products = this.userDAO.viewFavouriteProducts((User) session.getAttribute("user"));
+			products = this.userDAO.viewFavouriteProducts((User) session.getAttribute("user"));
 		} catch (Exception e) {
 			 return "errorPage";
 		}

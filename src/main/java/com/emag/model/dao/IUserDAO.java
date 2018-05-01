@@ -19,5 +19,5 @@ public interface IUserDAO {
 	List<Order> getAllUserOrders(int user_id) throws Exception;	
 	HashMap<String, User> getAllUsers() throws Exception;
 	User getExistingUser(String username, String password) throws Exception;
-	//Set<Product> viewFavouriteProducts(User user) throws Exception;
+	Set<Product> viewFavouriteProducts(User user) throws Exception;
 }

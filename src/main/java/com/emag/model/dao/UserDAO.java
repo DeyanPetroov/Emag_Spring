@@ -241,7 +241,7 @@ public class UserDAO implements IUserDAO {
 		return false;
 	}
 	
-/*	@Override
+	@Override
 	public Set<Product> viewFavouriteProducts(User user) throws Exception {
 		ResultSet res =  null;
 		Set<Product> favProducts = new HashSet<>();
@@ -251,7 +251,7 @@ public class UserDAO implements IUserDAO {
 			while(res.next()){
 				long productId = (long) res.getInt("product_id");
 				Product p = this.productDAO.getProductById(productId);				
-				this.addProductToFavourites(user, p);
+				//this.addProductToFavourites(user, p);
 				favProducts.add(p);
 			}
 			
@@ -260,7 +260,7 @@ public class UserDAO implements IUserDAO {
 		}
 		return favProducts;
 		
-	}*/
+	}
 
 	public void changeProfilePicture(String profilePicture, long id) throws SQLException {
 		try(PreparedStatement changePicture = connection.prepareStatement(CHANGE_PROFILE_PICTURE);) {
