@@ -16,8 +16,8 @@
 			${product.model},
 			${product.price},
 			<form action="favourite" method="POST">
-						<input type="hidden" name="favouriteProduct" value="${product.productID}"> 
-						<input type="submit" value="Remove">
+				<input type="hidden" name="favouriteProduct" value="${product.productID}"> 
+				<input type="submit" value="Remove">
 			</form>
 		</c:forEach>
 	</c:if>

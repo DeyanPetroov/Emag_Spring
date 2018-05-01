@@ -12,40 +12,49 @@
 	<c:if test="${invalidSession != null }">
 		<h4>${invalidSession}</h4>
 	</c:if>
+
 	<c:if test="${invalidSession == null }">
-	<table cellspacing="10">
-		<tr>
-			<th align="center">Brand</th>
-			<th align="center">Model</th>
-			<th align="center">Description</th>
-			<th align="center">Discount percent</th>
-			<th align="center">Discount expiration</th>
-			<th align="center">Image</th>
-			<th align="center">Availability</th>
-		</tr>
-		<c:forEach var="product" items="${products}">
-			<tr>
-				<td align="center">${product.brand}</td>
-				<td align="center">${product.model}</td>
-				<td align="center">${product.description}</td>
-				<td align="center">${product.price}BGN</td>
-				<td align="center">${product.discountPercent}</td>
-				<td align="center">${product.discountExpiration}</td>
-				<td align="center">${product.productImageURL}</td>
-				<td align="center">${product.availability}</td>
-				<td align="center">
-					<form action="cart" method="POST">
-						<input type="hidden" name="orderedProduct" value="${product.productID}"> 
-						<input type="submit" value="Order">
-					</form>
-					<form action="favourite" method="POST">
-						<input type="hidden" name="favouriteProduct" value="${product.productID}"> 
-						<input type="submit" value="&#9829;">
-					</form>
-				</td>
-			</tr>
-		</c:forEach>
-	</table>
+		<c:if test="${requestScope.unavailable != null }">
+			<h4>${unavailable}</h4>
+		</c:if>
+
+		<c:if test="${requestScope.unavailable == null }">
+			<table cellspacing="10">
+				<tr>
+					<th align="center">Brand</th>
+					<th align="center">Model</th>
+					<th align="center">Description</th>
+					<th align="center">Discount percent</th>
+					<th align="center">Discount expiration</th>
+					<th align="center">Image</th>
+					<th align="center">Availability</th>
+				</tr>
+				<c:forEach var="product" items="${products}">
+					<tr>
+						<td align="center">${product.brand}</td>
+						<td align="center">${product.model}</td>
+						<td align="center">${product.description}</td>
+						<td align="center">${product.price}BGN</td>
+						<td align="center">${product.discountPercent}</td>
+						<td align="center">${product.discountExpiration}</td>
+						<td align="center">${product.productImageURL}</td>
+						<td align="center">${product.availability}</td>
+						<td align="center">
+							<form action="cart" method="POST">
+								<input type="hidden" name="cartProduct" value="${product.productID}">
+								<input type="number" name="quantity" min=1 required><br>
+							    <input type="submit" value="Order">
+							</form>
+							<form action="favourite" method="POST">
+								<input type="hidden" name="favouriteProduct"
+									value="${product.productID}"> <input type="submit"
+									value="&#9829;">
+							</form>
+						</td>
+					</tr>
+				</c:forEach>
+			</table>
+		</c:if>
 	</c:if>
 </body>
 </html>

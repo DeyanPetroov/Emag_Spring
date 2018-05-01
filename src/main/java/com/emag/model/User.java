@@ -176,14 +176,6 @@ public class User {
 	public void addToHistory(Order order) {
 		orderHistory.add(order);
 	}
-
-	public void addToCart(Product product, int quantity) {
-		cart.addToCart(product, quantity);
-	}
-
-	public void removeFromCart(Product product, int quantity) {
-		cart.removeFromCart(product, quantity);
-	}
 	
 	public String hashPassword(String password) {
 		return BCrypt.hashpw(password, BCrypt.gensalt());

@@ -244,20 +244,26 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/category/cart", method = RequestMethod.POST)
-	public String addToCart(Model model, HttpServletRequest request, HttpSession session) {
+	public String addOrRemoveCartProducts(Model model, HttpServletRequest request, HttpSession session) {
 		if(session.getAttribute("user") == null) {
 			model.addAttribute("invalidSession", "Please log in to add items to your cart.");
 			return "products";
 		}
 		
-		Long productID = Long.valueOf(request.getParameter("orderedProduct"));
+		Long productID = Long.valueOf(request.getParameter("cartProduct"));
 		Cart cart =  (Cart) session.getAttribute("cart");
+		Integer quantity = Integer.valueOf(request.getParameter("quantity"));
 		
 		try {
 			Product product = productDAO.getProductById(productID);
-			cart.addToCart(product, 1);
-			model.addAttribute("cart", cart);
-			return "cart";
+			if(!cart.addOrRemoveCartProduct(product, quantity)) {
+				model.addAttribute("unavailable", "Sorry the product is not in stock.");
+				return "products";
+			}
+			else {
+				model.addAttribute("cart", cart);
+				return "cart";
+			}
 		} 
 		catch (SQLException e) {
 			return "errorPage";
@@ -308,8 +314,5 @@ public class UserController {
 	//TODO
 	//make an order, finalize it and add it to history of orders 
 	//profile picture change when editing profile --> it's not working because of multipart
-	//remove from favourites
-	//remove from cart
-	//add quantity when adding to cart
 	//exceptions!! now everything goes to error page with same message :/
 }

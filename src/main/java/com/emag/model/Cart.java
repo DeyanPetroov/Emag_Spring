@@ -2,12 +2,13 @@ package com.emag.model;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 public class Cart {
 
 	private User user;
-	private TreeMap<Product, Integer> products = new TreeMap<Product, Integer>((Product p1, Product p2) -> {
+	private Map<Product, Integer> products = new TreeMap<Product, Integer>((Product p1, Product p2) -> {
 		return p1.getBrand().compareTo(p2.getBrand());
 	});
 
@@ -19,16 +20,31 @@ public class Cart {
 		return user.getOrder().getTotalCost();
 	}
 
-	public void addToCart(Product p, int quantity) {
-		// TODO: validate (ako ima nalichnost)
-		// TODO: fix
-		if (this.products.containsKey(p)) {
-			this.products.put(p, products.get(p) + quantity);
-		} 
-		else {
-			this.products.put(p, quantity);
+	public boolean addOrRemoveCartProduct(Product p, int quantity) {
+		if(p.getAvailability() == false) {
+			return false;
 		}
+		
+		boolean inCart = false;
+		for(Entry<Product, Integer> entry : this.products.entrySet()) {
+			if(entry.getKey().getProductID() == p.getProductID()) {
+				if(quantity >= entry.getValue()) {
+					this.products.remove(entry.getKey(), entry.getValue());				
+				}
+				else {
+					this.products.put(entry.getKey(), entry.getValue() - quantity);
+				}
+				System.out.println("removed from cart");
+				inCart = true;
+			}
+		}
+		
+		if(inCart == false ) {
+			System.out.println("added to cart");
+			this.products.put(p, quantity);
+		}		
 		user.getOrder().setTotalCost(user.getOrder().getTotalCost() + p.getPrice() * quantity);
+		return true;
 	}
 
 	public void removeFromCart(Product p, int quantity) {

@@ -10,11 +10,17 @@
 </head>
 <body>
 
-<h1>Your cart</h1>
-<c:if test="${requestScope.cart != null}">
+	<h1>Your cart</h1>
+	<c:if test="${requestScope.cart != null}">
 		<c:forEach var="entry" items="${cart.products}">
+			${entry.key.brand} ${entry.key.model}
     		Price of product: ${entry.key.price}
    			Quantity: ${entry.value}
+   			<form action="cart" method="POST">
+				<input type="hidden" name="cartProduct" value="${entry.key.productID}"> 
+				<input type = "number" name = "quantity" min = 1 required>
+				<input type="submit" value="Remove">
+			</form>
 		</c:forEach>
 	</c:if>
 
