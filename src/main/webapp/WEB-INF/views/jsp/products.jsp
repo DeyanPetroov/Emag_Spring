@@ -38,6 +38,10 @@
 						<input type="hidden" name="orderedProduct" value="${product.productID}"> 
 						<input type="submit" value="Order">
 					</form>
+					<form action="favourite" method="POST">
+						<input type="hidden" name="favouriteProduct" value="${product.productID}"> 
+						<input type="submit" value="Add To Favourites">
+					</form>
 				</td>
 			</tr>
 		</c:forEach>

@@ -2,16 +2,20 @@ package com.emag.controller;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.emag.hashing.BCrypt;
 import com.emag.model.Cart;
@@ -227,12 +231,12 @@ public class UserController {
 		return "profile";
 	}
 	
-	@RequestMapping(value = "/category/cart", method = RequestMethod.GET)
+	@RequestMapping(value = "/cart", method = RequestMethod.GET)
 	public String addToCart(HttpSession session, Model model) {
 		return "cart";
 	}
 	
-	@RequestMapping(value = "/cart", method = RequestMethod.GET)
+	@RequestMapping(value = "/category/cart", method = RequestMethod.GET)
 	public String viewCart(HttpSession session, Model model) {
 		Cart cart =  (Cart) session.getAttribute("cart");
 		model.addAttribute("cart", cart);
@@ -247,7 +251,6 @@ public class UserController {
 		}
 		
 		Long productID = Long.valueOf(request.getParameter("orderedProduct"));
-		System.out.println(productID);
 		Cart cart =  (Cart) session.getAttribute("cart");
 		
 		try {
@@ -260,11 +263,49 @@ public class UserController {
 			return "errorPage";
 		}
 	}
+	
+	@RequestMapping(value = "/favourite", method = RequestMethod.GET)
+	public String viewFavourites(HttpSession session, Model model) {
+		Set<Product> products =  (Set<Product>) session.getAttribute("favourites");
+		model.addAttribute("favourites", products);
+		return "favourites";
+	}
+	
+	@RequestMapping(value = "/category/favourite", method = RequestMethod.GET)
+	public String addToFavourites() {
+		return "favourites";
+	}
+	
+	@RequestMapping(value = "/category/favourite", method = RequestMethod.POST)
+	public String addToFavourites(@RequestParam("favouriteProduct") Long productID, HttpSession session, Model model, HttpServletRequest request) {
+		if(session.getAttribute("user") == null) {
+			model.addAttribute("invalidSession", "Please log in to add favourite items.");
+			return "products";
+		}	
+		
+		User user = (User) session.getAttribute("user");
+		Product product = null;
+		
+		try {
+			product = productDAO.getProductById(productID);
+			userDAO.addProductToFavourites(user, product);
+			user.addToFavourites(product);
+		} catch (SQLException e) {
+			return "errorPage";
+		}
+		
+		Set<Product> favouriteProducts = user.getFavouriteProducts();
+		model.addAttribute("favourites", favouriteProducts);
+		session.setAttribute("favourites", favouriteProducts);
+		return "favourites";
+	}
 
 	
-	//get all
-	//get existing user	
-	//profile pic pri editing profile
-	//add to favourites	
+	//TODO
+	//make an order, finalize it and add it to history of orders 
+	//profile picture change when editing profile --> it's not working because of multipart
+	//remove from favourites
+	//remove from cart
+	//add quantity when adding to cart
+	//exceptions!! now everything goes to error page with same message :/
 }
-

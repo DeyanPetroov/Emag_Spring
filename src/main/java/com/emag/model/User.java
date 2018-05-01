@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 import com.emag.hashing.BCrypt;
 import com.emag.model.util.UserValidations;
@@ -211,7 +212,7 @@ public class User {
 		}
 	}
 	
-	public HashSet<Product> getFavouriteProducts() {
-		return (HashSet<Product>) Collections.unmodifiableSet(this.favouriteProducts);
+	public Set<Product> getFavouriteProducts() {
+		return Collections.unmodifiableSet(this.favouriteProducts);
 	}
 }

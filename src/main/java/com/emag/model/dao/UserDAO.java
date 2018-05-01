@@ -26,8 +26,8 @@ public class UserDAO implements IUserDAO {
 	private static final String DELETE_USER_BY_ID = "DELETE FROM users WHERE user_id = ?";
 	private static final String CHANGE_PASSWORD = "UPDATE users SET password = ? WHERE user_id = ?";
 	private static final String GET_ORDERS_FOR_USER = "SELECT date, total_cost, status_id FROM orders WHERE user_id = ?";
-	private static final String INSERT_PRODUCT_INTO_FAVOURITES = "INSERT INTO favouriteproducts (user_id, product_id) VALUES (?,?)";
-	private static final String REMOVE_FROM_FAVOURITES = "DELETE FROM favouriteproducts WHERE user_id = ? AND product_id = ?";
+	private static final String INSERT_PRODUCT_INTO_FAVOURITES = "INSERT INTO favourite_products (user_id, product_id) VALUES (?,?)";
+	private static final String REMOVE_FROM_FAVOURITES = "DELETE FROM favourite_products WHERE user_id = ? AND product_id = ?";
 	private static final String CHANGE_PROFILE_PICTURE = "UPDATE users SET profile_picture = ? WHERE user_id = ?";
 	
 	private Connection connection;
@@ -205,9 +205,11 @@ public class UserDAO implements IUserDAO {
 	// add product to favourites in the database
 	@Override
 	public void addProductToFavourites(User user, Product product) throws SQLException {
+		System.out.println("User id: " + user.getId());
 		try (PreparedStatement addToFav = connection.prepareStatement(INSERT_PRODUCT_INTO_FAVOURITES);) {
 			addToFav.setLong(1, user.getId());
-			addToFav.setLong(1, product.getProductID());
+			addToFav.setLong(2, product.getProductID());
+			System.out.println("Result: " +addToFav.getMetaData());
 			addToFav.executeUpdate();
 		}
 	}

@@ -21,6 +21,7 @@
 		<c:if test="${sessionScope.user != null }">
 			<a href="logout">Logout</a> <br>
 			<a href= "cart">Cart</a> <br>
+			<a href = "favourite">Favourites</a>
 			<a href="profile">My account</a>
 		</c:if>
 	</div>

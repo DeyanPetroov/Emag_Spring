@@ -43,16 +43,12 @@ public class ImageController {
 		File serverFile = new File(FILE_PATH + profilePicture);
 		try {
 			Files.copy(uploadedFile.getInputStream(), serverFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {
+			userDAO.changeProfilePicture(profilePicture, user.getId());
+			user.setProfilePictureURL(profilePicture);
+		} catch (IOException | SQLException s) {
 			return "errorPage";
 		}
 		
-		try {
-			userDAO.changeProfilePicture(profilePicture, user.getId());
-			user.setProfilePictureURL(profilePicture);
-		} catch (SQLException e) {
-			return "errorPage";
-		}
 		model.addAttribute("filename", profilePicture);
 		return "profile";
 	}
