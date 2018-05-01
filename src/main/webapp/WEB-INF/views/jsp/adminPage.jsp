@@ -10,6 +10,6 @@
 </head>
 <body>
 <h1>Admin page</h1>
-<a href = "addProduct">Click to add a product</a>	
+	<a href = "addProduct">Click to add a product</a>	
 </body>
 </html>

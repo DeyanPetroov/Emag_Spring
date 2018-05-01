@@ -1,5 +1,7 @@
 package com.emag.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -7,6 +9,7 @@ import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 
 import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -23,21 +26,20 @@ import com.emag.model.User;
 import com.emag.model.dao.UserDAO;
 
 @Controller
-@MultipartConfig
 public class ImageController {
 	
-	private static final String FILE_PATH = "\\Users\\Nadya\\Desktop";
+	private static final String FILE_PATH = "C:\\Users\\Nadya\\Desktop\\images\\";
 
 	@Autowired
 	private UserDAO userDAO;
 	
 	@RequestMapping(value = "/uploadProfilePicture", method = RequestMethod.GET)
-	public String viewUploadForm() {	
+	public String viewUploadForm(Model model, HttpServletRequest request, HttpSession session) {
 		return "editProfile";
 	}
 	
 	@RequestMapping(value = "/uploadProfilePicture", method = RequestMethod.POST)
-	public String finishUploading(@RequestParam("image") MultipartFile uploadedFile, Model model, HttpSession session) {
+	public String finishUploading(@RequestParam("image") MultipartFile uploadedFile, Model model, HttpSession session, HttpServletRequest request) {
 		User user = (User) session.getAttribute("user");
 		String profilePicture = uploadedFile.getOriginalFilename();
 		File serverFile = new File(FILE_PATH + profilePicture);
@@ -49,14 +51,13 @@ public class ImageController {
 			return "errorPage";
 		}
 		
-		model.addAttribute("filename", profilePicture);
+		model.addAttribute("profilePicture", profilePicture);
 		return "profile";
 	}
 	
 
 	@RequestMapping(value="/download/{profilePicture:.+}", method=RequestMethod.GET)
-	public void downloadFile(HttpServletResponse resp, @PathVariable("profilePicture") String profilePicture) throws IOException {
-		System.out.println(profilePicture);
+	public void downloadPicture(Model model, HttpServletResponse resp, @PathVariable("profilePicture") String profilePicture) throws IOException {
 		File serverFile = new File(FILE_PATH + profilePicture);
 		Files.copy(serverFile.toPath(), resp.getOutputStream());
 	}

@@ -160,7 +160,14 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
-	public String profile(HttpSession session) {
+	public String profile(HttpSession session, Model model) {
+		User user = (User) session.getAttribute("user");
+		try {
+			String picture = userDAO.getProfilePicture(user);
+			model.addAttribute("profilePicture", picture);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return "profile";
 	}
 	

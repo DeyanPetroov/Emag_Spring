@@ -22,7 +22,7 @@ public class ProductDAO implements IProductDAO {
 	private static final String UPDATE_PRODUCT = "UPDATE products SET brand = ?, price = ?, availability = ?, model = ?, description = ?, discount_percent = ?, discount_expiration = ?, product_picture = ?, category_id = ?";
 	private static final String DELETE_PRODUCT_BY_ID = "DELETE FROM products WHERE product_id = ?";
 	private static final String GET_ALL_BY_CATEGORY = "SELECT product_id, brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, category_id FROM products WHERE category_id = ?";
-	private static final String GET_ID_OF_PRODUCT = "SELECT product_id FROM products WHERE brand = ?, model = ?";
+	private static final String GET_ID_OF_PRODUCT = "SELECT product_id FROM products WHERE brand = ? AND model = ?";
 	
 	private Connection connection;
 	

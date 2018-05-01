@@ -13,7 +13,7 @@
 		<h4 style="color: red">${error}</h4>
 	</c:if>
 	<c:if test="${sessionScope.user != null}">
-		<form action = "uploadProfilePicture" method = "POST" enctype="multipart/form-data">
+		<form action = "./uploadProfilePicture" method = "POST" enctype="multipart/form-data" accept="image/*">
 			<input type = "file" name = "image"><br>
 			<input type = "submit" value = "Change picture">
 		</form>

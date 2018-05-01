@@ -22,4 +22,5 @@ public interface IUserDAO {
 	User getExistingUser(String username, String password) throws Exception;
 	Set<Product> viewFavouriteProducts(User user) throws Exception;
 	boolean isAdmin(User user) throws Exception;
+	String getProfilePicture(User user) throws Exception;
 }

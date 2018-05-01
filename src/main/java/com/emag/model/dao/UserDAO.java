@@ -35,7 +35,8 @@ public class UserDAO implements IUserDAO {
 	private static final String GET_FAVOURITE_BY_USER_ID = "SELECT user_id, product_id FROM favourite_products WHERE user_id = ? AND product_id = ?";
 	private static final String VIEW_FAVOURITE_PRODUCTS = "SELECT product_id FROM favourite_products WHERE user_id = ?";
 	private static final String CHECK_IF_IS_ADMIN = "SELECT is_admin FROM users WHERE username = ?";
-		
+	private static final String GET_PROFILE_PICTURE = "SELECT profile_picture FROM users WHERE user_id = ?";	
+	
 	private Connection connection;
 	@Autowired
 	private ProductDAO productDAO;
@@ -282,5 +283,19 @@ public class UserDAO implements IUserDAO {
 			changePicture.setLong(2, id);
 			changePicture.executeUpdate();
 		}	
+	}
+
+	@Override
+	public String getProfilePicture(User user) throws SQLException {
+		String picture = null;
+		try(PreparedStatement getPicture = connection.prepareStatement(GET_PROFILE_PICTURE);) {
+			getPicture.setLong(1, user.getId());
+			try(ResultSet result = getPicture.executeQuery()){
+				if(result.next()) {
+					picture = result.getString("profile_picture");
+				}
+			}
+		}
+		return picture;
 	}
 }

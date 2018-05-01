@@ -9,11 +9,10 @@
 <title>eMAG</title>
 </head>
 <body>
+	<img src="download/${profilePicture}" width = "150px" height = "150px">
+	
 	<c:if test="${sessionScope.user != null}">
 		<table>
-			<tr>
-				<td><img src="download/${profilePicture}"></td>
-			</tr>
 			<tr>
 				<td>First name: ${user.firstName}</td>
 			</tr>
