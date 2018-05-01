@@ -59,6 +59,7 @@ public class AdminController {
         	return ("errorPage");
         }        
                 
+        //TODO: do something about the empty url
         return "forward:/viewProduct/" + product.getProductID();
     }
 	

@@ -14,7 +14,7 @@ import com.emag.model.*;
 @Component
 public class ProductDAO implements IProductDAO {
 	
-	private static final String INSERT_PRODUCT = "INSERT INTO products(brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, cateogory_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String INSERT_PRODUCT = "INSERT INTO products(brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_PRODUCT_BY_ID = 
 			"SELECT p.product_id, p.brand, p.price, p.model, p.availability, p.description, p.discount_percent, p.discount_expiration, p.product_picture, c.category_name FROM products AS p " + 
 			"JOIN categories AS c " + 
