@@ -65,6 +65,9 @@ public class UserController {
 		try {
 			user = this.userDAO.getExistingUser(username, password);
 			if(user!=null) {
+				if(userDAO.isAdmin(user)) {
+					user.setAdmin(true);
+				}
 				session.setAttribute("user", user);
 				session.setAttribute("cart", user.getCart());
 				session.setMaxInactiveInterval(60*60);
@@ -106,6 +109,9 @@ public class UserController {
 				User u = new User(username, password, first_name, last_name, email, age);
 				try {
 					this.userDAO.saveUser(u);
+					if(userDAO.isAdmin(u)) {
+						u.setAdmin(true);
+					}
 					u.setPassword(u.hashPassword(u.getPassword()));
 				} catch (SQLException e) {
 					e.getMessage();

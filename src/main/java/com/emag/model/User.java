@@ -24,7 +24,7 @@ public class User {
 	private String profilePictureURL;
 	private String address;
 	private int age;
-	private boolean isAdmin;
+	private boolean admin;
 	
 	private Cart cart = new Cart();
 	private Order order = new Order(this);
@@ -49,6 +49,7 @@ public class User {
 		setEmail(email);
 		setAge(age);
 		cart.setUser(this);
+		this.admin = false;
 	}
 
 	// ----------GETTERS-----------
@@ -99,6 +100,14 @@ public class User {
 	
 	public String getProfilePictureURL() {
 		return profilePictureURL;
+	}
+	
+	public boolean isAdmin() {
+		return admin;
+	}
+	
+	public Set<Product> getFavouriteProducts() {
+		return Collections.unmodifiableSet(this.favouriteProducts);
 	}
 	
 	// -----------SETTERS-----------
@@ -170,6 +179,10 @@ public class User {
 			this.address = address;
 		}
 	}
+	
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
 
 	// -------------METHODS-----------
 	
@@ -211,7 +224,4 @@ public class User {
 		}
 	}
 	
-	public Set<Product> getFavouriteProducts() {
-		return Collections.unmodifiableSet(this.favouriteProducts);
-	}
 }

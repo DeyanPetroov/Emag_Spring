@@ -19,6 +19,9 @@
 			<a href="register">Register</a> <br>
 		</c:if>
 		<c:if test="${sessionScope.user != null }">
+			<c:if test="${sessionScope.user.admin == true}">
+				<a href = "adminPage">Admin page</a>
+			</c:if>
 			<a href="logout">Logout</a> <br>
 			<a href= "cart">Cart</a> <br>
 			<a href = "favourite">Favourites</a>

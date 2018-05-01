@@ -73,21 +73,18 @@ public class UserDAO implements IUserDAO {
 	
 	@Override
 	public boolean isAdmin(User user) throws SQLException {
-		ResultSet result = null;
-		String username = null;
-		try (PreparedStatement s = connection.prepareStatement(CHECK_IF_IS_ADMIN);) {			
-			username = this.usernameExists(user.getUsername());
+		try (PreparedStatement s = connection.prepareStatement(CHECK_IF_IS_ADMIN);) {
+			String username = this.usernameExists(user.getUsername());
 			s.setString(1, username);
-			result = s.executeQuery();
-			if(result.next()) {
-				if(result.getInt("is_admin")==1) {
-					return true;
+			try (ResultSet result = s.executeQuery()) {
+				if (result.next()) {
+					if (result.getInt("is_admin") == 1) {
+						return true;
+					}
 				}
-				return false;
 			}
-			return false;			
+			return false;
 		}
-		
 	}
 
 	// insert user in the database -------> maybe synchronized ?

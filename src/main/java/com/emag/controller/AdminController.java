@@ -114,4 +114,8 @@ public class AdminController {
 		
 		return("viewProduct");
 	}	
+	@RequestMapping(value = "adminPage", method = RequestMethod.GET)
+	public String viewAdminPage() {
+		return "adminPage";
+	}
 }
