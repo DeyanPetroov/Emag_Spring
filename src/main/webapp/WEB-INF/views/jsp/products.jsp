@@ -40,7 +40,7 @@
 					</form>
 					<form action="favourite" method="POST">
 						<input type="hidden" name="favouriteProduct" value="${product.productID}"> 
-						<input type="submit" value="Add To Favourites">
+						<input type="submit" value="&#9829;">
 					</form>
 				</td>
 			</tr>

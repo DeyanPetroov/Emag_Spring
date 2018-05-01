@@ -29,6 +29,7 @@ public class UserDAO implements IUserDAO {
 	private static final String INSERT_PRODUCT_INTO_FAVOURITES = "INSERT INTO favourite_products (user_id, product_id) VALUES (?,?)";
 	private static final String REMOVE_FROM_FAVOURITES = "DELETE FROM favourite_products WHERE user_id = ? AND product_id = ?";
 	private static final String CHANGE_PROFILE_PICTURE = "UPDATE users SET profile_picture = ? WHERE user_id = ?";
+	private static final String GET_FAVOURITE_BY_USER_ID = "SELECT user_id, product_id FROM favourite_products WHERE user_id = ? AND product_id = ?";
 	
 	private Connection connection;
 	private static final HashMap<String, User> allUsers = new HashMap<>();
@@ -204,24 +205,34 @@ public class UserDAO implements IUserDAO {
 
 	// add product to favourites in the database
 	@Override
-	public void addProductToFavourites(User user, Product product) throws SQLException {
-		System.out.println("User id: " + user.getId());
-		try (PreparedStatement addToFav = connection.prepareStatement(INSERT_PRODUCT_INTO_FAVOURITES);) {
-			addToFav.setLong(1, user.getId());
-			addToFav.setLong(2, product.getProductID());
-			System.out.println("Result: " +addToFav.getMetaData());
-			addToFav.executeUpdate();
+	public void addOrRemoveFavouriteProduct(User user, Product product) throws SQLException {
+		if (favouriteExists(user, product)) {
+			try (PreparedStatement removeFromFav = connection.prepareStatement(REMOVE_FROM_FAVOURITES);) {
+				removeFromFav.setLong(1, user.getId());
+				removeFromFav.setLong(2, product.getProductID());
+				removeFromFav.executeUpdate();
+			}
+		} 
+		else {
+			try (PreparedStatement addToFav = connection.prepareStatement(INSERT_PRODUCT_INTO_FAVOURITES);) {
+				addToFav.setLong(1, user.getId());
+				addToFav.setLong(2, product.getProductID());
+				addToFav.executeUpdate();
+			}
 		}
 	}
-
-	//remove product from favourites
-	@Override
-	public void removeProductFromFavourites(User user, Product product) throws SQLException {
-		try(PreparedStatement removeFromFav= connection.prepareStatement(REMOVE_FROM_FAVOURITES);){
-			removeFromFav.setLong(1, user.getId());
-			removeFromFav.setLong(2, product.getProductID());
-			removeFromFav.executeUpdate();
+	
+	private boolean favouriteExists(User user, Product product) throws SQLException {
+		try(PreparedStatement getFav= connection.prepareStatement(GET_FAVOURITE_BY_USER_ID);) {
+			getFav.setLong(1, user.getId());
+			getFav.setLong(2, product.getProductID());
+			try(ResultSet result = getFav.executeQuery()){
+				if(result.next()) {
+					return true;
+				}
+			}
 		}
+		return false;	
 	}
 
 	public void changeProfilePicture(String profilePicture, long id) throws SQLException {

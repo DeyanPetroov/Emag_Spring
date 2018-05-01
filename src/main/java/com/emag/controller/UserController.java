@@ -288,8 +288,8 @@ public class UserController {
 		
 		try {
 			product = productDAO.getProductById(productID);
-			userDAO.addProductToFavourites(user, product);
-			user.addToFavourites(product);
+			userDAO.addOrRemoveFavouriteProduct(user, product);
+			user.addOrRemoveFavourites(product);
 		} catch (SQLException e) {
 			return "errorPage";
 		}

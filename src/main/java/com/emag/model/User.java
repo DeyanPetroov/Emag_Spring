@@ -7,9 +7,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.emag.hashing.BCrypt;
+import com.emag.model.dao.UserDAO;
 import com.emag.model.util.UserValidations;
 
 public class User {
+	
+	private UserDAO userDAO;
 
 	private long user_id;
 	private String username;
@@ -200,15 +203,19 @@ public class User {
 		this.cart.setUser(this);
 	}
 
-	public void addToFavourites(Product product) {
-		if (!this.favouriteProducts.contains(product)) {
-			this.favouriteProducts.add(product);
+	public void addOrRemoveFavourites(Product product) {
+		boolean found = false;
+		for(Product p : favouriteProducts) {
+			if(p.getProductID() == product.getProductID()) {
+				System.out.println("removed from pojo");
+				found = true;
+				this.favouriteProducts.remove(p);
+				break;
+			}
 		}
-	}
-	
-	public void removeFromFavourites(Product product) {
-		if (this.favouriteProducts.contains(product)) {
-			this.favouriteProducts.remove(product);
+		if(found == false ) {
+			System.out.println("added to pojo");
+			this.favouriteProducts.add(product);		
 		}
 	}
 	

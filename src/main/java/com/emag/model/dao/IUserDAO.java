@@ -13,8 +13,7 @@ public interface IUserDAO {
 	void updateUser(User u) throws Exception;
 	void changePassword(User u, String password) throws Exception;
 	void deleteUserById(User user) throws Exception;
-	void addProductToFavourites(User user, Product product) throws Exception;
-	void removeProductFromFavourites(User user, Product product) throws Exception;
+	void addOrRemoveFavouriteProduct(User user, Product product) throws Exception;
 	void changeProfilePicture(String profilePicture, long id) throws Exception;
 	List<Order> getAllUserOrders(int user_id) throws Exception;	
 	HashMap<String, User> getAllUsers() throws Exception;
