@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -268,6 +269,14 @@ public class UserController {
 		catch (SQLException e) {
 			return "errorPage";
 		}
+	}
+	
+	@RequestMapping(value = "/favourite", method = RequestMethod.POST)
+	public String removeFavourite(HttpSession session, Model model, HttpServletRequest request) {
+		Long productID = Long.valueOf(request.getParameter("favouriteProduct"));
+		System.out.println(productID);
+		addOrRemoveFavourite(productID, session, model, request);
+		return "favourites";
 	}
 	
 	@RequestMapping(value = "/favourite", method = RequestMethod.GET)
