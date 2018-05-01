@@ -89,4 +89,8 @@ public class Product {
 	public Category getCategory() {
 		return category;
 	}
+	
+	public void setProductID(long productID) {
+		this.productID = productID;
+	}
 }

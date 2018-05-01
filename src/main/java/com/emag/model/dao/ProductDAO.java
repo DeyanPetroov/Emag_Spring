@@ -22,6 +22,7 @@ public class ProductDAO implements IProductDAO {
 	private static final String UPDATE_PRODUCT = "UPDATE products SET brand = ?, price = ?, availability = ?, model = ?, description = ?, discount_percent = ?, discount_expiration = ?, product_picture = ?, category_id = ?";
 	private static final String DELETE_PRODUCT_BY_ID = "DELETE FROM products WHERE product_id = ?";
 	private static final String GET_ALL_BY_CATEGORY = "SELECT product_id, brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, category_id FROM products WHERE category_id = ?";
+	private static final String GET_ID_OF_PRODUCT = "SELECT product_id FROM products WHERE brand = ?, model = ?";
 	
 	private Connection connection;
 	
@@ -125,5 +126,20 @@ public class ProductDAO implements IProductDAO {
 			}
 		}
 		return sameCategoryProducts;
-	}	
+	}
+	
+	@Override
+	public int getProductId(Product product) throws SQLException{
+		int id=0;
+		try(PreparedStatement getID = connection.prepareStatement(GET_ID_OF_PRODUCT);){
+			getID.setString(1, product.getBrand());
+			getID.setString(2, product.getModel());
+			try(ResultSet result = getID.executeQuery()){
+				if(result.next()) {
+					id = result.getInt("product_id");
+				}
+			}
+		}
+		return id;
+	}
 }

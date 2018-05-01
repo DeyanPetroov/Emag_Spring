@@ -51,9 +51,12 @@ public class AdminController {
         Product product = null;               
         
         try {
-        	int category_id = this.categoryDAO.getCategoryID(request.getParameter("categoryName"));
-            product = new Product(category_id, brand, model, description, productImageURL, price, availability, 0, null);
-        	this.productDAO.addProduct(product);        	
+        	if(this.productDAO.getProductId(product)>0) {
+	        	int category_id = this.categoryDAO.getCategoryID(request.getParameter("categoryName"));
+	            product = new Product(category_id, brand, model, description, productImageURL, price, availability, 0, null);
+	        	this.productDAO.addProduct(product); 
+	        	product.setProductID(this.productDAO.getProductId(product)); //takes the ID from the DB and sets it.
+        	}
         }
         catch(Exception e) {
         	return ("errorPage");
