@@ -1,6 +1,7 @@
 package com.emag.model.dao;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import com.emag.model.*;
 
@@ -18,4 +19,5 @@ public interface IUserDAO {
 	List<Order> getAllUserOrders(int user_id) throws Exception;	
 	HashMap<String, User> getAllUsers() throws Exception;
 	User getExistingUser(String username, String password) throws Exception;
+	//Set<Product> viewFavouriteProducts(User user) throws Exception;
 }

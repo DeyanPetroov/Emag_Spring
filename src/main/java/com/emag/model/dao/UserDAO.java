@@ -6,8 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.emag.hashing.BCrypt;
@@ -30,8 +33,11 @@ public class UserDAO implements IUserDAO {
 	private static final String REMOVE_FROM_FAVOURITES = "DELETE FROM favourite_products WHERE user_id = ? AND product_id = ?";
 	private static final String CHANGE_PROFILE_PICTURE = "UPDATE users SET profile_picture = ? WHERE user_id = ?";
 	private static final String GET_FAVOURITE_BY_USER_ID = "SELECT user_id, product_id FROM favourite_products WHERE user_id = ? AND product_id = ?";
-	
+	private static final String VIEW_FAVOURITE_PRODUCTS = "SELECT product_id FROM favourite_products where user_id = ?";
+		
 	private Connection connection;
+	@Autowired
+	private ProductDAO productDAO;
 	private static final HashMap<String, User> allUsers = new HashMap<>();
 
 	public UserDAO() {
@@ -232,8 +238,29 @@ public class UserDAO implements IUserDAO {
 				}
 			}
 		}
-		return false;	
+		return false;
 	}
+	
+/*	@Override
+	public Set<Product> viewFavouriteProducts(User user) throws Exception {
+		ResultSet res =  null;
+		Set<Product> favProducts = new HashSet<>();
+		try (PreparedStatement st = connection.prepareStatement(VIEW_FAVOURITE_PRODUCTS); ) {
+			st.setInt(1, (int) user.getId());
+			res = st.executeQuery();
+			while(res.next()){
+				long productId = (long) res.getInt("product_id");
+				Product p = this.productDAO.getProductById(productId);				
+				this.addProductToFavourites(user, p);
+				favProducts.add(p);
+			}
+			
+		} catch (SQLException e) {
+			//TODO
+		}
+		return favProducts;
+		
+	}*/
 
 	public void changeProfilePicture(String profilePicture, long id) throws SQLException {
 		try(PreparedStatement changePicture = connection.prepareStatement(CHANGE_PROFILE_PICTURE);) {

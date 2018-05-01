@@ -266,7 +266,12 @@ public class UserController {
 	
 	@RequestMapping(value = "/favourite", method = RequestMethod.GET)
 	public String viewFavourites(HttpSession session, Model model) {
-		Set<Product> products =  (Set<Product>) session.getAttribute("favourites");
+		Set<Product> products = null;
+		try {
+			//products = this.userDAO.viewFavouriteProducts((User) session.getAttribute("user"));
+		} catch (Exception e) {
+			 return "errorPage";
+		}
 		model.addAttribute("favourites", products);
 		return "favourites";
 	}
@@ -296,7 +301,7 @@ public class UserController {
 		
 		Set<Product> favouriteProducts = user.getFavouriteProducts();
 		model.addAttribute("favourites", favouriteProducts);
-		session.setAttribute("favourites", favouriteProducts);
+		//session.setAttribute("favourites", favouriteProducts);
 		return "favourites";
 	}
 
