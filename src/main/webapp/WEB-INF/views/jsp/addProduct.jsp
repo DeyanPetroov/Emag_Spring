@@ -37,8 +37,7 @@
 					</c:forEach>				    
 			    </select> <br>
 					
-				<input type="text" name="productImageURL" placeholder="Product Image URL"
-					title="Enter the product image URL"/> <br> <br>
+				<input type="file" name="productImage" value="Add Image"/> <br> <br>
 					
 				<input type="submit" name="addProduct" value="Create Product" /> <br> <br>
 				

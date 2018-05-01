@@ -6,8 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.emag.hashing.BCrypt;
@@ -29,8 +32,12 @@ public class UserDAO implements IUserDAO {
 	private static final String INSERT_PRODUCT_INTO_FAVOURITES = "INSERT INTO favourite_products (user_id, product_id) VALUES (?,?)";
 	private static final String REMOVE_FROM_FAVOURITES = "DELETE FROM favourite_products WHERE user_id = ? AND product_id = ?";
 	private static final String CHANGE_PROFILE_PICTURE = "UPDATE users SET profile_picture = ? WHERE user_id = ?";
+	private static final String VIEW_FAVOURITE_PRODUCTS = "SELECT product_id FROM favourite_products where user_id = ?";
+	
 	
 	private Connection connection;
+	@Autowired
+	private ProductDAO productDAO;
 	private static final HashMap<String, User> allUsers = new HashMap<>();
 
 	public UserDAO() {
@@ -205,13 +212,33 @@ public class UserDAO implements IUserDAO {
 	// add product to favourites in the database
 	@Override
 	public void addProductToFavourites(User user, Product product) throws SQLException {
-		System.out.println("User id: " + user.getId());
 		try (PreparedStatement addToFav = connection.prepareStatement(INSERT_PRODUCT_INTO_FAVOURITES);) {
 			addToFav.setLong(1, user.getId());
 			addToFav.setLong(2, product.getProductID());
 			System.out.println("Result: " +addToFav.getMetaData());
 			addToFav.executeUpdate();
 		}
+	}
+	
+	@Override
+	public Set<Product> viewFavouriteProducts(User user) throws Exception {
+		ResultSet res =  null;
+		Set<Product> favProducts = new HashSet<>();
+		try (PreparedStatement st = connection.prepareStatement(VIEW_FAVOURITE_PRODUCTS); ) {
+			st.setInt(1, (int) user.getId());
+			res = st.executeQuery();
+			while(res.next()){
+				long productId = (long) res.getInt("product_id");
+				Product p = this.productDAO.getProductById(productId);				
+				this.addProductToFavourites(user, p);
+				favProducts.add(p);
+			}
+			
+		} catch (SQLException e) {
+			//TODO
+		}
+		return favProducts;
+		
 	}
 
 	//remove product from favourites

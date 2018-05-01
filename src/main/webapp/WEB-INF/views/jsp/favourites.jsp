@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>eMAG</title>
 </head>
 <body>
 	<c:if test="${requestScope.favourites != null}">
@@ -14,7 +14,11 @@
 		<c:forEach items="${favourites}" var="product">
 			${product.brand}, 
 			${product.model},
-			${product.price} <br>
+			${product.price},
+			<form action="removeFromFavourites" method="POST">
+						<input type="hidden" name="favouriteProduct" value="${product.productID}"> 
+						<input type="submit" value="Remove">
+			</form>
 		</c:forEach>
 	</c:if>
 </body>

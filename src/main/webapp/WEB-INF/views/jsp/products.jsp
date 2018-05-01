@@ -13,15 +13,15 @@
 		<h4>${invalidSession}</h4>
 	</c:if>
 	<c:if test="${invalidSession == null }">
-	<table>
+	<table cellspacing="10">
 		<tr>
-			<th>Brand</th>
-			<th>Model</th>
-			<th>Description</th>
-			<th>Discount percent</th>
-			<th>Discount expiration</th>
-			<th>Image</th>
-			<th>Availability</th>
+			<th align="center">Brand</th>
+			<th align="center">Model</th>
+			<th align="center">Description</th>
+			<th align="center">Discount percent</th>
+			<th align="center">Discount expiration</th>
+			<th align="center">Image</th>
+			<th align="center">Availability</th>
 		</tr>
 		<c:forEach var="product" items="${products}">
 			<tr>
@@ -33,7 +33,7 @@
 				<td align="center">${product.discountExpiration}</td>
 				<td align="center">${product.productImageURL}</td>
 				<td align="center">${product.availability}</td>
-				<td>
+				<td align="center">
 					<form action="cart" method="POST">
 						<input type="hidden" name="orderedProduct" value="${product.productID}"> 
 						<input type="submit" value="Order">
