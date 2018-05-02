@@ -44,6 +44,7 @@ public class OrderDAO implements IOrderDAO {
 			insertOrder.setString(3, order.getDeliveryAddress());
 			insertOrder.setLong(4, order.getUser().getId());
 			insertOrder.setInt(5, order.getStatus());
+			insertOrder.executeUpdate();
 		}
 	}
 

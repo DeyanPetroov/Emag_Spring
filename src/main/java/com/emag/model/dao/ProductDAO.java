@@ -19,7 +19,7 @@ public class ProductDAO implements IProductDAO {
 			"SELECT p.product_id, p.brand, p.price, p.model, p.availability, p.description, p.discount_percent, p.discount_expiration, p.product_picture, c.category_name FROM products AS p " + 
 			"JOIN categories AS c " + 
 			"ON p.product_id = ? AND p.category_id = c.category_id";
-	private static final String UPDATE_PRODUCT = "UPDATE products SET brand = ?, price = ?, availability = ?, model = ?, description = ?, discount_percent = ?, discount_expiration = ?, product_picture = ?, category_id = ?";
+	private static final String UPDATE_PRODUCT = "UPDATE products SET brand = ?, price = ?, availability = ?, model = ?, description = ?, discount_percent = ?, discount_expiration = ?, product_picture = ?, category_id = ? WHERE product_id = ?";
 	private static final String DELETE_PRODUCT_BY_ID = "DELETE FROM products WHERE product_id = ?";
 	private static final String GET_ALL_BY_CATEGORY = "SELECT product_id, brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, category_id FROM products WHERE category_id = ?";
 	private static final String GET_ID_OF_PRODUCT = "SELECT product_id FROM products WHERE brand = ? AND model = ?";
@@ -47,9 +47,9 @@ public class ProductDAO implements IProductDAO {
 	}
 
 	@Override
-	public void deleteProduct(long product_id) throws SQLException {
+	public void deleteProduct(long productId) throws SQLException {
 		try(PreparedStatement p = connection.prepareStatement(DELETE_PRODUCT_BY_ID);){
-			p.setLong(1, product_id);
+			p.setLong(1, productId);
 			p.executeUpdate();
 		}
 	}
@@ -66,15 +66,16 @@ public class ProductDAO implements IProductDAO {
 			p.setObject(7, product.getDiscountExpiration());
 			p.setString(8, product.getProductImageURL());
 			p.setInt(9, product.getCategory().getCategoryID());
+			p.setLong(10, product.getProductID());
 			p.executeUpdate();
 		}
 	}
 
 	@Override
-	public Product getProductById(long product_id) throws SQLException {
+	public Product getProductById(long productId) throws SQLException {
 		Product product = null;
 		try(PreparedStatement p = connection.prepareStatement(GET_PRODUCT_BY_ID);){
-			p.setLong(1, product_id);
+			p.setLong(1, productId);
 			System.out.println(p.toString());
 			try (ResultSet resultSet = p.executeQuery()) {
 				while (resultSet.next()) {
@@ -96,13 +97,13 @@ public class ProductDAO implements IProductDAO {
 	}
 
 	@Override
-	public List<Product> getProductsByCategory(int category_id) throws SQLException {
+	public List<Product> getProductsByCategory(int categoryId) throws SQLException {
 		List<Product> sameCategoryProducts = new ArrayList<>();
 		ResultSet resultSet = null;
 		Product product = null;
 		
 		try(PreparedStatement p = connection.prepareStatement(GET_ALL_BY_CATEGORY);){
-			p.setInt(1, category_id);
+			p.setInt(1, categoryId);
 			try {				
 				resultSet = p.executeQuery();
 				while (resultSet.next()) {

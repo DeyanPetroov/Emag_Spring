@@ -1,27 +1,30 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>eMAG</title>
+<title>eMAG - Admin</title>
 </head>
 <body>
-<div align="center">
-	<h3>Enter the product details!</h3>     
-       <form action="addProduct" method="POST">
-       
-				<input type="text" name="brand" placeholder="Brand"
+
+	<c:if test="${sessionScope.user != null}">
+			<form action = "./uploadProfilePicture" method = "POST" enctype="multipart/form-data" accept="image/*">
+				<input type = "file" name = "image"><br>
+				<input type = "submit" value = "Change picture">
+			</form>
+			<form action="editProduct" method="POST">
+				<input type="text" name="brand" value="${product.brand} placeholder="Brand"
 					required title="Enter the product brand"/> <br>
 					
-				<input type="text" name="model" placeholder="Model"
+				<input type="text" name="model" value="${product.model} placeholder="Model"
 					required title="Enter the product model"/> <br>
 					
-				<input type="text" name="description" placeholder="Description"
+				<input type="text" name="description" value="${product.description} placeholder="Description"
 					title="Enter the product brand"/> <br>
 					
-				<input type="number" name="price" placeholder="Price"
+				<input type="number" name="price" value="${product.price} placeholder="Price"
 					required min = 1 title="Enter a price for the product"/> <br>
 					
 				Is the product in stock?<input type="radio" id="Yes" name="availability" placeholder="Availability"
@@ -35,12 +38,13 @@
 					</c:forEach>				    
 			    </select> <br>
 					
-				<input type="file" name="productImage" value="Add Image"/> <br> <br>
-					
-				<input type="submit" name="addProduct" value="Create Product" /> <br> <br>
-				
-			 	Go back to <a href="index">main page?</a>							 	
-		</form>
-	</div>		
+				<input type="submit" name="editProduct" value="Save Product" /> <br> <br>	
+			</form>
+		</c:if>
+		
+		<c:if test="${sessionScope.user == null}">
+			<c:redirect url = "login">Please log in.</c:redirect>
+	</c:if>	
+
 </body>
 </html>

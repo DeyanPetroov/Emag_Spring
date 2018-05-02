@@ -9,6 +9,7 @@
 <title>eMAG</title>
 </head>
 <body>
+	<c:set var="productId" value="${product.product_id}" />
 	${product.brand}<br>
 	${product.model}<br>
 	${product.price}

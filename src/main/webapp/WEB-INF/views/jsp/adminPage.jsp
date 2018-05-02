@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Admin page</title>
+<title>eMAG - Admin</title>
 </head>
 <body>
 <h1>Admin page</h1>

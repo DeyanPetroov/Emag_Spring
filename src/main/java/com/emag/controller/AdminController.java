@@ -1,7 +1,9 @@
 package com.emag.controller;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -62,7 +64,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/addProduct", method = RequestMethod.POST)
-    public String addProduct(Model model, HttpServletRequest request, HttpServletResponse response, HttpSession session, Model m) {
+    public String addProduct(HttpServletRequest request, HttpServletResponse response, HttpSession session, Model m) {
 		
 		try {
 			if(!this.userDAO.isAdmin((User) session.getAttribute("user"))){
@@ -87,18 +89,83 @@ public class AdminController {
         Product product = null;               
         
 		try {
-			int category_id = this.categoryDAO.getCategoryID(request.getParameter("categoryName"));
-			product = new Product(category_id, brand, productModel, description, productImageURL, price, availability, 0, null);
+			int categoryId = this.categoryDAO.getCategoryID(request.getParameter("categoryName"));
+			product = new Product(categoryId, brand, productModel, description, productImageURL, price, availability, 0, null);
 			this.productDAO.addProduct(product);
 			product.setProductID(this.productDAO.getProductId(product)); // takes the ID from the DB and sets it.
-
+			m.addAttribute("productId", product.getProductID());
 		}
         catch(Exception e) {
         	return ("errorPage");
         }        
                 
         //TODO: do something about the empty url
-		model.addAttribute("product", product);
+		m.addAttribute("product", product);
+        return "viewProduct";
+    }
+	
+	@RequestMapping(value = "/editProduct", method = RequestMethod.GET)
+    public String editProduct(HttpSession session, Model m) {
+		
+		try {
+			if(!this.userDAO.isAdmin((User) session.getAttribute("user"))){
+				m.addAttribute("invalidSession", "You do not have the authority to view this page. Sorry!");
+				return "index";
+			}
+		} catch (SQLException e1) {
+			return "errorPage";
+		}
+		
+		if(session.getAttribute("user") == null) {
+			m.addAttribute("invalidSession", "Please log in to view this page.");
+			return "products";
+		}	
+		
+		ArrayList<Category> categories=null;
+		try {
+			categories = this.categoryDAO.getAllCategories();
+		} catch (Exception e) {
+			return ("errorPage");
+		}
+		
+		m.addAttribute("categories", categories);
+		
+		//TODO: get current product -> form
+		
+        return "editProduct";
+    }
+	
+	@RequestMapping(value = "/editProduct", method = RequestMethod.POST)
+    public String editProduct(HttpServletRequest request, HttpServletResponse response, HttpSession session, Model m) throws SQLException {
+		
+		try {
+			if(!this.userDAO.isAdmin((User) session.getAttribute("user"))){
+				m.addAttribute("invalidSession", "You do not have the authority to view this page. Sorry!");
+				return "index";
+			}
+		} catch (SQLException e1) {
+			return "errorPage";
+		}
+		
+		if(session.getAttribute("user") == null) {
+			m.addAttribute("invalidSession", "Please log in to view this page.");
+			return "products";
+		}	
+		
+		Product product = this.productDAO.getProductById(Integer.valueOf(request.getParameter("productId")));
+		
+		String brand = request.getParameter("brand");
+        String productModel = request.getParameter("model");
+        String description = request.getParameter("description");
+        String productImageURL = request.getParameter("productImageURL");
+        //TODO: fix null pointer of price
+        double price = Double.valueOf(request.getParameter("price"));
+        boolean availability = Boolean.valueOf(request.getParameter("availability"));        
+		
+		Product updatedProduct = new Product(product.getCategory().getCategoryID(), brand, productModel, description, productImageURL, price, availability, product.getDiscountPercent(), product.getDiscountExpiration());
+		this.productDAO.updateProduct(updatedProduct);
+		
+		m.addAttribute("product", product);
         return "viewProduct";
     }
 	

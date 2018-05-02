@@ -28,6 +28,7 @@
 			 	<td align="center">${product.discountPercent}</td>	
 			 	<td align="center">${product.discountExpiration}</td>			
 				<td align="center">${product.productImageURL}</td>
+				<td align="center"><c:set var="productId" value="${product.product_id}" /></td>
 			</tr>
 		</c:forEach>
 	</table>
