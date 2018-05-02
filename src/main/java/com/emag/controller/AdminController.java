@@ -92,7 +92,6 @@ public class AdminController {
 			int categoryId = this.categoryDAO.getCategoryID(request.getParameter("categoryName"));
 			product = new Product(categoryId, brand, productModel, description, productImageURL, price, availability, 0, null);
 			this.productDAO.addProduct(product);
-			product.setProductID(this.productDAO.getProductId(product)); // takes the ID from the DB and sets it.
 			m.addAttribute("productId", product.getProductID());
 		}
         catch(Exception e) {
@@ -168,20 +167,6 @@ public class AdminController {
 		m.addAttribute("product", product);
         return "viewProduct";
     }
-	
-	
-/*	@RequestMapping(value = "/viewProduct/{productId}", method = RequestMethod.GET)
-	public String viewProduct(@PathVariable("productId") long productId, Model model){
-		Product product;
-		try {
-			product = this.productDAO.getProductById(productId);
-		} catch (SQLException e) {
-			return("errorPage");
-		}
-		model.addAttribute(product);
-		
-		return("viewProduct");
-	}	*/
 	
 	@RequestMapping(value = "adminPage", method = RequestMethod.GET)
 	public String viewAdminPage() {

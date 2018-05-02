@@ -35,7 +35,7 @@ public class UserDAO implements IUserDAO {
 	private Connection connection;
 	private static final HashMap<String, User> allUsers = new HashMap<>();
 
-	public UserDAO() {
+	private UserDAO() {
 		connection = DBManager.getInstance().getConnection();
 	}
 

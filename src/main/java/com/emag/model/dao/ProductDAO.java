@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.emag.model.*;
+import com.mysql.jdbc.Statement;
 
 @Component
 public class ProductDAO implements IProductDAO {
@@ -39,17 +40,23 @@ public class ProductDAO implements IProductDAO {
 	
 	@Override
 	public void addProduct(Product product) throws SQLException {
-		try(PreparedStatement p = connection.prepareStatement(INSERT_PRODUCT);) {
-			p.setString(1, product.getBrand());
-			p.setDouble(2, product.getPrice());
-			p.setBoolean(3, product.getAvailability());
-			p.setString(4, product.getModel());
-			p.setString(5, product.getDescription());
-			p.setInt(6, product.getDiscountPercent());
-			p.setObject(7, product.getDiscountExpiration());
-			p.setString(8, product.getProductImageURL());
-			p.setInt(9, product.getCategory().getCategoryID());
-			p.executeUpdate();
+		try(PreparedStatement addProduct = connection.prepareStatement(INSERT_PRODUCT, Statement.RETURN_GENERATED_KEYS)) {
+			addProduct.setString(1, product.getBrand());
+			addProduct.setDouble(2, product.getPrice());
+			addProduct.setBoolean(3, product.getAvailability());
+			addProduct.setString(4, product.getModel());
+			addProduct.setString(5, product.getDescription());
+			addProduct.setInt(6, product.getDiscountPercent());
+			addProduct.setObject(7, product.getDiscountExpiration());
+			addProduct.setString(8, product.getProductImageURL());
+			addProduct.setInt(9, product.getCategory().getCategoryID());
+			addProduct.executeUpdate();
+			
+			try(ResultSet result = addProduct.getGeneratedKeys()){
+				if(result.next()) {
+					product.setProductID(result.getLong(1));
+				}
+			}
 		}
 	}
 
@@ -127,22 +134,6 @@ public class ProductDAO implements IProductDAO {
 			}
 		}
 		return sameCategoryProducts;
-	}
-
-	//shouldn't be this way
-	@Override
-	public int getProductId(Product product) throws SQLException{
-		int id=0;
-		try(PreparedStatement getID = connection.prepareStatement(GET_ID_OF_PRODUCT);){
-			getID.setString(1, product.getBrand());
-			getID.setString(2, product.getModel());
-			try(ResultSet result = getID.executeQuery()){
-				if(result.next()) {
-					id = result.getInt("product_id");
-				}
-			}
-		}
-		return id;
 	}
 
 	// add product to favourites in the database
