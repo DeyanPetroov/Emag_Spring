@@ -3,6 +3,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.stereotype.Component;
 
@@ -26,6 +28,7 @@ public class OrderDAO implements IOrderDAO {
 			"FROM users as u" + 
 			"JOIN orders as o" + 
 			"WHERE o.order_id = ?";
+	private static final String INSERT_ORDERED_PRODUCT = "INSERT INTO ordered_products(order_id, product_id, quantity) VALUES(?, ?, ?)";
 	
 	private Connection connection;
 	
@@ -45,16 +48,15 @@ public class OrderDAO implements IOrderDAO {
 	}
 
 	@Override
-	public Order getOrderById(long id) throws SQLException {
-		ResultSet resultSet = null;
+	public Order getOrderById(long user_id) throws SQLException {
 		Order order = null;
-		
-		try(PreparedStatement getOrderById = connection.prepareStatement(GET_ORDER_BY_ID);) {
-			getOrderById.setLong(1, id);
-			resultSet = getOrderById.executeQuery();
-			while (resultSet.next()) {
-				User user = getUserByOrderId(id);
-				order = new Order(user);
+		try (PreparedStatement getOrderById = connection.prepareStatement(GET_ORDER_BY_ID);) {
+			getOrderById.setLong(1, user_id);
+			try (ResultSet resultSet = getOrderById.executeQuery()) {
+				while (resultSet.next()) {
+					User user = getUserByOrderId(user_id);
+					order = new Order(user, resultSet.getString("delivery_address"));
+				}
 			}
 		}
 		
@@ -97,5 +99,19 @@ public class OrderDAO implements IOrderDAO {
 			}
 		}
 		return user;
+	}
+
+	@Override
+	public void addOrderedProduct(Order order) throws SQLException {
+		Map<Product, Integer> products = order.getProducts();
+		for(Entry<Product, Integer> p : products.entrySet()) {
+			try(PreparedStatement ps = connection.prepareStatement(INSERT_ORDERED_PRODUCT);){
+				ps.setLong(1, order.getOrderID());
+				ps.setLong(2, p.getKey().getProductID());
+				ps.setInt(3, p.getValue());
+				ps.executeUpdate();
+			}
+		}
+		
 	}
 }

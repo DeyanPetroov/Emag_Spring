@@ -17,7 +17,11 @@ public class Cart {
 	}
 
 	public double getTotalCost() {
-		return user.getOrder().getTotalCost();
+		double totalCost = 0;
+		for(Entry<Product, Integer> prod : this.products.entrySet()) {
+			totalCost += prod.getKey().getPrice();
+		}
+		return totalCost;
 	}
 
 	public boolean addOrRemoveCartProduct(Product p, int quantity) {

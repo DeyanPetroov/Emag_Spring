@@ -8,6 +8,7 @@ import java.util.TreeMap;
 
 public class Order {
 	
+	private long orderID; 
 	private LocalDateTime date;
 	private User user;
 	private double totalCost;
@@ -16,14 +17,19 @@ public class Order {
 	private String deliveryAddress;
 	private Map<Product, Integer> products;
 
-	public Order(User user) {
+	public Order(long orderID, User user, String deliveryAddress) {
+		this(user, deliveryAddress);
+		this.totalCost = user.getCart().getTotalCost();
+		this.orderID = orderID;
+	}
+	
+	public Order(User user, String deliveryAddress) {
 		this.user = user;
 		this.date = LocalDateTime.now();
-		this.totalCost = 0;
 		this.status = 0;
-		this.products = new TreeMap<Product, Integer>();
-		this.deliveryAddress = user.getAddress();
-		setProducts(user.getCart().getProducts());
+		this.products = user.getCart().getProducts();
+		this.deliveryAddress = deliveryAddress;
+		this.totalCost = user.getCart().getTotalCost();
 	}
 
 	//==================GETTERS==================
@@ -55,6 +61,10 @@ public class Order {
 
 	public Map<Product, Integer> getProducts() {
 		return Collections.unmodifiableMap(this.products);
+	}
+	
+	public long getOrderID() {
+		return orderID;
 	}
 	
 	//==================SETTERS==================

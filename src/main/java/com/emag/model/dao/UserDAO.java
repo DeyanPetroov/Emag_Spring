@@ -128,7 +128,7 @@ public class UserDAO implements IUserDAO {
 			ResultSet result = getOrders.executeQuery();
 			while (result.next()) {
 				User user = getByID(user_id);
-				Order order = new Order(user);
+				Order order = new Order(user, user.getAddress());
 				userOrders.add(order);
 			}
 		}

@@ -9,4 +9,5 @@ public interface IOrderDAO {
 	Order getOrderById(long order_id) throws Exception;
 	void updateOrderStatus(User user, int status_id) throws Exception;
 	User getUserByOrderId(long user_id) throws Exception;	
+	void addOrderedProduct(Order order) throws Exception;
 }

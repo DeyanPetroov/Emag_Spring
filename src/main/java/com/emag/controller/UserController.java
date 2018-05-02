@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.emag.hashing.BCrypt;
 import com.emag.model.Cart;
+import com.emag.model.Order;
 import com.emag.model.Product;
 import com.emag.model.User;
+import com.emag.model.dao.OrderDAO;
 import com.emag.model.dao.ProductDAO;
 import com.emag.model.dao.UserDAO;
+
 
 @Controller
 public class UserController {
@@ -27,6 +30,8 @@ public class UserController {
 	private UserDAO userDAO;
 	@Autowired
 	private ProductDAO productDAO;
+	@Autowired
+	private OrderDAO orderDAO;
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(HttpSession session, Model model) {
@@ -308,8 +313,32 @@ public class UserController {
 		model.addAttribute("favourites", favouriteProducts);
 		return "favourites";
 	}
+	
+	@RequestMapping(value = "/orderPage", method = RequestMethod.GET)
+	public String orderProducts(HttpSession session) {
+		return "orderPage";
+	}
+	
+	@RequestMapping(value = "/finalizeOrder", method = RequestMethod.POST)
+	public String finalizeOrder(Model model, HttpSession session, HttpServletRequest request) {
+		User user = (User) session.getAttribute("user");
+		Cart cart = (Cart) session.getAttribute("cart");
+		String deliveryAddress = request.getParameter("address");
+
+		Order order = new Order(user, deliveryAddress);
+		try {
+			orderDAO.addNewOrder(order);
+			orderDAO.addOrderedProduct(order);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		model.addAttribute("order", order);
+		user.addToHistory(order);
+		cart.emptyCart();
+		return "viewOrder";
+	}
 
 	//TODO
-	//make an order, finalize it and add it to history of orders 
 	//exceptions!! now everything goes to error page with same message :/
 }

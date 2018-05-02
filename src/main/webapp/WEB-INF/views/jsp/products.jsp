@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>eMAG</title>
+<title>Products</title>
 </head>
 <body>
 	<c:if test="${invalidSession != null }">

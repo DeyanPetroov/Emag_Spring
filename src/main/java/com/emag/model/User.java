@@ -27,7 +27,7 @@ public class User {
 	private boolean admin;
 	
 	private Cart cart = new Cart();
-	private Order order = new Order(this);
+	private Order order = new Order(this, address);
 	
 	private ArrayList<Order> orderHistory = new ArrayList<>();
 	private HashSet<Product> favouriteProducts = new HashSet<>();

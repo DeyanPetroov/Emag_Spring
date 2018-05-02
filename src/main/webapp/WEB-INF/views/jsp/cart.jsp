@@ -19,11 +19,11 @@
    			Total cost of products in cart: ${sessionScope.user.order.totalCost}
    			<form action="cart" method="POST">
 				<input type="hidden" name="cartProduct" value="${entry.key.productID}"> 
-				<input type = "number" name = "quantity" min = 1 required>
+				<input type ="number" name = "quantity" min = 1 required>
 				<input type="submit" value="Remove">
 			</form>
 		</c:forEach>
+	<a href = "orderPage">Order</a>
 	</c:if>
-
 </body>
 </html>
