@@ -56,12 +56,13 @@ public class AdminController {
 		} catch (Exception e) {
 			return ("errorPage");
 		}
+		
 		m.addAttribute("categories", categories);
 		return("addProduct");
 	}
 	
 	@RequestMapping(value = "/addProduct", method = RequestMethod.POST)
-    public String addProduct(HttpServletRequest request, HttpServletResponse response, HttpSession session, Model m) {
+    public String addProduct(Model model, HttpServletRequest request, HttpServletResponse response, HttpSession session, Model m) {
 		
 		try {
 			if(!this.userDAO.isAdmin((User) session.getAttribute("user"))){
@@ -78,21 +79,18 @@ public class AdminController {
 		}	
 		
 		String brand = request.getParameter("brand");
-        String model = request.getParameter("model");
+        String productModel = request.getParameter("model");
         String description = request.getParameter("description");
         String productImageURL = request.getParameter("productImageURL");
         double price = Double.valueOf(request.getParameter("price"));
-        boolean availability = Boolean.parseBoolean(request.getParameter("availability"));        
+        boolean availability = Boolean.valueOf(request.getParameter("availability"));        
         Product product = null;               
         
 		try {
 			int category_id = this.categoryDAO.getCategoryID(request.getParameter("categoryName"));
-			product = new Product(category_id, brand, model, description, productImageURL, price, availability, 0,
-					null);
+			product = new Product(category_id, brand, productModel, description, productImageURL, price, availability, 0, null);
 			this.productDAO.addProduct(product);
-			System.out.println("after adding product to db");
 			product.setProductID(this.productDAO.getProductId(product)); // takes the ID from the DB and sets it.
-			System.out.println("after getting product id from db");
 
 		}
         catch(Exception e) {
@@ -100,12 +98,13 @@ public class AdminController {
         }        
                 
         //TODO: do something about the empty url
-        return "forward:/viewProduct/" + product.getProductID();
+		model.addAttribute("product", product);
+        return "viewProduct";
     }
 	
 	
-	@RequestMapping(value = "/viewProduct/{productId}", method = RequestMethod.GET)
-	public String viewProduct(@PathVariable long productId, Model model){
+/*	@RequestMapping(value = "/viewProduct/{productId}", method = RequestMethod.GET)
+	public String viewProduct(@PathVariable("productId") long productId, Model model){
 		Product product;
 		try {
 			product = this.productDAO.getProductById(productId);
@@ -115,7 +114,8 @@ public class AdminController {
 		model.addAttribute(product);
 		
 		return("viewProduct");
-	}	
+	}	*/
+	
 	@RequestMapping(value = "adminPage", method = RequestMethod.GET)
 	public String viewAdminPage() {
 		return "adminPage";

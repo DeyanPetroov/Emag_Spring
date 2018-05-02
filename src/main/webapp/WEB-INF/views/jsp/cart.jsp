@@ -15,7 +15,8 @@
 		<c:forEach var="entry" items="${cart.products}">
 			${entry.key.brand} ${entry.key.model}
     		Price of product: ${entry.key.price}
-   			Quantity: ${entry.value}
+   			Quantity: ${entry.value} <br>
+   			Total cost of products in cart: ${sessionScope.user.order.totalCost}
    			<form action="cart" method="POST">
 				<input type="hidden" name="cartProduct" value="${entry.key.productID}"> 
 				<input type = "number" name = "quantity" min = 1 required>

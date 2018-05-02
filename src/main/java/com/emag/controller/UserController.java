@@ -1,19 +1,14 @@
 package com.emag.controller;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -246,18 +241,13 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/cart", method = RequestMethod.GET)
-	public String addToCart(HttpSession session, Model model) {
-		return "cart";
-	}
-	
-	@RequestMapping(value = "/category/cart", method = RequestMethod.GET)
 	public String viewCart(HttpSession session, Model model) {
 		Cart cart =  (Cart) session.getAttribute("cart");
 		model.addAttribute("cart", cart);
 		return "cart";
 	}
 
-	@RequestMapping(value = "/category/cart", method = RequestMethod.POST)
+	@RequestMapping(value = "/cart", method = RequestMethod.POST)
 	public String addOrRemoveCartProducts(Model model, HttpServletRequest request, HttpSession session) {
 		if(session.getAttribute("user") == null) {
 			model.addAttribute("invalidSession", "Please log in to add items to your cart.");
@@ -284,14 +274,6 @@ public class UserController {
 		}
 	}
 	
-	@RequestMapping(value = "/favourite", method = RequestMethod.POST)
-	public String removeFavourite(HttpSession session, Model model, HttpServletRequest request) {
-		Long productID = Long.valueOf(request.getParameter("favouriteProduct"));
-		System.out.println(productID);
-		addOrRemoveFavourite(productID, session, model, request);
-		return "favourites";
-	}
-	
 	@RequestMapping(value = "/favourite", method = RequestMethod.GET)
 	public String viewFavourites(HttpSession session, Model model) {
 		Set<Product> products = null;
@@ -304,12 +286,7 @@ public class UserController {
 		return "favourites";
 	}
 	
-	@RequestMapping(value = "/category/favourite", method = RequestMethod.GET)
-	public String addToFavourites() {
-		return "favourites";
-	}
-	
-	@RequestMapping(value = "/category/favourite", method = RequestMethod.POST)
+	@RequestMapping(value = "/favourite", method = RequestMethod.POST)
 	public String addOrRemoveFavourite(@RequestParam("favouriteProduct") Long productID, HttpSession session, Model model, HttpServletRequest request) {
 		if(session.getAttribute("user") == null) {
 			model.addAttribute("invalidSession", "Please log in to add favourite items.");
@@ -332,9 +309,7 @@ public class UserController {
 		return "favourites";
 	}
 
-	
 	//TODO
 	//make an order, finalize it and add it to history of orders 
-	//profile picture change when editing profile --> it's not working because of multipart
 	//exceptions!! now everything goes to error page with same message :/
 }

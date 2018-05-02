@@ -29,21 +29,20 @@ public class Cart {
 		for(Entry<Product, Integer> entry : this.products.entrySet()) {
 			if(entry.getKey().getProductID() == p.getProductID()) {
 				if(quantity >= entry.getValue()) {
-					this.products.remove(entry.getKey(), entry.getValue());				
+					this.products.remove(entry.getKey(), entry.getValue());	
 				}
 				else {
 					this.products.put(entry.getKey(), entry.getValue() - quantity);
 				}
-				System.out.println("removed from cart");
+				user.getOrder().setTotalCost(user.getOrder().getTotalCost() - p.getPrice() * quantity);
 				inCart = true;
 			}
 		}
 		
 		if(inCart == false ) {
-			System.out.println("added to cart");
 			this.products.put(p, quantity);
+			user.getOrder().setTotalCost(user.getOrder().getTotalCost() + p.getPrice() * quantity);
 		}		
-		user.getOrder().setTotalCost(user.getOrder().getTotalCost() + p.getPrice() * quantity);
 		return true;
 	}
 

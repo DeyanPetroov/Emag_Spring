@@ -11,11 +11,13 @@
 <body>
 	<c:if test="${invalidSession != null }">
 		<h4>${invalidSession}</h4>
+		<a href = "${pageContext.request.contextPath}/index">Go to the main page</a>	
 	</c:if>
 
 	<c:if test="${invalidSession == null }">
 		<c:if test="${requestScope.unavailable != null }">
 			<h4>${unavailable}</h4>
+			<a href = "${pageContext.request.contextPath}/index">Go to the main page</a>
 		</c:if>
 
 		<c:if test="${requestScope.unavailable == null }">
@@ -40,12 +42,12 @@
 						<td align="center">${product.productImageURL}</td>
 						<td align="center">${product.availability}</td>
 						<td align="center">
-							<form action="cart" method="POST">
+							<form action="${pageContext.request.contextPath}/cart" method="POST">
 								<input type="hidden" name="cartProduct" value="${product.productID}">
-								<input type="number" name="quantity" min=1 required><br>
-							    <input type="submit" value="Order">
+								<input type="number" name="quantity" min=1 placeholder = "quantity" required><br>
+							    <input type="submit" value="Add to cart">
 							</form>
-							<form action="favourite" method="POST">
+							<form action="${pageContext.request.contextPath}/favourite" method="POST">
 								<input type="hidden" name="favouriteProduct"
 									value="${product.productID}"> <input type="submit"
 									value="&#9829;">

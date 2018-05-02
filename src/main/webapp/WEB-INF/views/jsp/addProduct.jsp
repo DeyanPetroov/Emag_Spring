@@ -22,7 +22,7 @@
 					title="Enter the product brand"/> <br>
 					
 				<input type="number" name="price" placeholder="Price"
-					required title="Enter a price for the product"/> <br>
+					required min = 1 title="Enter a price for the product"/> <br>
 					
 				Is the product in stock?<input type="radio" id="Yes" name="availability" placeholder="Availability"
 					required title="Is the product available?"/>  <label for="Yes">Yes</label>
