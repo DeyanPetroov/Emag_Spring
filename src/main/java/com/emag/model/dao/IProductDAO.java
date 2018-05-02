@@ -1,10 +1,10 @@
 package com.emag.model.dao;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.emag.model.Product;
+import com.emag.model.User;
 
 public interface IProductDAO {
 	
@@ -13,5 +13,7 @@ public interface IProductDAO {
 	void updateProduct(Product product) throws Exception;
 	Product getProductById(long product_id) throws Exception;
 	List<Product> getProductsByCategory(int category_id) throws Exception;
-	int getProductId(Product product) throws Exception;
+	int getProductId(Product product) throws Exception; //shouldn't be this way
+	void addOrRemoveFavouriteProduct(User user, Product product) throws Exception;
+	Set<Product> viewFavouriteProducts(User user) throws Exception;
 }

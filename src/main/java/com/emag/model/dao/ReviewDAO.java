@@ -49,18 +49,18 @@ public class ReviewDAO implements IReviewDAO {
 	}
 
 	@Override
-	public void removeReviewByID(long review_id) throws SQLException {
+	public void removeReviewByID(long reviewID) throws SQLException {
 		try(PreparedStatement deleteReview = connection.prepareStatement(DELETE_REVIEW_BY_ID);){
-			deleteReview.setLong(1, review_id);
+			deleteReview.setLong(1, reviewID);
 			deleteReview.executeUpdate();
 		}
 	}
 
 	@Override
-	public Review getReviewByID(long review_id) throws Exception {
+	public Review getReviewByID(long reviewID) throws Exception {
 		Review review = null;
 		try(PreparedStatement getReview = connection.prepareStatement(GET_REVIEW_BY_ID);){
-			getReview.setLong(1, review_id);
+			getReview.setLong(1, reviewID);
 			try(ResultSet result = getReview.executeQuery()) {
 				while(result.next()) {
 					review = new Review(
@@ -75,10 +75,10 @@ public class ReviewDAO implements IReviewDAO {
 	}
 	
 	@Override
-	public TreeMap<LocalDateTime, Review> getAllReviewsForUser(long user_id) throws Exception {
+	public TreeMap<LocalDateTime, Review> getAllReviewsForUser(long userID) throws Exception {
 		TreeMap<LocalDateTime, Review> reviews = new TreeMap<>(new DateComparator());
 		try(PreparedStatement getAllReviews = connection.prepareStatement(GET_ALL_REVIEWS_FOR_USER);){
-			getAllReviews.setLong(1, user_id);
+			getAllReviews.setLong(1, userID);
 			try(ResultSet result = getAllReviews.executeQuery()){
 				while(result.next()) {
 					Review review = new Review(
@@ -94,10 +94,10 @@ public class ReviewDAO implements IReviewDAO {
 	}
 
 	@Override
-	public TreeMap<LocalDateTime, Review> getAllReviewsForProduct(long product_id) throws Exception {
+	public TreeMap<LocalDateTime, Review> getAllReviewsForProduct(long productID) throws Exception {
 		TreeMap<LocalDateTime, Review> reviews = new TreeMap<>(new DateComparator());
 		try(PreparedStatement getAllReviews = connection.prepareStatement(GET_ALL_REVIEWS_FOR_PRODUCT);) {
-			getAllReviews.setLong(1, product_id);
+			getAllReviews.setLong(1, productID);
 			try(ResultSet result = getAllReviews.executeQuery()){
 				while(result.next()) {
 					Review review = new Review(
@@ -112,7 +112,7 @@ public class ReviewDAO implements IReviewDAO {
 		return reviews;
 	}
 	
-	public class DateComparator implements Comparator<LocalDateTime> {
+	private class DateComparator implements Comparator<LocalDateTime> {
 		@Override
 		public int compare(LocalDateTime o1, LocalDateTime o2) {
 			if(o1.isBefore(o2)) {

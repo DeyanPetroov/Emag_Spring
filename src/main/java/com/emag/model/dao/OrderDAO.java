@@ -3,9 +3,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.emag.model.*;
@@ -29,12 +34,16 @@ public class OrderDAO implements IOrderDAO {
 			"JOIN orders as o" + 
 			"WHERE o.order_id = ?";
 	private static final String INSERT_ORDERED_PRODUCT = "INSERT INTO ordered_products(order_id, product_id, quantity) VALUES(?, ?, ?)";
+	private static final String GET_ORDERS_FOR_USER = "SELECT date, total_cost, status_id FROM orders WHERE user_id = ?";
 	
 	private Connection connection;
 	
 	private OrderDAO() {
 		connection = DBManager.getInstance().getConnection();
 	}
+	
+	@Autowired
+	private UserDAO userDAO;
 	
 	@Override
 	public void addNewOrder(Order order) throws SQLException {
@@ -49,45 +58,43 @@ public class OrderDAO implements IOrderDAO {
 	}
 
 	@Override
-	public Order getOrderById(long user_id) throws SQLException {
+	public Order getOrderByID(long userID) throws SQLException {
 		Order order = null;
 		try (PreparedStatement getOrderById = connection.prepareStatement(GET_ORDER_BY_ID);) {
-			getOrderById.setLong(1, user_id);
+			getOrderById.setLong(1, userID);
 			try (ResultSet resultSet = getOrderById.executeQuery()) {
 				while (resultSet.next()) {
-					User user = getUserByOrderId(user_id);
+					User user = getUserByOrderID(userID);
 					order = new Order(user, resultSet.getString("delivery_address"));
 				}
 			}
-		}
-		
+		}	
 		return order;
 	}
 
 	@Override
-	public void removeOrder(long order_id) throws SQLException {
+	public void removeOrder(long orderID) throws SQLException {
 		try(PreparedStatement removeOrder = connection.prepareStatement(DELETE_ORDER_BY_ID);){
-			removeOrder.setLong(1, order_id);
+			removeOrder.setLong(1, orderID);
 			removeOrder.executeUpdate();
 		}
 	}
 
 	@Override
-	public void updateOrderStatus(User user, int status_id) throws SQLException {
+	public void updateOrderStatus(User user, int statusID) throws SQLException {
 		try (PreparedStatement updateOrder = connection.prepareStatement(UPDATE_ORDER_STATUS_FOR_USER);) {
-			updateOrder.setInt(1, status_id);
+			updateOrder.setInt(1, statusID);
 			updateOrder.setLong(2, user.getId());
 			updateOrder.executeUpdate();
 		}
 	}
 	
 	@Override
-	public User getUserByOrderId(long order_id) throws SQLException {
+	public User getUserByOrderID(long orderID) throws SQLException {
 		User user = null;
 		try (PreparedStatement getUser = connection.prepareStatement(GET_USER_BY_ORDER_ID);) {
-			getUser.setLong(1, order_id);
+			getUser.setLong(1, orderID);
 			try (ResultSet result = getUser.executeQuery();) {
-
 				while (result.next()) {
 					user = new User(
 							result.getString("username"), 
@@ -114,5 +121,21 @@ public class OrderDAO implements IOrderDAO {
 			}
 		}
 		
+	}
+	
+	@Override
+	public List<Order> getAllUserOrders(long userID) throws SQLException {
+		List<Order> userOrders = new ArrayList<>();
+		try (PreparedStatement getOrders = connection.prepareStatement(GET_ORDERS_FOR_USER);) {
+			getOrders.setLong(1, userID);
+			try (ResultSet result = getOrders.executeQuery();) {
+				while (result.next()) {
+					User user = userDAO.getUserByID(userID);
+					Order order = new Order(user, user.getAddress());
+					userOrders.add(order);
+				}
+			}
+		}
+		return userOrders;
 	}
 }

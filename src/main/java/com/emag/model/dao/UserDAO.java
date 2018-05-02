@@ -28,18 +28,11 @@ public class UserDAO implements IUserDAO {
 	private static final String UPDATE_USER = "UPDATE users SET first_name = ?, last_name = ?, email = ?, phone = ?, age = ?, profile_picture = ?, address = ? WHERE user_id = ?";
 	private static final String DELETE_USER_BY_ID = "DELETE FROM users WHERE user_id = ?";
 	private static final String CHANGE_PASSWORD = "UPDATE users SET password = ? WHERE user_id = ?";
-	private static final String GET_ORDERS_FOR_USER = "SELECT date, total_cost, status_id FROM orders WHERE user_id = ?";
-	private static final String INSERT_PRODUCT_INTO_FAVOURITES = "INSERT INTO favourite_products (user_id, product_id) VALUES (?,?)";
-	private static final String REMOVE_FROM_FAVOURITES = "DELETE FROM favourite_products WHERE user_id = ? AND product_id = ?";
 	private static final String CHANGE_PROFILE_PICTURE = "UPDATE users SET profile_picture = ? WHERE user_id = ?";
-	private static final String GET_FAVOURITE_BY_USER_ID = "SELECT user_id, product_id FROM favourite_products WHERE user_id = ? AND product_id = ?";
-	private static final String VIEW_FAVOURITE_PRODUCTS = "SELECT product_id FROM favourite_products WHERE user_id = ?";
 	private static final String CHECK_IF_IS_ADMIN = "SELECT is_admin FROM users WHERE username = ?";
 	private static final String GET_PROFILE_PICTURE = "SELECT profile_picture FROM users WHERE user_id = ?";	
 	
 	private Connection connection;
-	@Autowired
-	private ProductDAO productDAO;
 	private static final HashMap<String, User> allUsers = new HashMap<>();
 
 	public UserDAO() {
@@ -47,15 +40,13 @@ public class UserDAO implements IUserDAO {
 	}
 
 	@Override
-	public User getByID(long id) throws SQLException {
-		ResultSet resultSet = null;
+	public User getUserByID(long userID) throws SQLException {
 		User user = null;
-
 		try (PreparedStatement selectUserById = connection.prepareStatement(GET_USER_BY_ID);) {
-			selectUserById.setLong(1, id);
-			resultSet = selectUserById.executeQuery();
-			while (resultSet.next()) {
-				user = new User(
+			selectUserById.setLong(1, userID);
+			try (ResultSet resultSet = selectUserById.executeQuery();) {
+				while (resultSet.next()) {
+					user = new User(
 						resultSet.getLong("user_id"),
 						resultSet.getString("username"), 
 						resultSet.getString("password"),
@@ -66,18 +57,18 @@ public class UserDAO implements IUserDAO {
 						resultSet.getInt("age"),
 						resultSet.getString("profile_picture"),
 						resultSet.getString("address"));
+				}
 			}
 		}
-		resultSet.close();
 		return user;
 	}
-	
+
 	@Override
 	public boolean isAdmin(User user) throws SQLException {
-		try (PreparedStatement s = connection.prepareStatement(CHECK_IF_IS_ADMIN);) {
+		try (PreparedStatement checkAdmin = connection.prepareStatement(CHECK_IF_IS_ADMIN);) {
 			String username = this.usernameExists(user.getUsername());
-			s.setString(1, username);
-			try (ResultSet result = s.executeQuery()) {
+			checkAdmin.setString(1, username);
+			try (ResultSet result = checkAdmin.executeQuery()) {
 				if (result.next()) {
 					if (result.getInt("is_admin") == 1) {
 						return true;
@@ -91,74 +82,56 @@ public class UserDAO implements IUserDAO {
 	// insert user in the database -------> maybe synchronized ?
 	@Override
 	public void saveUser(User u) throws SQLException {
-		try (PreparedStatement s = connection.prepareStatement(INSERT_USER);) {
+		try (PreparedStatement saveUser = connection.prepareStatement(INSERT_USER);) {
 			String hashedPassword = u.hashPassword(u.getPassword());
-			s.setString(1, u.getUsername());
-			s.setString(2, hashedPassword);
-			s.setString(3, u.getFirstName());
-			s.setString(4, u.getLastName());
-			s.setString(5, u.getEmail());
-			s.setInt(6, u.getAge());
-			s.executeUpdate();
+			saveUser.setString(1, u.getUsername());
+			saveUser.setString(2, hashedPassword);
+			saveUser.setString(3, u.getFirstName());
+			saveUser.setString(4, u.getLastName());
+			saveUser.setString(5, u.getEmail());
+			saveUser.setInt(6, u.getAge());
+			saveUser.executeUpdate();
 		}
 	}
 
 	// update user in the database
 	@Override
 	public void updateUser(User u) throws SQLException {
-		try (PreparedStatement update = connection.prepareStatement(UPDATE_USER);) {
-			update.setString(1, u.getFirstName());
-			update.setString(2, u.getLastName());
-			update.setString(3, u.getEmail());
-			update.setString(4, u.getPhone());
-			update.setInt(5, u.getAge());
-			update.setString(6, u.getProfilePictureURL());
-			update.setString(7, u.getAddress());
-			update.setLong(8, u.getId());
-			update.executeUpdate();
+		try (PreparedStatement updateUser = connection.prepareStatement(UPDATE_USER);) {
+			updateUser.setString(1, u.getFirstName());
+			updateUser.setString(2, u.getLastName());
+			updateUser.setString(3, u.getEmail());
+			updateUser.setString(4, u.getPhone());
+			updateUser.setInt(5, u.getAge());
+			updateUser.setString(6, u.getProfilePictureURL());
+			updateUser.setString(7, u.getAddress());
+			updateUser.setLong(8, u.getId());
+			updateUser.executeUpdate();
 		}
 	}
 
-	// get all orders for one user by user_id
-	@Override
-	public List<Order> getAllUserOrders(int user_id) throws SQLException {
-		List<Order> userOrders = new ArrayList<>();
-		try (PreparedStatement getOrders = connection.prepareStatement(GET_ORDERS_FOR_USER);) {
-			getOrders.setInt(1, user_id);
-			ResultSet result = getOrders.executeQuery();
-			while (result.next()) {
-				User user = getByID(user_id);
-				Order order = new Order(user, user.getAddress());
-				userOrders.add(order);
-			}
-		}
-		return userOrders;
-	}
-
-	//get hashmap of all users
+	// get hashmap of all users
 	@Override
 	public HashMap<String, User> getAllUsers() throws SQLException {
-		ResultSet resultSet = null;
 		if (allUsers.isEmpty()) {
 			try (PreparedStatement selectAllUsers = connection.prepareStatement(GET_ALL_USERS);) {
-				resultSet = selectAllUsers.executeQuery();
-				while (resultSet.next()) {
-					User u = new User(
-							resultSet.getLong("user_id"),
-							resultSet.getString("username"), 
-							resultSet.getString("password"),
-							resultSet.getString("first_name"),
-							resultSet.getString("last_name"),
-							resultSet.getString("email"),
-							resultSet.getString("phone"), 
-							resultSet.getInt("age"),
-							resultSet.getString("profile_picture"),
-							resultSet.getString("address"));
-					allUsers.put(u.getUsername(), u);
+				try (ResultSet resultSet = selectAllUsers.executeQuery();) {
+					while (resultSet.next()) {
+						User user = new User(resultSet.getLong("user_id"),
+								resultSet.getString("username"),
+								resultSet.getString("password"), 
+								resultSet.getString("first_name"),
+								resultSet.getString("last_name"), 
+								resultSet.getString("email"),
+								resultSet.getString("phone"), 
+								resultSet.getInt("age"),
+								resultSet.getString("profile_picture"), 
+								resultSet.getString("address"));
+						allUsers.put(user.getUsername(), user);
+					}
 				}
 			}
 		}
-		resultSet.close();
 		return allUsers;
 	}
 
@@ -175,10 +148,10 @@ public class UserDAO implements IUserDAO {
 
 	//delete user from the database
 	@Override
-	public void deleteUserById(User user) throws SQLException {
-		try (PreparedStatement deleteUserById = connection.prepareStatement(DELETE_USER_BY_ID);) {
-			deleteUserById.setLong(1, user.getId());
-			deleteUserById.executeUpdate();
+	public void deleteUserByID(User user) throws SQLException {
+		try (PreparedStatement deleteUserByID = connection.prepareStatement(DELETE_USER_BY_ID);) {
+			deleteUserByID.setLong(1, user.getId());
+			deleteUserByID.executeUpdate();
 		}
 	}
 
@@ -186,13 +159,13 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public User getExistingUser(String username, String password) throws SQLException {
 		User user = null;
-		try (PreparedStatement ps = connection.prepareStatement(GET_USER_BY_USERNAME);) {
-			ps.setString(1, username);
-			try (ResultSet result = ps.executeQuery()) {
+		try (PreparedStatement getExistingUser = connection.prepareStatement(GET_USER_BY_USERNAME);) {
+			getExistingUser.setString(1, username);
+			try (ResultSet result = getExistingUser.executeQuery()) {
 				if (result.next()) {
 					String hashedPassword = result.getString("password");
 					if(BCrypt.checkpw(password, hashedPassword)) {
-						user = getByID(result.getInt("user_id"));
+						user = getUserByID(result.getInt("user_id"));
 					}
 				}
 			}
@@ -225,56 +198,6 @@ public class UserDAO implements IUserDAO {
 			}
 		}
 		return null;
-	}
-
-	// add product to favourites in the database
-	@Override
-	public void addOrRemoveFavouriteProduct(User user, Product product) throws SQLException {
-		if (favouriteExists(user, product)) {
-			try (PreparedStatement removeFromFav = connection.prepareStatement(REMOVE_FROM_FAVOURITES);) {
-				removeFromFav.setLong(1, user.getId());
-				removeFromFav.setLong(2, product.getProductID());
-				removeFromFav.executeUpdate();
-			}
-		} 
-		else {
-			try (PreparedStatement addToFav = connection.prepareStatement(INSERT_PRODUCT_INTO_FAVOURITES);) {
-				addToFav.setLong(1, user.getId());
-				addToFav.setLong(2, product.getProductID());
-				addToFav.executeUpdate();
-			}
-		}
-	}
-	
-	private boolean favouriteExists(User user, Product product) throws SQLException {
-		try(PreparedStatement getFav= connection.prepareStatement(GET_FAVOURITE_BY_USER_ID);) {
-			getFav.setLong(1, user.getId());
-			getFav.setLong(2, product.getProductID());
-			try(ResultSet result = getFav.executeQuery()){
-				if(result.next()) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	@Override
-	public Set<Product> viewFavouriteProducts(User user) throws Exception {
-		Set<Product> favProducts = new HashSet<>();
-		try (PreparedStatement st = connection.prepareStatement(VIEW_FAVOURITE_PRODUCTS);) {
-			st.setLong(1, user.getId());
-			try (ResultSet result = st.executeQuery();) {
-				while (result.next()) {
-					long productId = result.getLong("product_id");
-					Product p = this.productDAO.getProductById(productId);
-					favProducts.add(p);
-				}
-			}
-		} catch (SQLException e) {
-			// TODO
-		}
-		return favProducts;
 	}
 
 	public void changeProfilePicture(String profilePicture, long id) throws SQLException {

@@ -283,7 +283,7 @@ public class UserController {
 	public String viewFavourites(HttpSession session, Model model) {
 		Set<Product> products = null;
 		try {
-			products = this.userDAO.viewFavouriteProducts((User) session.getAttribute("user"));
+			products = this.productDAO.viewFavouriteProducts((User) session.getAttribute("user"));
 		} catch (Exception e) {
 			 return "errorPage";
 		}
@@ -303,7 +303,7 @@ public class UserController {
 		
 		try {
 			product = productDAO.getProductById(productID);
-			userDAO.addOrRemoveFavouriteProduct(user, product);
+			productDAO.addOrRemoveFavouriteProduct(user, product);
 			user.addOrRemoveFavourites(product);
 		} catch (SQLException e) {
 			return "errorPage";
@@ -327,6 +327,7 @@ public class UserController {
 
 		Order order = new Order(user, deliveryAddress);
 		try {
+			//doesn't work
 			orderDAO.addNewOrder(order);
 			orderDAO.addOrderedProduct(order);
 		} catch (SQLException e) {

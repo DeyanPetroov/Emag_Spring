@@ -2,6 +2,7 @@ package com.emag.controller;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -30,7 +31,7 @@ public class ProductController {
 	@RequestMapping(value = "/category/{category_id}", method = RequestMethod.GET)
 	public String getProductsByCategory(Model model, @PathVariable("category_id") Integer category_id, HttpSession session, HttpServletRequest request){
 		try {
-			ArrayList<Product> productsByCategory = (ArrayList<Product>) productDAO.getProductsByCategory(category_id);
+			List<Product> productsByCategory = productDAO.getProductsByCategory(category_id);
 			model.addAttribute("products", productsByCategory);
 			request.setAttribute("isAdmin", this.userDAO.isAdmin((User) session.getAttribute("user")));
 			return "products";
