@@ -44,7 +44,6 @@ public class ProductController {
 	//TODO
 	//make product page with product characteristics and add to cart and add to favourites buttons
 	//every product should have a picture
-	//we should have characteristic DAO
 	//make menu with hot offers
 	//deal with JSON
 }

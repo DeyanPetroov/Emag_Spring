@@ -36,6 +36,7 @@ public class OrderController {
 		Order order = new Order(user, deliveryAddress);
 		try {
 			//doesn't work
+			//should be transaction
 			orderDAO.addNewOrder(order);
 			orderDAO.addOrderedProduct(order);
 		} catch (SQLException e) {

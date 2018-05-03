@@ -158,7 +158,7 @@ public class UserController {
 	public String profile(HttpSession session, Model model) {
 		User user = (User) session.getAttribute("user");
 		try {
-			String picture = userDAO.getProfilePicture(user);
+			String picture = userDAO.getProfilePicture(user.getID());
 			model.addAttribute("profilePicture", picture);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -227,9 +227,9 @@ public class UserController {
 				return "editProfile";
 			} 
 			else {
-				User userNewData = new User(user.getId(), user.getUsername(), user.getPassword(), firstName, lastName, email, phone, user.getAge(), user.getProfilePictureURL(), address);
+				User userNewData = new User(user.getID(), user.getUsername(), user.getPassword(), firstName, lastName, email, phone, user.getAge(), user.getProfilePictureURL(), address);
 				userDAO.updateUser(userNewData);
-				user.updateUser(user.getId(), user.getUsername(), user.getPassword(), firstName, lastName, email, phone, user.getAge(), user.getProfilePictureURL(), address);
+				user.updateUser(user.getID(), user.getUsername(), user.getPassword(), firstName, lastName, email, phone, user.getAge(), user.getProfilePictureURL(), address);
 			}
 		}
 		//TODO make an abstract exception handler		
