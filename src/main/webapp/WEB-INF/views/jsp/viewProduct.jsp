@@ -10,7 +10,9 @@
 </head>
 <body>
 	<c:set var="productId" value="${product.productID}" />
-	${product.brand}<br>
+<%-- 	<img src="download/${picture}" width = "150px" height = "150px">
+ --%>	
+ 	${product.brand}<br>
 	${product.model}<br>
 	${product.price}
 	<a href = "${pageContext.request.contextPath}/index">Go to the main page</a>	

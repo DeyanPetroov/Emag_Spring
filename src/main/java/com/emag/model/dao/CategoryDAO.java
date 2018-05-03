@@ -17,7 +17,7 @@ public class CategoryDAO implements ICategoryDAO {
 	private static final String GET_ALL_CATEGORIES = "SELECT category_id, category_name FROM categories";
 	private static final String GET_CATEGORIES_BY_PARENT_ID = "SELECT category_id, category_name FROM categories WHERE parent_category_id = ?";
 	private static final String GET_ALL_MAIN_CATEGORIES = "SELECT category_id, category_name FROM categories WHERE parent_category_id IS NULL";
-	private static final String GET_ID_OF_CATEGORY = "SELECT category_id FROM categories WHERE category_name = ?";
+	private static final String GET_CATEGORY_BY_NAME = "SELECT category_id FROM categories WHERE category_name = ?";
 	
 	private Connection connection;
 
@@ -69,18 +69,18 @@ public class CategoryDAO implements ICategoryDAO {
 		}
 		return subCategories;
 	}
-	
+
 	@Override
-	public int getCategoryID(String categoryName) throws SQLException{
-		int id=0;
-		try(PreparedStatement getID = connection.prepareStatement(GET_ID_OF_CATEGORY);){
-			getID.setString(1, categoryName);
-			try(ResultSet result = getID.executeQuery()){
+	public Category getCategoryByName(String categoryName) throws Exception {
+		Category category = null;
+		try(PreparedStatement getCategory = connection.prepareStatement(GET_CATEGORY_BY_NAME);){
+			getCategory.setString(1, categoryName);
+			try(ResultSet result = getCategory.executeQuery()){
 				if(result.next()) {
-					id = result.getInt("category_id");
+					category = new Category(result.getInt("category_id"), categoryName);
 				}
 			}
 		}
-		return id;
+		return category;
 	}
 }

@@ -105,7 +105,7 @@ public class UserDAO implements IUserDAO {
 			updateUser.setInt(5, u.getAge());
 			updateUser.setString(6, u.getProfilePictureURL());
 			updateUser.setString(7, u.getAddress());
-			updateUser.setLong(8, u.getId());
+			updateUser.setLong(8, u.getID());
 			updateUser.executeUpdate();
 		}
 	}
@@ -141,7 +141,7 @@ public class UserDAO implements IUserDAO {
 		try (PreparedStatement changePass = connection.prepareStatement(CHANGE_PASSWORD);) {
 			String hashedPass = u.hashPassword(password);
 			changePass.setString(1, hashedPass);
-			changePass.setLong(2, u.getId());
+			changePass.setLong(2, u.getID());
 			changePass.executeUpdate();
 		}
 	}
@@ -150,7 +150,7 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public void deleteUserByID(User user) throws SQLException {
 		try (PreparedStatement deleteUserByID = connection.prepareStatement(DELETE_USER_BY_ID);) {
-			deleteUserByID.setLong(1, user.getId());
+			deleteUserByID.setLong(1, user.getID());
 			deleteUserByID.executeUpdate();
 		}
 	}
@@ -209,10 +209,10 @@ public class UserDAO implements IUserDAO {
 	}
 
 	@Override
-	public String getProfilePicture(User user) throws SQLException {
+	public String getProfilePicture(long userID) throws SQLException {
 		String picture = null;
 		try(PreparedStatement getPicture = connection.prepareStatement(GET_PROFILE_PICTURE);) {
-			getPicture.setLong(1, user.getId());
+			getPicture.setLong(1, userID);
 			try(ResultSet result = getPicture.executeQuery()){
 				if(result.next()) {
 					picture = result.getString("profile_picture");

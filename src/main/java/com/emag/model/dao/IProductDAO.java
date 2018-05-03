@@ -9,10 +9,12 @@ import com.emag.model.User;
 public interface IProductDAO {
 	
 	void addProduct(Product product) throws Exception;
-	void deleteProduct(long product_id) throws Exception;
+	void deleteProduct(long productID) throws Exception;
 	void updateProduct(Product product) throws Exception;
-	Product getProductById(long product_id) throws Exception;
-	List<Product> getProductsByCategory(int category_id) throws Exception;
+	Product getProductById(long productID) throws Exception;
+	List<Product> getProductsByCategory(int categoryID) throws Exception;
 	void addOrRemoveFavouriteProduct(User user, Product product) throws Exception;
 	Set<Product> viewFavouriteProducts(User user) throws Exception;
+	void changeProductPicture(String productPicture, long productID) throws Exception;
+	public String getProfilePicture(long productID) throws Exception;
 }

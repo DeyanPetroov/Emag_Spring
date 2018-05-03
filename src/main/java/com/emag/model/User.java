@@ -7,14 +7,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.emag.hashing.BCrypt;
-import com.emag.model.dao.UserDAO;
 import com.emag.model.util.UserValidations;
 
 public class User {
 	
-	private UserDAO userDAO;
-
-	private long user_id;
+	private long userID;
 	private String username;
 	private String password;
 	private String firstName;
@@ -32,9 +29,9 @@ public class User {
 	private ArrayList<Order> orderHistory = new ArrayList<>();
 	private HashSet<Product> favouriteProducts = new HashSet<>();
 
-	public User(long id, String username, String password, String first_name, String last_name, String email, String phone, int age, String profilePicture, String address) {
-		this(username, password, first_name, last_name, email, age);
-		this.user_id = id;
+	public User(long id, String username, String password, String firstName, String lastName, String email, String phone, int age, String profilePicture, String address) {
+		this(username, password, firstName, lastName, email, age);
+		this.userID = id;
 		this.profilePictureURL = profilePicture;
 		this.address = address;
 		this.phone = phone;
@@ -90,8 +87,8 @@ public class User {
 		return phone;
 	}
 
-	public long getId() {
-		return user_id;
+	public long getID() {
+		return userID;
 	}
 	
 	public String getAddress() {
@@ -195,7 +192,7 @@ public class User {
 	}
 	
 	public void updateUser(long id, String username, String password, String first_name, String last_name, String email, String phone, int age, String profilePicture, String address) {
-		this.user_id = id;
+		this.userID = id;
 		setUsername(username);
 		setPassword(password);
 		setFirstName(first_name);

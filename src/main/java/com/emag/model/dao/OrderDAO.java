@@ -51,7 +51,7 @@ public class OrderDAO implements IOrderDAO {
 			insertOrder.setObject(1, order.getDate());
 			insertOrder.setDouble(2, order.getTotalCost());
 			insertOrder.setString(3, order.getDeliveryAddress());
-			insertOrder.setLong(4, order.getUser().getId());
+			insertOrder.setLong(4, order.getUser().getID());
 			insertOrder.setInt(5, order.getStatus());
 			insertOrder.executeUpdate();
 		}
@@ -84,7 +84,7 @@ public class OrderDAO implements IOrderDAO {
 	public void updateOrderStatus(User user, int statusID) throws SQLException {
 		try (PreparedStatement updateOrder = connection.prepareStatement(UPDATE_ORDER_STATUS_FOR_USER);) {
 			updateOrder.setInt(1, statusID);
-			updateOrder.setLong(2, user.getId());
+			updateOrder.setLong(2, user.getID());
 			updateOrder.executeUpdate();
 		}
 	}

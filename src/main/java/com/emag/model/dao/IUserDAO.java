@@ -17,5 +17,5 @@ public interface IUserDAO {
 	HashMap<String, User> getAllUsers() throws Exception;
 	User getExistingUser(String username, String password) throws Exception;
 	boolean isAdmin(User user) throws Exception;
-	String getProfilePicture(User user) throws Exception;
+	String getProfilePicture(long userID) throws Exception;
 }
