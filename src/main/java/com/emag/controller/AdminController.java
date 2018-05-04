@@ -128,8 +128,6 @@ public class AdminController {
 		
 		m.addAttribute("categories", categories);
 		
-		//TODO: get current product -> form
-		
         return "editProduct";
     }
 	

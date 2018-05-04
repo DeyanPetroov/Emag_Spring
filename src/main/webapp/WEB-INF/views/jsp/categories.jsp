@@ -27,7 +27,7 @@
 				<td align="center">${product.price} BGN</td>
 			 	<td align="center">${product.discountPercent}</td>	
 			 	<td align="center">${product.discountExpiration}</td>			
-				<td align="center">${product.productImageURL}</td>
+				<td align="center">${product.productPicture}</td>
 				<td align="center"><c:set var="productId" value="${product.product_id}" /></td>
 			</tr>
 		</c:forEach>

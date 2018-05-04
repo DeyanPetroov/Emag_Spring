@@ -12,7 +12,7 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 import com.emag.model.*;
-import com.mysql.jdbc.Statement;
+import java.sql.*;
 
 @Component
 public class ProductDAO implements IProductDAO {
