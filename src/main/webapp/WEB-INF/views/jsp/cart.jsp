@@ -15,6 +15,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <html>
 <head>
 <title>Your cart</title>
+<link rel="stylesheet" type="text/css" href="css/my.css">
+
 </head>
 	
 <body>
@@ -42,6 +44,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							<th>Quantity</th>
 							<th>Product Name</th>
 							<th>Price</th>
+							<th>Add</th>
 							<th>Remove</th>
 						</tr>
 					</thead>
@@ -57,9 +60,17 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<td class="invert">${entry.key.brand} ${entry.key.model} </td>
 						<td class="invert">${entry.key.price * entry.value}</td>
 						<td class="invert">
-							<form action="cart" method="POST">
+							<form action="addToCart" method="POST">
+								<input type="hidden" name="productID" value="${entry.key.productID}">
+								<input type="number" name="quantity" min=1 required>
+								<input type="submit" value="Add to cart">
+								</form>
+							</td>
+						<td class="invert">
+							<form action="removeFromCart" method="POST">
 							<input type="hidden" name="productID" value="${entry.key.productID}"> 
-							<input type="number" name="quantity" min=1 required> <input type="submit" value="Remove">
+							<input type="number" name="quantity" min=1 required> 
+							<input type="submit" value="Remove">
 							</form>
 						</td>
 						</c:forEach>

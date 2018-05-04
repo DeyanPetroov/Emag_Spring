@@ -24,38 +24,38 @@ public class Cart {
 		return totalCost;
 	}
 
-	public boolean addOrRemoveCartProduct(Product p, int quantity) {
-		if(p.getAvailability() == false) {
+	public boolean addToCart(Product p, int quantity) {
+		if (p.getAvailability() == false) {
 			return false;
 		}
-		
-		boolean inCart = false;
-		for(Entry<Product, Integer> entry : this.products.entrySet()) {
-			if(entry.getKey().getProductID() == p.getProductID()) {
-				if(quantity >= entry.getValue()) {
-					this.products.remove(entry.getKey(), entry.getValue());	
-				}
-				else {
-					this.products.put(entry.getKey(), entry.getValue() - quantity);
-				}
-				user.getOrder().setTotalCost(user.getOrder().getTotalCost() - p.getPrice() * quantity);
+
+		boolean inCart = false;;
+		for (Entry<Product, Integer> entry : this.products.entrySet()) {
+			if (entry.getKey().getProductID() == p.getProductID()) {
+				entry.setValue(entry.getValue() + quantity);
+				user.getOrder().setTotalCost(user.getOrder().getTotalCost() + p.getPrice() * quantity);
 				inCart = true;
+				break;
 			}
 		}
 		
-		if(inCart == false ) {
+		if(!inCart) {
 			this.products.put(p, quantity);
-			user.getOrder().setTotalCost(user.getOrder().getTotalCost() + p.getPrice() * quantity);
-		}		
+		}
+		
 		return true;
 	}
 
 	public void removeFromCart(Product p, int quantity) {
-		if (this.products.containsKey(p)) {
-			if (products.get(p) > quantity) {
-				this.products.put(p, products.get(p) - quantity);
-			} else {
-				this.products.remove(p);
+		for (Entry<Product, Integer> entry : this.products.entrySet()) {
+			if (entry.getKey().getProductID() == p.getProductID()) {
+				if (entry.getValue() > quantity) {
+					entry.setValue(entry.getValue() - quantity);
+				}
+				else {
+					this.products.remove(entry.getKey());
+				}
+				break;
 			}
 		}
 	}
