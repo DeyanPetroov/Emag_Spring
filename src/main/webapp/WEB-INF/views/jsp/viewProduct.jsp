@@ -10,11 +10,21 @@
 </head>
 <body>
 	<c:set var="productId" value="${product.productID}" />
-<%-- 	<img src="download/${picture}" width = "150px" height = "150px">
- --%>	
+	<img src="download/${picture}" width = "150px" height = "150px"> <br>
  	${product.brand}<br>
 	${product.model}<br>
-	${product.price}
+	${product.price}<br>
+	<form action="${pageContext.request.contextPath}/cart" method="POST">
+		<input type="hidden" name="productID" value="${product.productID}">
+		<input type="number" name="quantity" min=1 placeholder="quantity"
+			required><br> <input type="submit" value="Add to cart">
+	</form>
+	<form action="${pageContext.request.contextPath}/favourite"
+		method="POST">
+		<input type="hidden" name="favouriteProduct"
+			value="${product.productID}"> <input type="submit"
+			value="&#9829;">
+	</form>
 	<a href = "${pageContext.request.contextPath}/index">Go to the main page</a>	
 </body>
 </html>

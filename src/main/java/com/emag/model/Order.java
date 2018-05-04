@@ -3,6 +3,7 @@ package com.emag.model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -12,7 +13,7 @@ public class Order {
 	private LocalDateTime date;
 	private User user;
 	private double totalCost;
-	private int status = -1;
+	private int status = 1;
 	private String statusDescription;
 	private String deliveryAddress;
 	private Map<Product, Integer> products;
@@ -21,12 +22,14 @@ public class Order {
 		this(user, deliveryAddress);
 		this.totalCost = user.getCart().getTotalCost();
 		this.orderID = orderID;
+		this.status = 2;
+		this.products = user.getCart().getProducts();
 	}
 	
 	public Order(User user, String deliveryAddress) {
 		this.user = user;
 		this.date = LocalDateTime.now();
-		this.status = 0;
+		this.status = 2;
 		this.products = user.getCart().getProducts();
 		this.deliveryAddress = deliveryAddress;
 		this.totalCost = user.getCart().getTotalCost();
@@ -35,7 +38,7 @@ public class Order {
 	//==================GETTERS==================
 
 	public LocalDateTime getDate() {
-		return date;
+		return this.date;
 	}
 
 	public User getUser() {
@@ -71,16 +74,16 @@ public class Order {
 	
 	public void setStatusDescription() {
 		switch (status) {
-		case -1:
+		case 1:
 			this.statusDescription = "No order present.";
 			break;
-		case 0:
+		case 2:
 			this.statusDescription = "Order is awaiting confirmation";
 			break;
-		case 1:
+		case 3:
 			this.statusDescription = "Order has been confirmed and has been shipped.";
 			break;
-		case 2:
+		case 4:
 			this.statusDescription = "Order has been delivered";
 			break;
 		default:
@@ -97,5 +100,9 @@ public class Order {
 	
 	public void setProducts(Map<Product, Integer> products) {
 		this.products = products;
+	}
+	
+	public void setOrderID(long orderID) {
+		this.orderID = orderID;
 	}
 }

@@ -26,9 +26,8 @@
 					<th align="center">Brand</th>
 					<th align="center">Model</th>
 					<th align="center">Description</th>
+					<th align="center">Price</th>
 					<th align="center">Discount percent</th>
-					<th align="center">Discount expiration</th>
-					<th align="center">Image</th>
 					<th align="center">Availability</th>
 				</tr>
 				<c:forEach var="product" items="${products}">
@@ -39,11 +38,10 @@
 						<td align="center">${product.price}BGN</td>
 						<td align="center">${product.discountPercent}</td>
 						<td align="center">${product.discountExpiration}</td>
-						<td align="center">${product.productImageURL}</td>
-						<td align="center">${product.availability}</td>
+						<td align="left">${product.availability}</td>
 						<td align="center">
 							<form action="${pageContext.request.contextPath}/cart" method="POST">
-								<input type="hidden" name="cartProduct" value="${product.productID}">
+								<input type="hidden" name="productID" value="${product.productID}">
 								<input type="number" name="quantity" min=1 placeholder = "quantity" required><br>
 							    <input type="submit" value="Add to cart">
 							</form>
@@ -58,6 +56,12 @@
 								    <input type="submit" value="Edit">
 								</form>
 							</c:if>
+						</td>
+						<td>
+						<form action="${pageContext.request.contextPath}/viewProduct" method="POST">
+								<input type="hidden" name="productID" value="${product.productID}">
+							    <input type="submit" value="View Product">
+							</form>
 						</td>
 					</tr>
 				</c:forEach>

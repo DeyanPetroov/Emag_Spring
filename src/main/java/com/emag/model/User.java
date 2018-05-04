@@ -30,21 +30,21 @@ public class User {
 	private HashSet<Product> favouriteProducts = new HashSet<>();
 
 	public User(long id, String username, String password, String firstName, String lastName, String email, String phone, int age, String profilePicture, String address) {
-		this(username, password, firstName, lastName, email, age);
+		this(username, password, firstName, lastName, email);
 		this.userID = id;
 		this.profilePictureURL = profilePicture;
 		this.address = address;
 		this.phone = phone;
+		this.age = age;
 	}
 
 	//used for registration
-	public User(String username, String password, String firstName, String lastName, String email, int age) {
+	public User(String username, String password, String firstName, String lastName, String email) {
 		setFirstName(firstName);
 		setLastName(lastName);
 		setUsername(username);
 		setPassword(password);
 		setEmail(email);
-		setAge(age);
 		cart.setUser(this);
 		this.admin = false;
 	}
@@ -209,12 +209,17 @@ public class User {
 		boolean found = false;
 		for(Product p : favouriteProducts) {
 			if(p.getProductID() == product.getProductID()) {
+				System.out.println(p.getBrand());
+				System.out.println(p.getProductID());
+				System.out.println(product.getBrand());
+				System.out.println(product.getProductID());
 				System.out.println("removed from pojo");
 				found = true;
 				this.favouriteProducts.remove(p);
 				break;
 			}
 		}
+		
 		if(found == false ) {
 			System.out.println("added to pojo");
 			this.favouriteProducts.add(product);		

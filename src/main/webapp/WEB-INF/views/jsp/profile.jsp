@@ -30,12 +30,12 @@
 			</tr>
 		</table>
 		<a href="editProfile"><input type="button" value="Edit profile"/></a>
-		<a href="changePassword"><input type="button" value="Change password"/></a>	
+		<a href="changePassword"><input type="button" value="Change password"/></a> <br>	
 	</c:if>
 	
 	<c:if test="${sessionScope.user == null}">
 		<h3>Please <a href="login">log in</a>!</h3>
 	</c:if>
-	
+	<a href = "${pageContext.request.contextPath}/index">Go to the main page</a>
 </body>
 </html>

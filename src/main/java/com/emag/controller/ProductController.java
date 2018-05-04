@@ -19,6 +19,7 @@ import com.emag.model.User;
 import com.emag.model.dao.ProductDAO;
 import com.emag.model.dao.UserDAO;
 
+
 @Controller
 public class ProductController {
 
@@ -33,12 +34,25 @@ public class ProductController {
 		try {
 			List<Product> productsByCategory = productDAO.getProductsByCategory(category_id);
 			model.addAttribute("products", productsByCategory);
-			request.setAttribute("isAdmin", this.userDAO.isAdmin((User) session.getAttribute("user")));
 			return "products";
 		} 
 		catch (SQLException e) {
 			return "errorPage";
 		}
+	}
+	
+	@RequestMapping(value = "/viewProduct", method = RequestMethod.POST)
+	public String viewProduct(Model model, HttpServletRequest request) {
+		long productID = Long.valueOf(request.getParameter("productID"));
+		Product product = null;
+		
+		try {
+			product = productDAO.getProductById(productID);
+			model.addAttribute("product", product);
+		} catch (SQLException e) {
+			return "errorPage";
+		}
+		return "viewProduct";
 	}
 	
 	//TODO

@@ -1,8 +1,10 @@
 package com.emag.model.dao;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.emag.model.*;
+import com.mysql.jdbc.Statement;
 
 @Component
 public class OrderDAO implements IOrderDAO {
@@ -47,13 +50,19 @@ public class OrderDAO implements IOrderDAO {
 	
 	@Override
 	public void addNewOrder(Order order) throws SQLException {
-		try(PreparedStatement insertOrder = connection.prepareStatement(NEW_ORDER);){
-			insertOrder.setObject(1, order.getDate());
+		try(PreparedStatement insertOrder = connection.prepareStatement(NEW_ORDER, Statement.RETURN_GENERATED_KEYS)){
+			insertOrder.setTimestamp(1, Timestamp.valueOf(order.getDate()));
 			insertOrder.setDouble(2, order.getTotalCost());
 			insertOrder.setString(3, order.getDeliveryAddress());
 			insertOrder.setLong(4, order.getUser().getID());
 			insertOrder.setInt(5, order.getStatus());
 			insertOrder.executeUpdate();
+			
+			try(ResultSet result = insertOrder.getGeneratedKeys()){
+				if(result.next()) {
+					order.setOrderID(result.getLong(1));
+				}
+			}
 		}
 	}
 
@@ -101,8 +110,7 @@ public class OrderDAO implements IOrderDAO {
 							result.getString("column"),
 							result.getString("first_name"), 
 							result.getString("last_name"), 
-							result.getString("email"),
-							result.getInt("age"));
+							result.getString("email"));
 				}
 			}
 		}

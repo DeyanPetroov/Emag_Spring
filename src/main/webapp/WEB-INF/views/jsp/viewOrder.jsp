@@ -11,11 +11,6 @@
 <body>
 	<h3>You finished completed the order!</h3>
 	Date: ${order.date} <br>
-	Products: <c:forEach var="entry" items="${order.products}">
-					${entry.key.brand} ${entry.key.model}
-    				Price of product: ${entry.key.price}
-   					Quantity: ${entry.value} <br>
-   				</c:forEach>
    	Total cost of products : ${order.totalCost}
 	<a href = "${pageContext.request.contextPath}/index">Go to the main page</a>	
 </body>
