@@ -19,7 +19,7 @@ public class Cart {
 	public double getTotalCost() {
 		double totalCost = 0;
 		for(Entry<Product, Integer> prod : this.products.entrySet()) {
-			totalCost += prod.getKey().getPrice();
+			totalCost += prod.getKey().getPrice() * prod.getValue();
 		}
 		return totalCost;
 	}

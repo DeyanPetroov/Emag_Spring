@@ -91,8 +91,6 @@ public class UserController {
 		String last_name = request.getParameter("last_name");
 		String email = request.getParameter("email");
 
-		Integer age = Integer.valueOf(request.getParameter("age"));
-
 		try {
 			String existingEmail = userDAO.emailExists(email);
 			String existingUsername = userDAO.usernameExists(username);
@@ -101,7 +99,7 @@ public class UserController {
 				return "register";
 			} 
 			else {
-				User u = new User(username, password, first_name, last_name, email, age);
+				User u = new User(username, password, first_name, last_name, email);
 				try {
 					this.userDAO.saveUser(u);
 					if(userDAO.isAdmin(u)) {

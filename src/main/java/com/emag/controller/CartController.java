@@ -35,9 +35,11 @@ public class CartController {
 			return "products";
 		}
 		
-		Long productID = Long.valueOf(request.getParameter("cartProduct"));
+		Long productID = Long.valueOf(request.getParameter("productID"));
 		Cart cart = (Cart) session.getAttribute("cart");
 		Integer quantity = Integer.valueOf(request.getParameter("quantity"));
+		
+		System.out.println("productID: " + productID);
 		
 		try {
 			Product product = productDAO.getProductById(productID);

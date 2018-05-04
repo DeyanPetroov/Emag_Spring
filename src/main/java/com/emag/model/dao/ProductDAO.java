@@ -104,6 +104,7 @@ public class ProductDAO implements IProductDAO {
 							withDiscountPercent(resultSet.getInt("discount_percent")).
 							withDiscountExpiration(resultSet.getDate("discount_expiration")).
 							withCategoryName(resultSet.getString("category_name"));
+					System.out.println("dao");
 				}
 			}
 		}

@@ -21,5 +21,6 @@
 			</form>
 		</c:forEach>
 	</c:if>
+	<a href = "${pageContext.request.contextPath}/index">Go to the main page</a>
 </body>
 </html>

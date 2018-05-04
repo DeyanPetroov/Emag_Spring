@@ -37,5 +37,6 @@ public class CategoryController {
 			return "errorPage";
 		}
 		return "index";
-	}	
+	}
+	
 }
