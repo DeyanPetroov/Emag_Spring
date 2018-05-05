@@ -131,21 +131,6 @@ public class UserController {
 		return "index";		
 	}
 	
-	@RequestMapping(value = "/user/account", method = RequestMethod.GET)
-	public String getProfile(Model model, HttpSession session) {
-		User user = (User) session.getAttribute("user");
-		if (user != null) {
-			model.addAttribute(user.getFirstName());
-			model.addAttribute(user.getLastName());
-			model.addAttribute(user.getEmail());
-			model.addAttribute(user.getAddress());
-			model.addAttribute(user.getPhone());
-			model.addAttribute(user.getProfilePictureURL());
-			return "profile";
-		}
-		return "index";
-	}
-	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpSession session) {
 		session.invalidate();
@@ -155,11 +140,13 @@ public class UserController {
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
 	public String profile(HttpSession session, Model model) {
 		User user = (User) session.getAttribute("user");
-		try {
-			String picture = userDAO.getProfilePicture(user.getID());
-			model.addAttribute("profilePicture", picture);
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if (user != null) {
+			try {
+				String picture = userDAO.getProfilePicture(user.getID());
+				model.addAttribute("profilePicture", picture);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return "profile";
 	}

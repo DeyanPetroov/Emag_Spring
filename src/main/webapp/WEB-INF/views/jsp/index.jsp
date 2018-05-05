@@ -46,16 +46,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							<h4>${loggedUser}</h4>
 						</c:if>
 						<c:if test="${sessionScope.user == null }">
-							<li><i class="glyphicon glyphicon-log-in" aria-hidden="true"></i><a href="login">Login</a></li>
-							<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="register">Register</a></li>
+							<li><a href="login">Login</a></li>
+							<li><a href="register">Register</a></li>
 						</c:if>
 						<c:if test="${sessionScope.user != null }">
 							<c:if test="${sessionScope.user.admin == true}">
-								<li><i class="glyphicon glyphicon-log-in" aria-hidden="true"></i><a href="adminPage">Admin page</a>
+								<li><a href="adminPage">Admin page</a>
 							</c:if>
-							<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="favourite">Favourites</a>
-							<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="profile">My account</a>
-							<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="logout">Logout</a>
+							<li><a href="favourite">Favourites</a>
+							<li><a href="profile">My account</a>
+							<li><a href="#">Your orders</a>			
+							<li><a href="logout">Logout</a>
 						</c:if>
 					</ul>
 				</div>
@@ -84,7 +85,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							<li class="active"><a href="index" class="act">Home</a></li>	
 							<!-- Mega Menu -->
 							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Products <b class="caret"></b></a>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Products<b class="caret"></b></a>
 								<ul class="dropdown-menu multi-column columns-3">
 									<div class="row">
 										<c:if test="${applicationScope.categories != null}">
@@ -153,7 +154,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<div class="header-right">
 					<div class="cart box_1">
 						<a href="cart">
-							<h3>Your cart</h3> <img src="images/bag.png" alt="" />
+							Your cart <img src="images/bag.png" alt="" />
 						</a>
 						<div class="clearfix"> </div>
 					</div>	
@@ -167,7 +168,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<div class="banner">
 		<div class="container">
 			<div class="banner-info animated wow zoomIn" data-wow-delay=".5s">
-				<h3>Free Online Shopping</h3>
+				<h3>Welcome to eMAG</h3>
 				<h4>Up to <span>50% <i>Off/-</i></span></h4>
 				<div class="wmuSlider example1">
 					<div class="wmuSliderWrapper">
