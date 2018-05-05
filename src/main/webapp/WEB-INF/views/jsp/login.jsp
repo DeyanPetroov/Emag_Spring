@@ -36,7 +36,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				<div class="header-grid-left animated wow slideInLeft">
 					<ul>
 						<c:if test="${requestScope.loggedUser != null }">
-							<h4>${loggedUser}</h4>
+							<h4>${loggedUser}</h4>		
 						</c:if>
 						<c:if test="${sessionScope.user == null }">
 							<li><i class="glyphicon glyphicon-log-in" aria-hidden="true"></i><a href="login">Login</a></li>
@@ -172,9 +172,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		<div class="container">
 			<h3>Login Form</h3>
 			<div class="login-form-grids animated wow slideInUp">
+				<div class="grid_3 grid_5 animated wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="500ms">
 				<c:if test="${ requestScope.error != null}">
-					<h5 style="color: red" align="center">${error}</h5>
+				<div class="alert alert-danger" role="alert">
+					${error} <strong>Try again!</strong>
+				</div>
 				</c:if>
+				</div>
 				<form action="login" method="POST">
 					<input type="text" name="username" placeholder="Username"
 						value="nadyapetrova" required /> <br> <input type="password"

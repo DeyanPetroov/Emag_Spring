@@ -23,7 +23,7 @@
 					
 				<input type="text" name="description" value="${product.description}" placeholder="Description"
 					title="Enter the product brand"/> <br>
-					
+
 				<input type="number" step="0.01" name="price" value="${product.price}" placeholder="Price"
 					required min ="1" title="Enter a price for the product"/> <br>
 					
