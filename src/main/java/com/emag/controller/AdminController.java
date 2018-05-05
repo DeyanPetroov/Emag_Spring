@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -102,8 +103,8 @@ public class AdminController {
         return "viewProduct";
     }
 	
-	@RequestMapping(value = "/editProduct", method = RequestMethod.GET)
-    public String editProduct(HttpSession session, Model m) {
+	@RequestMapping(value = "/editProduct/{productId}", method = RequestMethod.GET)
+    public String editProduct(HttpSession session, Model m, @PathVariable("productID") Integer productID) {
 		
 		try {
 			if(!this.userDAO.isAdmin((User) session.getAttribute("user"))){
@@ -120,18 +121,21 @@ public class AdminController {
 		}	
 		
 		ArrayList<Category> categories=null;
+		Product product = null;
 		try {
 			categories = this.categoryDAO.getAllCategories();
+			product = this.productDAO.getProductById(productID);
 		} catch (Exception e) {
 			return ("errorPage");
 		}
 		
 		m.addAttribute("categories", categories);
+		m.addAttribute("product", product);
 		
-        return "editProduct";
+        return "forward: /editProduct" + productID;
     }
 	
-	@RequestMapping(value = "/editProduct", method = RequestMethod.POST)
+	@RequestMapping(value = "/editProduct/{productId}", method = RequestMethod.POST)
     public String editProduct(HttpServletRequest request, HttpServletResponse response, HttpSession session, Model m) throws SQLException {
 		
 		try {
@@ -152,10 +156,10 @@ public class AdminController {
 		
 		String brand = request.getParameter("brand");
         String productModel = request.getParameter("model");
-        String description = request.getParameter("description");
-        //TODO: fix null pointer of price
+        String description = request.getParameter("description");        
         double price = Double.valueOf(request.getParameter("price"));
-        boolean availability = Boolean.valueOf(request.getParameter("availability"));        
+        boolean availability = Boolean.valueOf(request.getParameter("availability"));       
+        int discountPercent = Integer.valueOf(request.getParameter("discount_percent"));
 		
 		Product updatedProduct = new Product().
 				withCategory(product.getCategory()).

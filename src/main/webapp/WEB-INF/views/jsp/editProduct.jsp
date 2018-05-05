@@ -15,17 +15,20 @@
 				<input type = "submit" value = "Change picture">
 			</form>
 			<form action="editProduct" method="POST">
-				<input type="text" name="brand" value="${product.brand} placeholder="Brand"
+				<input type="text" name="brand" value="${product.brand}" placeholder="Brand"
 					required title="Enter the product brand"/> <br>
 					
-				<input type="text" name="model" value="${product.model} placeholder="Model"
+				<input type="text" name="model" value="${product.model}" placeholder="Model"
 					required title="Enter the product model"/> <br>
 					
-				<input type="text" name="description" value="${product.description} placeholder="Description"
+				<input type="text" name="description" value="${product.description}" placeholder="Description"
 					title="Enter the product brand"/> <br>
 					
-				<input type="number" name="price" value="${product.price} placeholder="Price"
-					required min = 1 title="Enter a price for the product"/> <br>
+				<input type="number" step="0.01" name="price" value="${product.price}" placeholder="Price"
+					required min ="1" title="Enter a price for the product"/> <br>
+					
+				<input type="number" name="discount_percent" value="${product.discount_percent}" placeholder="Discount %"
+					title="Enter discount % for this product" />
 					
 				Is the product in stock?<input type="radio" id="Yes" name="availability" placeholder="Availability"
 					required title="Is the product available?"/>  <label for="Yes">Yes</label>

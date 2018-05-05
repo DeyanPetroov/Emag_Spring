@@ -25,6 +25,12 @@
 			value="${product.productID}"> <input type="submit"
 			value="&#9829;">
 	</form>
+	<c:if test="${sessionScope.user.admin == true}">
+							<form action="${pageContext.request.contextPath}/editProduct" method="GET">
+								<input type="hidden" name="productId" value="${product.productID}">
+							    <input type="submit" value="Edit">
+							</form>
+						</c:if>
 	<a href = "${pageContext.request.contextPath}/index">Go to the main page</a>	
 </body>
 </html>

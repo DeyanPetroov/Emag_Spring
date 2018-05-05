@@ -13,19 +13,18 @@
 		<form action="addProduct" method="POST">
 
 			<input type="text" name="brand" placeholder="Brand" required
-				title="Enter the product brand" /> <br> <input type="text"
-				name="model" placeholder="Model" required
-				title="Enter the product model" /> <br> <input type="text"
-				name="description" placeholder="Description"
-				title="Enter the product brand" /> <br> <input type="number"
-				name="price" placeholder="Price" required min=1
-				title="Enter a price for the product" /> <br> Is the product in
-			stock?<input type="radio" id="Yes" name="availability"
-				placeholder="Availability" required
-				title="Is the product available?" /> <label for="Yes">Yes</label> <input
-				type="radio" id="No" name="availability" placeholder="Availability"
-				required title="Is the product available?" /> <label for="No">No</label>
-			<br> Select product category: <select name="categoryName">
+				title="Enter the product brand" /> <br> 
+				<input type="text" name="model" placeholder="Model" required
+				title="Enter the product model" /> <br> 
+				<input type="text" name="description" placeholder="Description"
+				title="Enter the product brand" /> <br> 
+				<input type="number" name="price" placeholder="Price" required min=1
+				title="Enter a price for the product" /> <br> 
+				Is the product in stock?<input type="radio" id="Yes" name="availability"
+				placeholder="Availability" required	title="Is the product available?" /> <label for="Yes">Yes</label> 
+				<input	type="radio" id="No" name="availability" placeholder="Availability"
+				required title="Is the product available?" /> <label for="No">No</label> <br> 
+				Select product category: <select name="categoryName">
 				<c:forEach items="${ categories }" var="category">
 					<option>${category.categoryName}</option>
 				</c:forEach>

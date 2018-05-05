@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.example</groupId>
-	<artifactId>MyProject</artifactId>
+	<artifactId>EmagSpring</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>MyProject</name>
+	<name>EmagSpring</name>
 	<description>Demo project for Spring Boot</description>
 
 <repositories>

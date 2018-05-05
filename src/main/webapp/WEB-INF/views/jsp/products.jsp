@@ -50,19 +50,20 @@
 									value="${product.productID}"> <input type="submit"
 									value="&#9829;">
 							</form>
-							<c:if test="${ isAdmin == true}">
-								<form action="${pageContext.request.contextPath}/editProduct" method="POST">
-									<input type="hidden" name="productId" value="${product.productID}">
-								    <input type="submit" value="Edit">
-								</form>
-							</c:if>
 						</td>
-						<td>
+						<td align="center">
 						<form action="${pageContext.request.contextPath}/viewProduct" method="POST">
 								<input type="hidden" name="productID" value="${product.productID}">
 							    <input type="submit" value="View Product">
+						</form>
+						<c:if test="${sessionScope.user.admin == true}">
+							<form action="${pageContext.request.contextPath}/editProduct/${product.productID}" method="POST">
+								<input type="hidden" name="productId" value="${product.productID}">
+							    <input type="submit" value="Edit">
 							</form>
-						</td>
+						</c:if>
+						</td>						
+						
 					</tr>
 				</c:forEach>
 			</table>
