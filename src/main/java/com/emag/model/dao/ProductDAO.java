@@ -46,9 +46,10 @@ public class ProductDAO implements IProductDAO {
 	@Override
 	public void addProduct(Product product) throws SQLException {
 		try(PreparedStatement addProduct = connection.prepareStatement(INSERT_PRODUCT, Statement.RETURN_GENERATED_KEYS)) {
+			System.out.println("product cat: " + product.getCategory().getCategoryID());
 			addProduct.setString(1, product.getBrand());
 			addProduct.setDouble(2, product.getPrice());
-			addProduct.setBoolean(3, product.getAvailability());
+			addProduct.setInt(3, product.getAvailability());
 			addProduct.setString(4, product.getModel());
 			addProduct.setString(5, product.getDescription());
 			addProduct.setInt(6, product.getDiscountPercent());
@@ -57,6 +58,7 @@ public class ProductDAO implements IProductDAO {
 			addProduct.setInt(9, product.getCategory().getCategoryID());
 			addProduct.executeUpdate();
 			
+			System.out.println("after middle");
 			try(ResultSet result = addProduct.getGeneratedKeys()){
 				if(result.next()) {
 					product.setProductID(result.getLong(1));
@@ -78,7 +80,7 @@ public class ProductDAO implements IProductDAO {
 		try(PreparedStatement p = connection.prepareStatement(UPDATE_PRODUCT);){
 			p.setString(1, product.getBrand());
 			p.setDouble(2, product.getPrice());
-			p.setBoolean(3, product.getAvailability());
+			p.setInt(3, product.getAvailability());
 			p.setString(4, product.getModel());
 			p.setString(5, product.getDescription());
 			p.setInt(6, product.getDiscountPercent());
@@ -104,11 +106,12 @@ public class ProductDAO implements IProductDAO {
 							withDescription(resultSet.getString("description")).
 							withProductPicture(resultSet.getString("product_picture")).
 							withPrice(resultSet.getDouble("price")).
-							withAvailability(resultSet.getBoolean("availability")).
+							withAvailability(resultSet.getInt("availability")).
 							withDiscountPercent(resultSet.getInt("discount_percent")).
 							withDiscountExpiration(resultSet.getDate("discount_expiration")).
 							withCategoryName(resultSet.getString("category_name"));
-					System.out.println("dao");
+					System.out.println("getting product");
+					System.out.println("name: " + product.getCategory().getCategoryName());
 				}
 			}
 		}
@@ -130,7 +133,7 @@ public class ProductDAO implements IProductDAO {
 							withDescription(resultSet.getString("description")).
 							withProductPicture(resultSet.getString("product_picture")).
 							withPrice(resultSet.getDouble("price")).
-							withAvailability(resultSet.getBoolean("availability")).
+							withAvailability(resultSet.getInt("availability")).
 							withDiscountPercent(resultSet.getInt("discount_percent")).
 							withDiscountExpiration(resultSet.getDate("discount_expiration"));						
 					
@@ -146,19 +149,20 @@ public class ProductDAO implements IProductDAO {
 		List<Product> sameCategoryProducts = new ArrayList<>();
 		Product product = null;
 
+		System.out.println("category in get products: " + categoryID);
 		try (PreparedStatement p = connection.prepareStatement(GET_ALL_BY_CATEGORY);) {
 			p.setInt(1, categoryID);
 			try (ResultSet resultSet = p.executeQuery();) {
 				while (resultSet.next()) {
 					product = new Product().
 							withProductID(resultSet.getLong("product_id")).
-							withCategoryID(resultSet.getInt("category_id")).
+							withCategoryID(categoryID).
 							withBrand(resultSet.getString("brand")).
 							withModel(resultSet.getString("model")).
 							withDescription(resultSet.getString("description")).
 							withProductPicture(resultSet.getString("product_picture")).
 							withPrice(resultSet.getDouble("price")).
-							withAvailability(resultSet.getBoolean("availability")).
+							withAvailability(resultSet.getInt("availability")).
 							withDiscountPercent(resultSet.getInt("discount_percent")).
 							withDiscountExpiration(resultSet.getDate("discount_expiration"));		
 					sameCategoryProducts.add(product);

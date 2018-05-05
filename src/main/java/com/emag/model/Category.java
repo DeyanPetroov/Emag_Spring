@@ -1,19 +1,33 @@
 package com.emag.model;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 public class Category {
 
 	private int categoryID;
 	private String categoryName;
+	private List<Characteristic> characteristics;
 	
 	public Category() {
-		
 	}
 		
-	public Category(int categoryID, String categoryName) {		
-		this.categoryID = categoryID;
-		this.categoryName = categoryName;		
+	public Category(String categoryName, List<Characteristic> characteristics) {		
+		this.categoryName = categoryName;	
+		this.characteristics = characteristics;
 	}	
 	
+	public Category(int categoryID, String categoryName, List<Characteristic> characteristics) {
+		this.categoryID = categoryID;
+		this.categoryName = categoryName;
+		this.characteristics = characteristics;
+	}
+	
+	public List<Characteristic> getCharacteristics() {
+		return Collections.unmodifiableList(this.characteristics);
+	}
+
 	public int getCategoryID() {
 		return categoryID;
 	}

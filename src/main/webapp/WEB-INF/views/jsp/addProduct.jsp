@@ -11,26 +11,33 @@
 <div align="center">
 	<h3>Enter the product details!</h3>
 		<form action="addProduct" method="POST">
-
-			<input type="text" name="brand" placeholder="Brand" required
-				title="Enter the product brand" /> <br> 
-				<input type="text" name="model" placeholder="Model" required
-				title="Enter the product model" /> <br> 
-				<input type="text" name="description" placeholder="Description"
-				title="Enter the product brand" /> <br> 
-				<input type="number" name="price" placeholder="Price" required min=1
-				title="Enter a price for the product" /> <br> 
-				Is the product in stock?
-				<input type="radio" name="availability" value = "Yes" checked/> Yes
-				<input type="radio" name="availability" value = "No" />No <br> 
-				Select product category: <select name="categoryName">
+			Brand: <input type="text" name="brand" placeholder="Brand" required title="Enter the product brand" /> <br> 
+			Model: <input type="text" name="model" placeholder="Model" required title="Enter the product model" /> <br> 
+			Description: <input type="text" name="description" placeholder="Description" title="Enter the product description" /> <br> 
+			Price: <input type="number" name="price" step = "0.01" placeholder="Price" required min=1 title="Enter a price for the product" /> <br> 
+			Availability: <input type = "number" name = "availability" placeholder = "Availability" required min = 0 title = "Enter the product availability"> <br>
+			
+			Select product category: 
+			<select name="categoryName">
 				<c:forEach items="${ categories }" var="category">
 					<option>${category.categoryName}</option>
 				</c:forEach>
-			</select> <br>
-			 
+			</select> <br> <br>
+			<h3>Characteristics menu </h3><br>
+			Choose characteristic: 
+			<select name="characteristic" id="chars">
+			<c:forEach items ="${characteristics}" var = "characteristic">
+				<option value = "">${characteristic.name}</option>
+				</c:forEach>
+			</select>
+			<br>
+			Enter characteristic unit:
+			<input type="text" name="unit" placeholder="Unit" title="Enter the characteristic unit" /> <br> 		
+			Enter characteristic value:	 
+			<input type="text" name="value" placeholder="Value" required title="Enter the characteristic value" /> <br> 
+			
 			<input type="submit" name="addProduct" value="Create Product" /> <br>
-		</form>
+		</form> 		
 		
 		<!-- <form action="./uploadProductPicture" method="POST" enctype="multipart/form-data" accept="image/*">
 			<input type="file" name="image"><br>

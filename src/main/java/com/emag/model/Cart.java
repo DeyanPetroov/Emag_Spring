@@ -11,6 +11,7 @@ public class Cart {
 	private Map<Product, Integer> products = new TreeMap<Product, Integer>((Product p1, Product p2) -> {
 		return p1.getBrand().compareTo(p2.getBrand());
 	});
+	boolean emptyCart;
 
 	public Map<Product, Integer> getProducts() {
 		return Collections.unmodifiableMap(products);
@@ -25,7 +26,7 @@ public class Cart {
 	}
 
 	public boolean addToCart(Product p, int quantity) {
-		if (p.getAvailability() == false) {
+		if (p.getAvailability() <= 0) {
 			return false;
 		}
 
@@ -70,5 +71,9 @@ public class Cart {
 	
 	public User getUser() {
 		return user;
+	}
+	
+	public boolean isEmpty() {
+		return this.products.size() == 0;
 	}
 }

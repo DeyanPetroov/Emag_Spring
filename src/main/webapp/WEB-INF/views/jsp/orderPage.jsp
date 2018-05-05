@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
     
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -12,12 +14,12 @@
 	<c:if test="${sessionScope.user == null}">
 		<a href = "${pageContext.request.contextPath}/login">Please log in to make an order.</a>			
 	</c:if>
-	
-	<c:if test=" ${sessionScope.user.cart.totalCost} == 0">
-		<a href = "${pageContext.request.contextPath}/index">Your cart is empty. </a>			
+	<c:if test="${sessionScope.user.cart.totalCost == 0}">
+		Your cart is empty
+		<a href= "${pageContext.request.contextPath}/index">Continue shopping</a>
 	</c:if>
 	
-	<c:if test=" ${sessionScope.user.cart.totalCost} != 0">
+	<c:if test="${sessionScope.user.cart.totalCost != 0}">
 	<c:if test="${sessionScope.user != null}">
 		<h2>You are on your way to finalize your order ..</h2>
 		<br>
@@ -38,7 +40,6 @@
 			<input type="text" name="address" placeholder="Delivery address" /> <input
 				type="submit" value="Finish order">
 		</form>
-	</c:if>
-	</c:if>
+	</c:if></c:if>
 </body>
 </html>

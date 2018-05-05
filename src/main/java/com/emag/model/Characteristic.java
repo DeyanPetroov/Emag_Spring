@@ -4,16 +4,22 @@ public class Characteristic {
 
 	private long characteristicID;
 	private String name;
-	private int unit;
+	private String unit;
 	private int categoryID;
 	private String value;
 	
 	//===========CONSTRUCTORS===========
 	
-	public Characteristic(String name, int unit, int categoryID, String value) {
+	public Characteristic(String name, String unit, int categoryID, String value) {
+		this.categoryID = categoryID;
 		setName(name);
 		setUnit(unit);
-		this.categoryID = categoryID;
+	}
+	
+	public Characteristic(long characteristicID, String name, String unit) {
+		setName(name);
+		setUnit(unit);
+		this.characteristicID = characteristicID;
 	}
 	
 	//===========GETTERS===========
@@ -30,7 +36,7 @@ public class Characteristic {
 		return categoryID;
 	}
 	
-	public int getUnit() {
+	public String getUnit() {
 		return unit;
 	}
 	
@@ -50,8 +56,8 @@ public class Characteristic {
 		}
 	}
 	
-	public void setUnit(int unit) {
-		if (unit >= 0) {
+	public void setUnit(String unit) {
+		if(unit!=null&&!unit.isEmpty()) {
 			this.unit = unit;
 		}
 	}
@@ -60,5 +66,9 @@ public class Characteristic {
 		if (value != null && !value.isEmpty()) {
 			this.value = value;
 		}
+	}
+	
+	public void setCategoryID(int categoryID) {
+		this.categoryID = categoryID;
 	}
 }

@@ -61,6 +61,7 @@ public class CartController {
 
 		try {
 			Product product = productDAO.getProductById(productID);
+			System.out.println("product brand: " + product.getBrand());
 			if (!cart.addToCart(product, quantity)) {
 				model.addAttribute("unavailable", "Sorry the product is not in stock.");
 				return "products";

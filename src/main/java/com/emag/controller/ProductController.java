@@ -33,6 +33,7 @@ public class ProductController {
 	@RequestMapping(value = "/category/{category_id}", method = RequestMethod.GET)
 	public String getProductsByCategory(Model model, @PathVariable("category_id") Integer category_id, HttpSession session, HttpServletRequest request){
 		try {
+			System.out.println("category id: " + category_id);
 			List<Product> productsByCategory = productDAO.getProductsByCategory(category_id);
 			model.addAttribute("products", productsByCategory);
 			return "products";

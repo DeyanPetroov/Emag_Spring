@@ -6,10 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.emag.model.Category;
+import com.emag.model.Characteristic;
 
 @Component
 public class CategoryDAO implements ICategoryDAO {
@@ -20,6 +23,9 @@ public class CategoryDAO implements ICategoryDAO {
 	private static final String GET_CATEGORY_BY_NAME = "SELECT category_id FROM categories WHERE category_name = ?";
 	
 	private Connection connection;
+	
+	@Autowired
+	CharacteristicDAO characteristicDAO;
 
 	private CategoryDAO() {
 		connection = DBManager.getInstance().getConnection();
@@ -27,12 +33,12 @@ public class CategoryDAO implements ICategoryDAO {
 	
 	@Override
 	public HashMap<Category, ArrayList<Category>> allCategories() throws SQLException {
-		HashMap<Category, ArrayList<Category>> allCategories = new HashMap<>();
-		
+		HashMap<Category, ArrayList<Category>> allCategories = new HashMap<>();	
 		try(PreparedStatement parentCategories = connection.prepareStatement(GET_ALL_MAIN_CATEGORIES);) {
 			try(ResultSet result = parentCategories.executeQuery()){
 				while (result.next()) {
-					allCategories.put(new Category(result.getInt("category_id"),result.getString("category_name")), new ArrayList<Category>(getSubCategoriesByParentID(result.getInt("category_id"))));
+					List<Characteristic> characteristics = characteristicDAO.allCategoryCharacteristics(result.getInt("category_id"));
+					allCategories.put(new Category(result.getInt("category_id"),result.getString("category_name"), characteristics),  new ArrayList<Category>(getSubCategoriesByParentID(result.getInt("category_id"))));
 				}
 			}
 		}
@@ -45,7 +51,8 @@ public class CategoryDAO implements ICategoryDAO {
 		try (PreparedStatement p = connection.prepareStatement(GET_ALL_CATEGORIES);) {
 			try(ResultSet resultSet = p.executeQuery()){
 				while (resultSet.next()) {
-					Category c = new Category(resultSet.getInt("category_id"), resultSet.getString("category_name"));
+					List<Characteristic> characteristics = characteristicDAO.allCategoryCharacteristics(resultSet.getInt("category_id"));
+					Category c = new Category(resultSet.getInt("category_id"),resultSet.getString("category_name"),characteristics);
 					categories.add(c);
 				}
 			}
@@ -62,7 +69,8 @@ public class CategoryDAO implements ICategoryDAO {
 			getSubCategories.setInt(1, parentID);
 			try(ResultSet result = getSubCategories.executeQuery()){
 				while (result.next()) {
-					category = new Category(result.getInt("category_id"), result.getString("category_name"));
+					List<Characteristic> characteristics = characteristicDAO.allCategoryCharacteristics(result.getInt("category_id"));
+					category = new Category(result.getInt("category_id"),result.getString("category_name"),characteristics);
 					subCategories.add(category);
 				}
 			}
@@ -77,7 +85,11 @@ public class CategoryDAO implements ICategoryDAO {
 			getCategory.setString(1, categoryName);
 			try(ResultSet result = getCategory.executeQuery()){
 				if(result.next()) {
-					category = new Category(result.getInt("category_id"), categoryName);
+					System.out.println("before chars");
+					List<Characteristic> characteristics = characteristicDAO.allCategoryCharacteristics(result.getInt("category_id"));
+					System.out.println("after chars");
+					category = new Category(result.getInt("category_id"),categoryName, characteristics);
+					System.out.println("after category");
 				}
 			}
 		}

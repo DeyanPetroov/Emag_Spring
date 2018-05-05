@@ -10,10 +10,9 @@ public class Product {
 	private String description;
 	private String productPicture;
 	private double price;
-	private boolean availability;
+	private int availability;
 	private int discountPercent;
 	private Date discountExpiration;
-	private int availableQuantity;
 	private Category category = new Category();
 
 	//==============GETTERS=====================
@@ -41,7 +40,7 @@ public class Product {
 		return productPicture;
 	}
 
-	public boolean getAvailability() {
+	public int getAvailability() {
 		return availability;
 	}
 
@@ -97,7 +96,7 @@ public class Product {
 		return this;
 	}
 
-	public Product withAvailability(boolean availability) {
+	public Product withAvailability(int availability) {
 		this.availability = availability;
 		return this;
 	}
@@ -116,11 +115,6 @@ public class Product {
 
 	public Product withCategory(Category category) {
 		this.category = category;
-		return this;
-	}
-	
-	public Product withAvailableQuantity(int availableQuantity) {
-		this.availableQuantity = availableQuantity;
 		return this;
 	}
 	
@@ -144,7 +138,11 @@ public class Product {
 		this.productPicture = productPicture;
 	}
 	
-	public void setAvailability(boolean availability) {
+	public void setAvailability(int availability) {
 		this.availability = availability;
+	}
+	
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 }

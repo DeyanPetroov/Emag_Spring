@@ -14,7 +14,7 @@
 				<input type = "file" name = "image"><br>
 				<input type = "submit" value = "Change picture">
 			</form>
-			<form action="editProduct" method="POST">
+			<form action="${pageContext.request.contextPath}/editProduct/${product.productID}" method="POST">
 				<input type="text" name="brand" value="${product.brand}" placeholder="Brand"
 					required title="Enter the product brand"/> <br>
 					
@@ -27,21 +27,29 @@
 				<input type="number" step="0.01" name="price" value="${product.price}" placeholder="Price"
 					required min ="1" title="Enter a price for the product"/> <br>
 					
-				<input type="number" name="discount_percent" value="${product.discount_percent}" placeholder="Discount %"
-					title="Enter discount % for this product" />
+				<input type="number" name="discountPercent" value="${product.discountPercent}" placeholder="Discount %"
+					title="Enter discount % for this product" /> <br>
 					
-				Is the product in stock?<input type="radio" id="Yes" name="availability" placeholder="Availability"
-					required title="Is the product available?"/>  <label for="Yes">Yes</label>
-				<input type="radio" id="No" name="availability" placeholder="Availability"
-					required title="Is the product available?"/> <label for="No">No</label> <br>
+				Availability: <input type = "number" name = "availability" value = "${product.availability}" placeholder = "Availability" 
+				required min = 0 title = "Enter the product availability"> <br>
+
 					
 				Select product category: <select name="categoryName">
 					<c:forEach items="${ categories }" var="category">
 						 <option>${category.categoryName}</option>
 					</c:forEach>				    
 			    </select> <br>
-					
-				<input type="submit" name="editProduct" value="Save Product" /> <br> <br>	
+			    
+			    Choose characteristic: <select name="characteristic" id="chars">
+				<c:forEach items="${characteristics}" var="characteristic">
+					<option value="">${characteristic.name}</option>
+				</c:forEach>
+				</select> <br> 
+				Enter characteristic unit:
+				<input type="text" name="unit" placeholder="Unit" title="Enter the characteristic unit" /> <br> 
+				Enter characteristic value: 
+				<input type="text"name="value" placeholder="Value" required title="Enter the characteristic value" /> <br>
+				<input type="submit" value="Save Product" /> <br> <br>	
 			</form>
 		</c:if>
 		

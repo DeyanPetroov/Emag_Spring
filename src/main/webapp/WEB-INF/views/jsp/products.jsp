@@ -51,10 +51,7 @@
 									value="&#9829;">
 							</form>
 							<c:if test="${sessionScope.user.admin == true}">
-								<form action="${pageContext.request.contextPath}/editProduct/${product.productID}" method="POST">
-								<input type="hidden" name="productId" value="${product.productID}">
-							    <input type="submit" value="Edit">
-							</form>
+							<a href="${pageContext.request.contextPath}/editProduct/${product.productID}"><button>Edit</button></a>						
 							</c:if>
 						</td>
 						<td>
