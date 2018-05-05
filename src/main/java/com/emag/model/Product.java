@@ -143,4 +143,8 @@ public class Product {
 	public void setProductPicture(String productPicture) {
 		this.productPicture = productPicture;
 	}
+	
+	public void setAvailability(boolean availability) {
+		this.availability = availability;
+	}
 }

@@ -13,6 +13,11 @@
 		<a href = "${pageContext.request.contextPath}/login">Please log in to make an order.</a>			
 	</c:if>
 	
+	<c:if test=" ${sessionScope.user.cart.totalCost} == 0">
+		<a href = "${pageContext.request.contextPath}/index">Your cart is empty. </a>			
+	</c:if>
+	
+	<c:if test=" ${sessionScope.user.cart.totalCost} != 0">
 	<c:if test="${sessionScope.user != null}">
 		<h2>You are on your way to finalize your order ..</h2>
 		<br>
@@ -22,7 +27,7 @@
     		Price of product: ${entry.key.price}
    			Quantity: ${entry.value} <br>
    	</c:forEach>
-   			Total cost of products in cart: ${sessionScope.user.order.totalCost}
+   			Total cost of products in cart: ${sessionScope.user.cart.totalCost}
 
 		<h3>
 			If you want to finish your order, enter your personal details. If you
@@ -33,6 +38,7 @@
 			<input type="text" name="address" placeholder="Delivery address" /> <input
 				type="submit" value="Finish order">
 		</form>
+	</c:if>
 	</c:if>
 </body>
 </html>

@@ -20,10 +20,9 @@
 				title="Enter the product brand" /> <br> 
 				<input type="number" name="price" placeholder="Price" required min=1
 				title="Enter a price for the product" /> <br> 
-				Is the product in stock?<input type="radio" id="Yes" name="availability"
-				placeholder="Availability" required	title="Is the product available?" /> <label for="Yes">Yes</label> 
-				<input	type="radio" id="No" name="availability" placeholder="Availability"
-				required title="Is the product available?" /> <label for="No">No</label> <br> 
+				Is the product in stock?
+				<input type="radio" name="availability" value = "Yes" checked/> Yes
+				<input type="radio" name="availability" value = "No" />No <br> 
 				Select product category: <select name="categoryName">
 				<c:forEach items="${ categories }" var="category">
 					<option>${category.categoryName}</option>

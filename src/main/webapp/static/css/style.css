@@ -1248,9 +1248,7 @@ ul.paging {
 .categories,.new-products{
 	border:1px solid #999;
 }
-.categories{
-	margin:3em 0;
-}
+
 .categories h3,.filter-price h3,.new-products h3{
 	font-size: 1.5em;
     color: #212121;
@@ -2229,11 +2227,11 @@ table.timetable_sub {
     background: #000000;
 }
 .timetable_sub th{
-    background:#D8703F;
+    background:lightskyblue;
     color: #fff !important;
     text-transform: capitalize;
     font-size: 13px;
-    border-right:1px solid #A95832;
+    border:1px solid cadetblue;
 }
 .timetable_sub th, .timetable_sub td {
     text-align: center;
@@ -2334,12 +2332,13 @@ td.invert-image a img {
 /*-- quantity-end --*/
 .checkout-left-basket h4{
 	padding: 1em;
-    background:#FFC229;
-    font-size: 1.1em;
-    color: #fff;
+    background: lightskyblue;
+    font-size: 1.2em;
+    color: white;
     text-transform: uppercase;
     text-align: center;
     margin: 0 0 1em;
+    border: 1px solid cadetblue;
 }
 .checkout-left {
     margin: 2em 0 0;

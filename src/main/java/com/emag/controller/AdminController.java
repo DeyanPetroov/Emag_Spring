@@ -79,7 +79,8 @@ public class AdminController {
         String productModel = request.getParameter("model");
         String description = request.getParameter("description");
         double price = Double.valueOf(request.getParameter("price"));
-        boolean availability = Boolean.valueOf(request.getParameter("availability"));        
+        String available = request.getParameter("availability");
+        boolean availability = available.equals("Yes")?true:false;
         Product product = null;               
         
 		try {
@@ -158,7 +159,8 @@ public class AdminController {
         String productModel = request.getParameter("model");
         String description = request.getParameter("description");        
         double price = Double.valueOf(request.getParameter("price"));
-        boolean availability = Boolean.valueOf(request.getParameter("availability"));       
+        String available = request.getParameter("availability");
+        boolean availability = available.equals("Yes")?true:false;
         int discountPercent = Integer.valueOf(request.getParameter("discount_percent"));
 		
 		Product updatedProduct = new Product().
@@ -170,6 +172,7 @@ public class AdminController {
 				withDiscountPercent(product.getDiscountPercent()).
 				withDiscountExpiration(product.getDiscountExpiration());
 		this.productDAO.updateProduct(updatedProduct);
+		System.out.println("after dao");
 		
 		m.addAttribute("product", product);
         return "viewProduct";
