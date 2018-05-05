@@ -209,19 +209,12 @@ public class User {
 		boolean found = false;
 		for(Product p : favouriteProducts) {
 			if(p.getProductID() == product.getProductID()) {
-				System.out.println(p.getBrand());
-				System.out.println(p.getProductID());
-				System.out.println(product.getBrand());
-				System.out.println(product.getProductID());
-				System.out.println("removed from pojo");
 				found = true;
 				this.favouriteProducts.remove(p);
 				break;
 			}
-		}
-		
+		}		
 		if(found == false ) {
-			System.out.println("added to pojo");
 			this.favouriteProducts.add(product);		
 		}
 	}

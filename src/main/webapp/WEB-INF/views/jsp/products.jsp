@@ -40,7 +40,7 @@
 						<td align="center">${product.discountExpiration}</td>
 						<td align="left">${product.availability}</td>
 						<td align="center">
-							<form action="${pageContext.request.contextPath}/cart" method="POST">
+							<form action="${pageContext.request.contextPath}/addToCart" method="POST">
 								<input type="hidden" name="productID" value="${product.productID}">
 								<input type="number" name="quantity" min=1 placeholder = "quantity" required><br>
 							    <input type="submit" value="Add to cart">

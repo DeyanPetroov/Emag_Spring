@@ -1,5 +1,6 @@
 package com.emag.controller;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -25,39 +26,40 @@ public class OrderController {
 	
 	@Autowired
 	private OrderDAO orderDAO;
+	
+	private Connection connection  = DBManager.getInstance().getConnection();
 
 	@RequestMapping(value = "/orderPage", method = RequestMethod.GET)
 	public String orderProducts(HttpSession session) {
 		return "orderPage";
 	}
-	
+	 
 	@RequestMapping(value = "/finalizeOrder", method = RequestMethod.POST)
-	public String finalizeOrder(Model model, HttpSession session, HttpServletRequest request) {
+	public String finalizeOrder(Model model, HttpSession session, HttpServletRequest request) throws SQLException {
 		User user = (User) session.getAttribute("user");
 		String deliveryAddress = request.getParameter("address");
 
 		Order order = new Order(user, deliveryAddress);
 		
 		try {
-			//doesn't work
-			//should be transaction
+			connection.setAutoCommit(false);
 			orderDAO.addNewOrder(order);
-			System.out.println("after dao new order");
 			orderDAO.addOrderedProduct(order);
-			System.out.println("after dao new ordered product");
+			connection.commit();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			connection.rollback();
+			throw new SQLException("the transaction is not made" + e.getMessage());
+		} finally {
+			connection.setAutoCommit(true);
 		}
-		
+
 		model.addAttribute("order", order);
-		System.out.println("===========================");
 		Map<Product, Integer> productss = order.getProducts();
 		for(Entry<Product,Integer> entry : productss.entrySet()) {
 			System.out.println(entry.getKey().getModel());
 			System.out.println(entry.getKey().getPrice());
 			System.out.println(entry.getValue());
 		}
-		System.out.println("===========================");
 		user.addToHistory(order);
 		user.getCart().emptyCart();
 		return "viewOrder";

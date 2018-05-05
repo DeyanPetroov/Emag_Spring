@@ -21,8 +21,8 @@
 			${entry.key.brand} ${entry.key.model}
     		Price of product: ${entry.key.price}
    			Quantity: ${entry.value} <br>
-   			Total cost of products in cart: ${sessionScope.user.order.totalCost}
    	</c:forEach>
+   			Total cost of products in cart: ${sessionScope.user.order.totalCost}
 
 		<h3>
 			If you want to finish your order, enter your personal details. If you

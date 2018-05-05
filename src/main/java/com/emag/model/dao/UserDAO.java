@@ -45,7 +45,7 @@ public class UserDAO implements IUserDAO {
 		try (PreparedStatement selectUserById = connection.prepareStatement(GET_USER_BY_ID);) {
 			selectUserById.setLong(1, userID);
 			try (ResultSet resultSet = selectUserById.executeQuery();) {
-				while (resultSet.next()) {
+				if (resultSet.next()) {
 					user = new User(
 						resultSet.getLong("user_id"),
 						resultSet.getString("username"), 
@@ -79,9 +79,8 @@ public class UserDAO implements IUserDAO {
 		}
 	}
 
-	// insert user in the database -------> maybe synchronized ?
 	@Override
-	public void saveUser(User u) throws SQLException {
+	public synchronized void saveUser(User u) throws SQLException {
 		try (PreparedStatement saveUser = connection.prepareStatement(INSERT_USER);) {
 			String hashedPassword = u.hashPassword(u.getPassword());
 			saveUser.setString(1, u.getUsername());
