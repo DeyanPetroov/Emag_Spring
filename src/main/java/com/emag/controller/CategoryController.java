@@ -27,12 +27,13 @@ public class CategoryController {
 	@Autowired
 	private ServletContext context;
 
-	@RequestMapping(value = "index", method = RequestMethod.GET)
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String getAllCategories(Model model, HttpSession session) {
 		HashMap<Category, ArrayList<Category>> categories = new HashMap<>();
 		try {
 			categories = categoryDAO.allCategories();
 			context.setAttribute("categories", categories);
+			System.out.println("added categories");
 		} catch (SQLException e) {
 			return "errorPage";
 		}

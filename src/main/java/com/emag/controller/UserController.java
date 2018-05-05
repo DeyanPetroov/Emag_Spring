@@ -238,7 +238,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/favourite", method = RequestMethod.POST)
-	public String addOrRemoveFavourite(@RequestParam("favouriteProduct") Long productID, HttpSession session, Model model, HttpServletRequest request) {
+	public synchronized String addOrRemoveFavourite(@RequestParam("favouriteProduct") Long productID, HttpSession session, Model model, HttpServletRequest request) {
 		if(session.getAttribute("user") == null) {
 			model.addAttribute("invalidSession", "Please log in to add favourite items.");
 			return "products";

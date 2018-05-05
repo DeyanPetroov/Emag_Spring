@@ -10,15 +10,25 @@ Author URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 -->
-
 <!DOCTYPE html>
 <html>
 <head>
-<title>Your cart</title>
-<link rel="stylesheet" type="text/css" href="css/my.css">
-
+<title>Shopping cart</title>
+<title>Insert title here</title>
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<!-- js -->
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<!-- //js -->
+<!-- cart -->
+<script src="js/simpleCart.min.js"></script>
+<!-- cart -->
+<!-- for bootstrap working -->
+<script type="text/javascript" src="js/bootstrap-3.1.1.min.js"></script>
+<!-- //for bootstrap working -->
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 </head>
-	
 <body>
 <!-- header -->
 	<div class="header">
@@ -30,16 +40,17 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							<h4>${loggedUser}</h4>
 						</c:if>
 						<c:if test="${sessionScope.user == null }">
-							<li><i class="glyphicon glyphicon-log-in" aria-hidden="true"></i><a href="login">Login</a></li>
-							<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="register">Register</a></li>
+							<li><a href="login">Login</a></li>
+							<li><a href="register">Register</a></li>
 						</c:if>
 						<c:if test="${sessionScope.user != null }">
 							<c:if test="${sessionScope.user.admin == true}">
-								<li><i class="glyphicon glyphicon-log-in" aria-hidden="true"></i><a href="adminPage">Admin page</a>
+								<li><a href="adminPage">Admin page</a>
 							</c:if>
-							<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="favourite">Favourites</a>
-							<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="profile">My account</a>
-							<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="logout">Logout</a>
+							<li><a href="favourite">Favourites</a>
+							<li><a href="profile">My account</a>
+							<li><a href="#">Your orders</a>			
+							<li><a href="logout">Logout</a>
 						</c:if>
 					</ul>
 				</div>
@@ -160,7 +171,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- checkout -->
 <div class="checkout">
 		<div class="container">
-			<h3 class="animated wow slideInLeft" data-wow-delay=".5s">Your shopping cart contains: <span>${fn:length(cart.products)}</span> products</h3>
+			<h3 class="animated wow slideInLeft">Your shopping cart contains: <span>${fn:length(cart.products)}</span> products</h3>
 			<div class="checkout-right animated wow slideInUp" data-wow-delay=".5s">
 				<table class="timetable_sub">
 					<thead>
@@ -198,9 +209,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							<input type="submit" value="Remove">
 							</form>
 						</td>
-						</c:forEach>
-					</tr>
-					
+						</c:forEach>					
 				</table>
 			</div>
 			<div class="checkout-left">	
@@ -212,7 +221,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<span>${entry.key.price * entry.value}</span>
 					</c:forEach>
 					
-					<li>Total <span>${sessionScope.user.order.totalCost} </span></li>
+					<li>Total <span>${sessionScope.user.cart.totalCost} </span></li>
 					</ul>
 				</div>
 				<div class="checkout-right-basket animated wow slideInRight" data-wow-delay=".5s">
@@ -220,8 +229,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				</div>
 				<div class="clearfix"> </div>
 			</div>
+			</div>
 		</div>
-	</div>
 <!-- //checkout -->
 <%@include file = "footer.jsp" %>
 </body>

@@ -7,14 +7,6 @@ input[type=submit] {
     color: white;
 }
 
-img {
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 5px;
-    width: 150px;
-    align-self: center;
-}
-
 .user-row {
     margin-bottom: 14px;
 }
@@ -40,7 +32,6 @@ img {
 .table-user-information > tbody > tr:first-child {
     border-top: 0;
 }
-
 
 .table-user-information > tbody > tr > td {
     border-top: 0;
