@@ -106,6 +106,8 @@ public class UserController {
 						u.setAdmin(true);
 					}
 					u.setPassword(u.hashPassword(u.getPassword()));
+					MailSender mailSender = new MailSender(u.getEmail() ,"Добре дошли в eMAG!", "Вие успешно се регистрирахте в eMAG! Добре дошли!");
+					mailSender.start();
 				} catch (SQLException e) {
 					e.getMessage();
 					return "errorPage";
