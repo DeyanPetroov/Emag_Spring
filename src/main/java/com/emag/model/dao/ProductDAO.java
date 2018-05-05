@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +26,7 @@ public class ProductDAO implements IProductDAO {
 			"ON p.product_id = ? AND p.category_id = c.category_id";
 	private static final String UPDATE_PRODUCT = "UPDATE products SET brand = ?, price = ?, availability = ?, model = ?, description = ?, discount_percent = ?, discount_expiration = ?, product_picture = ?, category_id = ? WHERE product_id = ?";
 	private static final String DELETE_PRODUCT_BY_ID = "DELETE FROM products WHERE product_id = ?";
+	private static final String GET_ALL_PRODUCTS = "SELECT product_id, brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, category_id FROM products";
 	private static final String GET_ALL_BY_CATEGORY = "SELECT product_id, brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, category_id FROM products WHERE category_id = ?";
 	private static final String INSERT_PRODUCT_INTO_FAVOURITES = "INSERT INTO favourite_products (user_id, product_id) VALUES (?,?)";
 	private static final String GET_FAVOURITE_BY_USER_ID = "SELECT user_id, product_id FROM favourite_products WHERE user_id = ? AND product_id = ?";
@@ -34,6 +37,7 @@ public class ProductDAO implements IProductDAO {
 	
 	
 	private Connection connection;
+	private static final HashMap<Long, Product> allProducts = new HashMap<>();
 
 	private ProductDAO() {
 		connection = DBManager.getInstance().getConnection();
@@ -110,6 +114,32 @@ public class ProductDAO implements IProductDAO {
 		}
 		return product;
 	}
+	
+	public HashMap<Long, Product> getAllProducts() throws SQLException{
+		if(allProducts.isEmpty()){
+			Product product = null;
+			try (PreparedStatement st = DBManager.getInstance().getConnection().prepareStatement(GET_ALL_PRODUCTS); 
+					ResultSet resultSet = st.executeQuery();)
+			{				
+				while (resultSet.next()) {
+					product = new Product().
+							withProductID(resultSet.getLong("product_id")).
+							withCategoryID(resultSet.getInt("category_id")).
+							withBrand(resultSet.getString("brand")).
+							withModel(resultSet.getString("model")).
+							withDescription(resultSet.getString("description")).
+							withProductPicture(resultSet.getString("product_picture")).
+							withPrice(resultSet.getDouble("price")).
+							withAvailability(resultSet.getBoolean("availability")).
+							withDiscountPercent(resultSet.getInt("discount_percent")).
+							withDiscountExpiration(resultSet.getDate("discount_expiration"));						
+					
+					allProducts.put(product.getProductID(), product);
+				}
+			}		
+		}
+		return allProducts;
+	}
 
 	@Override
 	public List<Product> getProductsByCategory(int categoryID) throws SQLException {
@@ -136,6 +166,29 @@ public class ProductDAO implements IProductDAO {
 			}
 		}
 		return sameCategoryProducts;
+	}
+	
+	public List<Product> searchProduct(String search) throws SQLException{
+		ArrayList<Product> searchResults = new ArrayList<>();
+		getAllProducts();
+		for(Product p : allProducts.values()){
+			if(p.getDescription() != null && p.getBrand() != null && p.getModel() != null){
+				String description = p.getDescription().toLowerCase();
+				String brand = p.getBrand().toLowerCase();
+				String model = p.getModel().toLowerCase();
+				if(description.contains(search.toLowerCase()) || brand.contains(search.toLowerCase()) || model.contains(search.toLowerCase())){
+					searchResults.add(p);
+				}
+			}
+			else{
+				if(p.getBrand() == null){
+					if(p.getDescription().contains(search) || p.getModel().contains(search)){
+						searchResults.add(p);
+					}
+				}
+			}
+		}
+		return Collections.unmodifiableList(searchResults);
 	}
 
 	// add product to favourites in the database
