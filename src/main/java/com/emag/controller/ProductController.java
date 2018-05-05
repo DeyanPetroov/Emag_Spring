@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.emag.model.Product;
 import com.emag.model.User;
@@ -41,20 +42,20 @@ public class ProductController {
 		}
 	}
 	
-	@RequestMapping(value = "/viewProduct", method = RequestMethod.POST)
-	public String viewProduct(Model model, HttpServletRequest request) {
-		long productID = Long.valueOf(request.getParameter("productID"));
-		Product product = null;
-		
+	@RequestMapping(value = "/viewProduct/{product_id}", method = RequestMethod.GET)
+	public String product(Model model, @PathVariable("product_id") Long productID) {
+		Product product = null;	
 		try {
 			product = productDAO.getProductById(productID);
 			model.addAttribute("product", product);
-		} catch (SQLException e) {
+			return "viewProduct";
+		} 
+		catch (SQLException e) {
 			return "errorPage";
 		}
-		return "viewProduct";
 	}
 	
+
 	//TODO
 	//make product page with product characteristics and add to cart and add to favourites buttons
 	//every product should have a picture
