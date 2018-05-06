@@ -54,7 +54,7 @@ public class ImageController {
 		}
 		
 		model.addAttribute("profilePicture", profilePicture);
-		return "profile";
+		return "editProfile";
 	}
 	
 	@RequestMapping(value = "/uploadProductPicture", method = RequestMethod.POST)

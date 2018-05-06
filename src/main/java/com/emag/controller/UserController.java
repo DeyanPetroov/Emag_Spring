@@ -154,7 +154,16 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/editProfile", method = RequestMethod.GET)
-	public String editProfile(HttpSession session) {
+	public String editProfile(HttpSession session, Model model) {
+		User user = (User) session.getAttribute("user");
+		if (user != null) {
+			try {
+				String picture = userDAO.getProfilePicture(user.getID());
+				model.addAttribute("profilePicture", picture);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		return "editProfile";
 	}
 	

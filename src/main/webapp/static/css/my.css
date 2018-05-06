@@ -1,6 +1,7 @@
 @charset "UTF-8";
 
-input[type=submit] {
+#add-cart,
+#remove-cart {
     background-color: #D8703F;
     border: 1px;
     border-radius: 2px;
@@ -39,3 +40,4 @@ input[type=submit] {
 .toppad {
 	margin-top:20px;
 }
+

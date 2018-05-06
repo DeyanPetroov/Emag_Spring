@@ -11,7 +11,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <html>
 <head>
 <base href="http://localhost:8080/EMAG_Spring/products">
-<title>Best Store a Ecommerce Online Shopping Category Flat Bootstrap Responsive Website Template | Products :: w3layouts</title>
+<title>Products</title>
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
 <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
 <!-- js -->

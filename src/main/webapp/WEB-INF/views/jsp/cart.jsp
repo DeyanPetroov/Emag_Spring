@@ -17,6 +17,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <title>Insert title here</title>
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
 <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/my.css" rel="stylesheet" type="text/css" media="all" />
 <!-- js -->
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <!-- //js -->
@@ -199,14 +200,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							<form action="addToCart" method="POST">
 								<input type="hidden" name="productID" value="${entry.key.productID}">
 								<input type="number" name="quantity" min=1 required>
-								<input type="submit" value="Add to cart">
+								<input type="submit" value="Add to cart" id= "remove-cart">
 								</form>
 							</td>
 						<td class="invert">
 							<form action="removeFromCart" method="POST">
 							<input type="hidden" name="productID" value="${entry.key.productID}"> 
 							<input type="number" name="quantity" min=1 required> 
-							<input type="submit" value="Remove">
+							<input type="submit" value="Remove" id = "add-cart">
 							</form>
 						</td>
 						</c:forEach>					
