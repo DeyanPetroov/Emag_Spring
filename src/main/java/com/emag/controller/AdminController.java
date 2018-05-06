@@ -168,18 +168,19 @@ public class AdminController {
 			return "products";
 		}	
 		
-		Product product = this.productDAO.getProductById(productID);
-		System.out.println("get product in ADMIN=========");
-		
+		Product product = this.productDAO.getProductById(productID);		
 		String brand = request.getParameter("brand");
         String productModel = request.getParameter("model");
         String description = request.getParameter("description");        
         double price = Double.valueOf(request.getParameter("price"));
-        System.out.println("Price: " + price);
         Integer availability = Integer.valueOf(request.getParameter("availability"));
         int discountPercent = Integer.valueOf(request.getParameter("discountPercent"));
+        if(discountPercent!=0) {
+        	price -= price * (Double) (0.01*discountPercent);
+        }
 		
 		Product updatedProduct = new Product().
+				withProductID(product.getProductID()).
 				withCategory(product.getCategory()).
 				withBrand(brand).withModel(productModel).
 				withDescription(description).
@@ -187,10 +188,9 @@ public class AdminController {
 				withAvailability(availability).
 				withDiscountPercent(discountPercent).
 				withDiscountExpiration(product.getDiscountExpiration());
-		this.productDAO.updateProduct(updatedProduct);
-		System.out.println("after dao in ADMIN");
+		this.productDAO.updateProduct(updatedProduct);	
 		
-		m.addAttribute("product", product);
+		m.addAttribute("product", updatedProduct);
         return "viewProduct";
     }
 	
