@@ -185,7 +185,7 @@ public class AdminController {
 				withDescription(description).
 				withPrice(price).
 				withAvailability(availability).
-				withDiscountPercent(product.getDiscountPercent()).
+				withDiscountPercent(discountPercent).
 				withDiscountExpiration(product.getDiscountExpiration());
 		this.productDAO.updateProduct(updatedProduct);
 		System.out.println("after dao in ADMIN");

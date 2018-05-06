@@ -34,6 +34,7 @@ public class ProductDAO implements IProductDAO {
 	private static final String VIEW_FAVOURITE_PRODUCTS = "SELECT product_id FROM favourite_products WHERE user_id = ?";
 	private static final String GET_PRODUCT_PICTURE = "SELECT product_picture FROM products WHERE product_id = ?";
 	private static final String CHANGE_PRODUCT_PICTURE = "UPDATE products SET product_picture = ? WHERE product_id = ?";
+	private static final String GET_PROMO_PRODUCTS = "SELECT product_id, brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, category_id FROM products WHERE discount_percent>0";
 	
 	
 	private Connection connection;
@@ -77,7 +78,12 @@ public class ProductDAO implements IProductDAO {
 	public void updateProduct(Product product) throws SQLException {
 		try(PreparedStatement p = connection.prepareStatement(UPDATE_PRODUCT);){
 			p.setString(1, product.getBrand());
-			p.setDouble(2, product.getPrice());
+			if(product.getDiscountPercent()==0) {
+				p.setDouble(2, product.getPrice());
+			}
+			else {
+				p.setDouble(2, product.getPrice()*(0.01*product.getDiscountPercent()));
+			}
 			p.setInt(3, product.getAvailability());
 			p.setString(4, product.getModel());
 			p.setString(5, product.getDescription());
@@ -89,6 +95,7 @@ public class ProductDAO implements IProductDAO {
 			p.executeUpdate();
 		}
 	}
+	
 
 	@Override
 	public Product getProductById(long productID) throws SQLException {
@@ -242,6 +249,23 @@ public class ProductDAO implements IProductDAO {
 			e.printStackTrace();
 		}
 		return favProducts;
+	}
+	
+	@Override
+	public Set<Product> viewPromoProducts() throws SQLException {
+		Set<Product> promoProducts = new HashSet<>();
+		try (PreparedStatement st = connection.prepareStatement(GET_PROMO_PRODUCTS);) {
+			try (ResultSet result = st.executeQuery();) {
+				while (result.next()) {
+					long productId = result.getLong("product_id");
+					Product p = getProductById(productId);
+					promoProducts.add(p);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return promoProducts;
 	}
 
 	@Override
