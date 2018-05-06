@@ -2,6 +2,8 @@ package com.emag.controller;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,8 +42,8 @@ public class AdminController {
 	@RequestMapping(value = "/addProduct", method = RequestMethod.GET)
 	public String addProductPage(Model m, HttpSession session) {
 		if(session.getAttribute("user") == null) {
-			m.addAttribute("invalidSession", "Please log in to view this page.");
-			return "products";
+			m.addAttribute("invalidSession", "Please log in to view this page.");	
+			return "redirect:/login";
 		}	
 
 		try {
@@ -82,7 +84,7 @@ public class AdminController {
 		
 		if(session.getAttribute("user") == null) {
 			m.addAttribute("invalidSession", "Please log in to view this page.");
-			return "products";
+			return "redirect:/login";
 		}	
 		
 		String brand = request.getParameter("brand");
@@ -165,7 +167,7 @@ public class AdminController {
 		
 		if(session.getAttribute("user") == null) {
 			m.addAttribute("invalidSession", "Please log in to view this page.");
-			return "products";
+			return "redirect:/login";
 		}	
 		
 		Product product = this.productDAO.getProductById(productID);		
@@ -195,7 +197,18 @@ public class AdminController {
     }
 	
 	@RequestMapping(value = "adminPage", method = RequestMethod.GET)
-	public String viewAdminPage() {
+	public String viewAdminPage(HttpSession session, Model model) {
+		if(session.getAttribute("user") == null) {
+			model.addAttribute("invalidSession", "Please log in to view this page.");
+			return "redirect:/login";
+		}	
+		try {
+			HashMap<String, User> users = userDAO.getAllUsers();
+			long countUsers = users.size();
+			model.addAttribute("totalUsers", countUsers);
+		} catch (SQLException e) {
+			return "errorPage";
+		}
 		return "adminPage";
 	}
 }

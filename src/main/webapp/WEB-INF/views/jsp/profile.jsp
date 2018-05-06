@@ -81,11 +81,6 @@
 			</div>
 			</div>
     <div id="rightCol">
-    <c:if test="${sessionScope.user == null}">
-		<h3>
-			Please <a href="login">log in</a>!
-		</h3>
-	</c:if>
 	<c:if test = "${sessionScope.user != null }">
 	<div id = "profile">
 	<div class="login">

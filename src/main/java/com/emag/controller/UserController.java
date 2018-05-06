@@ -142,7 +142,11 @@ public class UserController {
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
 	public String profile(HttpSession session, Model model) {
 		User user = (User) session.getAttribute("user");
-		if (user != null) {
+		if (session.getAttribute("user") == null) {
+			model.addAttribute("invalidSession", "Please log in to view this page.");
+			return "redirect:/login";
+		} 
+		else {
 			try {
 				String picture = userDAO.getProfilePicture(user.getID());
 				model.addAttribute("profilePicture", picture);
@@ -156,7 +160,11 @@ public class UserController {
 	@RequestMapping(value = "/editProfile", method = RequestMethod.GET)
 	public String editProfile(HttpSession session, Model model) {
 		User user = (User) session.getAttribute("user");
-		if (user != null) {
+		if (user == null) {
+			model.addAttribute("invalidSession", "Please log in to view this page.");
+			return "redirect:/login";
+		} 
+		else {
 			try {
 				String picture = userDAO.getProfilePicture(user.getID());
 				model.addAttribute("profilePicture", picture);
@@ -168,7 +176,11 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/changePassword", method = RequestMethod.GET)
-	public String changePassword(HttpSession session) {
+	public String changePassword(HttpSession session, Model model) {
+		if(session.getAttribute("user")==null) {
+			model.addAttribute("invalidSession", "Please log in to view this page.");
+			return "redirect:/login";
+		}
 		return "changePassword";
 	}
 	
@@ -187,7 +199,7 @@ public class UserController {
 		}
 		else {
 			if (!newPassword.equals(confirmedNewPassword)) {
-				model.addAttribute("passwordsMissmatch", "The new password doesn't match the confirmed one");
+				model.addAttribute("passwordsMissmatch", "The new passwords don't match");
 				return "changePassword";
 			}
 			else {
@@ -196,6 +208,8 @@ public class UserController {
 					return "changePassword";
 				}
 				try {
+					String picture = userDAO.getProfilePicture(user.getID());
+					model.addAttribute("profilePicture", picture);
 					userDAO.changePassword(user, newPassword);
 					user.setPassword(user.hashPassword(newPassword));
 				} catch (SQLException e) {
@@ -216,8 +230,12 @@ public class UserController {
 		String address = request.getParameter("address").trim();
 		String email = request.getParameter("email").trim();
 		String phone = request.getParameter("phone").trim();
+		String picture = null;
 		
 		try {
+			picture = userDAO.getProfilePicture(user.getID());
+			model.addAttribute("profilePicture", picture);
+			
 			if (!oldEmail.equals(email) && userDAO.emailExists(email) != null) {
 				model.addAttribute("error", "Email is taken, try again!");
 				return "editProfile";
@@ -233,11 +251,16 @@ public class UserController {
 			e.getMessage();
 			return "errorPage";
 		}
+		
 		return "profile";
 	}
 	
 	@RequestMapping(value = "/favourite", method = RequestMethod.GET)
 	public String viewFavourites(HttpSession session, Model model) {
+		if(session.getAttribute("user")==null) {
+			model.addAttribute("invalidSession", "Please log in to view this page.");
+			return "redirect:/login";
+		}
 		Set<Product> products = null;
 		try {
 			products = this.productDAO.viewFavouriteProducts((User) session.getAttribute("user"));

@@ -76,9 +76,6 @@
 <body>
 <div id="container">
 <div>
-	<c:if test="${ requestScope.error != null }">
-		<h4 style="color: red">${error}</h4>
-	</c:if>
 	<c:if test="${sessionScope.user == null}">
 		<c:redirect url = "login">Please log in.</c:redirect>
 	</c:if>
@@ -94,11 +91,6 @@
 	<!-- //left menu -->
 	<!-- right menu  -->
     <div id="rightCol">
-    <c:if test="${sessionScope.user == null}">
-		<h3>
-			Please <a href="login">log in</a>!
-		</h3>
-	</c:if>
 	<c:if test = "${sessionScope.user != null }">
 	<div id = "profile">
 	<div class="login">
@@ -118,7 +110,9 @@
 								height="200px" class="img-circle img-responsive">
 						</div>
 						<div class=" col-md-9 col-lg-9 ">
-						
+							<c:if test="${ requestScope.error != null }">
+								<h4 style="color: red">${error}</h4>
+							</c:if>
 						<form action = "./uploadProfilePicture" method = "POST" enctype="multipart/form-data" accept="image/*">
 							<div class="upload-wrap">
 								<input type = "file" name = "image" class="upload-btn">
