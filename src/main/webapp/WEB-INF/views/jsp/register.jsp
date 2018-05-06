@@ -191,7 +191,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<!-- //REGISTER FORM -->
 			</div>
 			<div class="register-home animated wow slideInUp" data-wow-delay=".5s">
-				<a href="index.html">Home</a>
+				<a href="index">Home</a>
 			</div>
 		</div>
 	</div>

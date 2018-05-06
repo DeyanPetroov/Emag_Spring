@@ -265,7 +265,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<div id="myTabContent" class="tab-content">
 							<div role="tabpanel" class="tab-pane fade in active bootstrap-tab-text" id="home" aria-labelledby="home-tab">
 								<h5>Product Brief Description</h5>
-								<p></span></p>
+								<c:forEach items="${requestScope.characteristics}" var="characteristic">
+									${characteristic.name} :
+									${characteristic.unit} ${characteristic.value}
+									<br>
+								</c:forEach>
 							</div>
 							<div role="tabpanel" class="tab-pane fade bootstrap-tab-text" id="profile" aria-labelledby="profile-tab">
 								<div class="bootstrap-tab-text-grids">
@@ -278,9 +282,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 												<li><a href="#">Admin</a></li>
 												<li><a href="#"><span class="glyphicon glyphicon-share" aria-hidden="true"></span>Reply</a></li>
 											</ul>
-											<p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis 
-												suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem 
-												vel eum iure reprehenderit.</p>
 										</div>
 										<div class="clearfix"> </div>
 									</div>

@@ -14,9 +14,10 @@ public class Characteristic {
 		this.categoryID = categoryID;
 		setName(name);
 		setUnit(unit);
+		this.value = value;
 	}
 	
-	public Characteristic(long characteristicID, String name, String unit) {
+	public Characteristic(long characteristicID, String name, String unit, String value) {
 		setName(name);
 		setUnit(unit);
 		this.characteristicID = characteristicID;

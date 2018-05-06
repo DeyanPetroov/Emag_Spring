@@ -46,7 +46,6 @@ public class ProductDAO implements IProductDAO {
 	@Override
 	public void addProduct(Product product) throws SQLException {
 		try(PreparedStatement addProduct = connection.prepareStatement(INSERT_PRODUCT, Statement.RETURN_GENERATED_KEYS)) {
-			System.out.println("product cat: " + product.getCategory().getCategoryID());
 			addProduct.setString(1, product.getBrand());
 			addProduct.setDouble(2, product.getPrice());
 			addProduct.setInt(3, product.getAvailability());
@@ -58,7 +57,6 @@ public class ProductDAO implements IProductDAO {
 			addProduct.setInt(9, product.getCategory().getCategoryID());
 			addProduct.executeUpdate();
 			
-			System.out.println("after middle");
 			try(ResultSet result = addProduct.getGeneratedKeys()){
 				if(result.next()) {
 					product.setProductID(result.getLong(1));
@@ -110,8 +108,6 @@ public class ProductDAO implements IProductDAO {
 							withDiscountPercent(resultSet.getInt("discount_percent")).
 							withDiscountExpiration(resultSet.getDate("discount_expiration")).
 							withCategoryName(resultSet.getString("category_name"));
-					System.out.println("getting product");
-					System.out.println("name: " + product.getCategory().getCategoryName());
 				}
 			}
 		}
@@ -149,7 +145,6 @@ public class ProductDAO implements IProductDAO {
 		List<Product> sameCategoryProducts = new ArrayList<>();
 		Product product = null;
 
-		System.out.println("category in get products: " + categoryID);
 		try (PreparedStatement p = connection.prepareStatement(GET_ALL_BY_CATEGORY);) {
 			p.setInt(1, categoryID);
 			try (ResultSet resultSet = p.executeQuery();) {

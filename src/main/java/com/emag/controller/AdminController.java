@@ -89,13 +89,10 @@ public class AdminController {
         String productModel = request.getParameter("model");
         String description = request.getParameter("description");
         double price = Double.valueOf(request.getParameter("price"));
-        System.out.println("price:" + price);
         Integer availability = Integer.valueOf(request.getParameter("availability"));
-        System.out.println("availability: " + availability);
         Product product = null;   
         String unit = request.getParameter("unit");
         String value = request.getParameter("value");
-        System.out.println(request.getParameter("categoryName"));
         
 		try {
 			Category category = this.categoryDAO.getCategoryByName(request.getParameter("categoryName"));
@@ -107,16 +104,13 @@ public class AdminController {
 					withModel(productModel).
 					withPrice(price).
 					withAvailability(availability);
-			System.out.println("created product");
 			this.productDAO.addProduct(product);
-			System.out.println("added product to db");
 			m.addAttribute("productId", product.getProductID());
 		}
         catch(Exception e) {
         	return ("errorPage");
         }        
                 
-        //TODO: do something about the empty url
 		m.addAttribute("product", product);
         return "viewProduct";
     }

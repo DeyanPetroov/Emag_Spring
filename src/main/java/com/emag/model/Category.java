@@ -43,7 +43,11 @@ public class Category {
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
-
+	
+	public void addCharacteristic(Characteristic c) {
+		this.characteristics.add(c);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

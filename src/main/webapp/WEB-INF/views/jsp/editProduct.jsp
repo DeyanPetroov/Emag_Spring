@@ -10,8 +10,10 @@
 <body>
 
 	<c:if test="${sessionScope.user != null}">
-			<form action = "./uploadProfilePicture" method = "POST" enctype="multipart/form-data" accept="image/*">
+			<img src="download/${productPicture}" height = 200px width = 200px>
+			<form action = "${pageContext.request.contextPath}/uploadProductPicture" method = "POST" enctype="multipart/form-data" accept="image/*">
 				<input type = "file" name = "image"><br>
+				<input type = "hidden" name = "productID" value ="${product.productID}">
 				<input type = "submit" value = "Change picture">
 			</form>
 			<form action="${pageContext.request.contextPath}/editProduct/${product.productID}" method="POST">

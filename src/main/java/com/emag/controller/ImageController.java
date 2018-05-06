@@ -43,7 +43,7 @@ public class ImageController {
 	@RequestMapping(value = "/uploadProfilePicture", method = RequestMethod.POST)
 	public String finishUploading(@RequestParam("image") MultipartFile uploadedFile, Model model, HttpSession session) {
 		User user = (User) session.getAttribute("user");
-		String profilePicture = uploadedFile.getOriginalFilename();
+		String profilePicture = user.getEmail() + uploadedFile.getOriginalFilename();
 		File serverFile = new File(USER_IMAGE_FILE_PATH + profilePicture); //should have better name for the current user
 		try {
 			Files.copy(uploadedFile.getInputStream(), serverFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -76,8 +76,12 @@ public class ImageController {
 	}
 		
 	@RequestMapping(value="/download/{profilePicture:.+}", method=RequestMethod.GET)
-	public void downloadPicture(Model model, HttpServletResponse resp, @PathVariable("profilePicture") String picture) throws IOException {
-		File serverFile = new File(USER_IMAGE_FILE_PATH + picture);
+	public void downloadUserPicture(Model model, HttpServletResponse resp, @PathVariable("profilePicture") String picture) throws IOException {
+		downloadPictures(USER_IMAGE_FILE_PATH, picture, resp);
+	}
+	
+	private void downloadPictures(String path, String picture, HttpServletResponse resp) {
+		File serverFile = new File(path + picture);
 		try {
 			Files.copy(serverFile.toPath(), resp.getOutputStream());
 		} catch (IOException e) {

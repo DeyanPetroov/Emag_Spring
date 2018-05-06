@@ -79,7 +79,7 @@ public class CategoryDAO implements ICategoryDAO {
 	}
 
 	@Override
-	public Category getCategoryByName(String categoryName) throws Exception {
+	public Category getCategoryByName(String categoryName) throws SQLException {
 		Category category = null;
 		try(PreparedStatement getCategory = connection.prepareStatement(GET_CATEGORY_BY_NAME);){
 			getCategory.setString(1, categoryName);

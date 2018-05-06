@@ -10,7 +10,6 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.emag.model.Characteristic;
-import com.emag.model.Product;
 import com.mysql.jdbc.Statement;
 
 @Component
@@ -29,7 +28,10 @@ public class CharacteristicDAO implements ICharacteristicDAO {
 			"JOIN characteristics AS chars " +
 			"ON chars.characteristic_id = cc.characteristic_id " +
 			"WHERE cat.category_id = ?";
-	private static final String GET_ALL_CHARACTERISTICS = "SELECT characteristic_id, name, unit FROM characteristics";
+	private static final String GET_ALL_CHARACTERISTICS =
+			"SELECT c.characteristic_id, c.name, c.unit, cc.value FROM characteristics AS c " + 
+			"JOIN category_characteristics AS cc " + 
+		    "ON c.characteristic_id = cc.characteristic_id";
 
 	private Connection connection;
 	
@@ -116,7 +118,7 @@ public class CharacteristicDAO implements ICharacteristicDAO {
 		try(PreparedStatement getAll = connection.prepareStatement(GET_ALL_CHARACTERISTICS);){
 			try(ResultSet result = getAll.executeQuery()){
 				while(result.next()) {
-					Characteristic characteristic = new Characteristic(result.getLong("characteristic_id"),result.getString("name"), result.getString("unit"));
+					Characteristic characteristic = new Characteristic(result.getLong("characteristic_id"),result.getString("name"), result.getString("unit"), result.getString("value"));
 					characteristics.add(characteristic);
 				}
 			}

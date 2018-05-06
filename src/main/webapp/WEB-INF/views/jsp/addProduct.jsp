@@ -38,11 +38,6 @@
 			
 			<input type="submit" name="addProduct" value="Create Product" /> <br>
 		</form> 		
-		
-		<!-- <form action="./uploadProductPicture" method="POST" enctype="multipart/form-data" accept="image/*">
-			<input type="file" name="image"><br>
-			<input type="submit" value="Choose product picture">
-		</form> -->
 		Go back to <a href="index">main page?</a>							 	
 	</div>		
 </body>

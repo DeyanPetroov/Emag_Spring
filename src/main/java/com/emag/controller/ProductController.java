@@ -1,7 +1,6 @@
 package com.emag.controller;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,13 +12,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import com.emag.model.Category;
+import com.emag.model.Characteristic;
 import com.emag.model.Product;
-import com.emag.model.User;
+import com.emag.model.dao.CategoryDAO;
+import com.emag.model.dao.CharacteristicDAO;
 import com.emag.model.dao.ProductDAO;
-import com.emag.model.dao.UserDAO;
-
 
 @Controller
 public class ProductController {
@@ -27,7 +26,9 @@ public class ProductController {
 	@Autowired
 	private ProductDAO productDAO;
 	@Autowired
-	private UserDAO userDAO;
+	private CharacteristicDAO characteristicDAO;
+	@Autowired
+	private CategoryDAO categoryDAO;
 	
 	//get products by category
 	@RequestMapping(value = "/category/{category_id}", method = RequestMethod.GET)
@@ -48,6 +49,9 @@ public class ProductController {
 		Product product = null;	
 		try {
 			product = productDAO.getProductById(productID);
+			Category category = categoryDAO.getCategoryByName(product.getCategory().getCategoryName());
+			List<Characteristic> characteristics = characteristicDAO.allCategoryCharacteristics(category.getCategoryID());
+			model.addAttribute("characteristics", characteristics);
 			model.addAttribute("product", product);
 			return "viewProduct";
 		} 
