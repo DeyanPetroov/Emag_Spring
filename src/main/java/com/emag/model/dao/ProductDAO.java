@@ -24,7 +24,7 @@ public class ProductDAO implements IProductDAO {
 			"SELECT p.product_id, p.brand, p.price, p.model, p.availability, p.description, p.discount_percent, p.discount_expiration, p.product_picture, c.category_name FROM products AS p " + 
 			"JOIN categories AS c " + 
 			"ON p.product_id = ? AND p.category_id = c.category_id";
-	private static final String UPDATE_PRODUCT = "UPDATE products SET brand = ?, price = ?, availability = ?, model = ?, description = ?, discount_percent = ?, discount_expiration = ?, product_picture = ?, category_id = ? WHERE product_id = ?";
+	private static final String UPDATE_PRODUCT = "UPDATE products SET brand = ?, discount_percent = ?, price = ?, availability = ?, model = ?, description = ?, discount_expiration = ?, product_picture = ? WHERE product_id = ?";
 	private static final String DELETE_PRODUCT_BY_ID = "DELETE FROM products WHERE product_id = ?";
 	private static final String GET_ALL_PRODUCTS = "SELECT product_id, brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, category_id FROM products";
 	private static final String GET_ALL_BY_CATEGORY = "SELECT product_id, brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, category_id FROM products WHERE category_id = ?";
@@ -34,6 +34,7 @@ public class ProductDAO implements IProductDAO {
 	private static final String VIEW_FAVOURITE_PRODUCTS = "SELECT product_id FROM favourite_products WHERE user_id = ?";
 	private static final String GET_PRODUCT_PICTURE = "SELECT product_picture FROM products WHERE product_id = ?";
 	private static final String CHANGE_PRODUCT_PICTURE = "UPDATE products SET product_picture = ? WHERE product_id = ?";
+	private static final String GET_PROMO_PRODUCTS = "SELECT product_id, brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, category_id FROM products WHERE discount_percent>0";
 	
 	
 	private Connection connection;
@@ -77,18 +78,18 @@ public class ProductDAO implements IProductDAO {
 	public void updateProduct(Product product) throws SQLException {
 		try(PreparedStatement p = connection.prepareStatement(UPDATE_PRODUCT);){
 			p.setString(1, product.getBrand());
-			p.setDouble(2, product.getPrice());
-			p.setInt(3, product.getAvailability());
-			p.setString(4, product.getModel());
-			p.setString(5, product.getDescription());
-			p.setInt(6, product.getDiscountPercent());
+			p.setInt(2, product.getDiscountPercent());
+			p.setDouble(3, product.getPrice());
+			p.setInt(4, product.getAvailability());
+			p.setString(5, product.getModel());
+			p.setString(6, product.getDescription());
 			p.setObject(7, product.getDiscountExpiration());
 			p.setString(8, product.getProductPicture());
-			p.setInt(9, product.getCategory().getCategoryID());
-			p.setLong(10, product.getProductID());
+			p.setLong(9, product.getProductID());
 			p.executeUpdate();
 		}
 	}
+	
 
 	@Override
 	public Product getProductById(long productID) throws SQLException {
@@ -242,6 +243,23 @@ public class ProductDAO implements IProductDAO {
 			e.printStackTrace();
 		}
 		return favProducts;
+	}
+	
+	@Override
+	public Set<Product> viewPromoProducts() throws SQLException {
+		Set<Product> promoProducts = new HashSet<>();
+		try (PreparedStatement st = connection.prepareStatement(GET_PROMO_PRODUCTS);) {
+			try (ResultSet result = st.executeQuery();) {
+				while (result.next()) {
+					long productId = result.getLong("product_id");
+					Product p = getProductById(productId);
+					promoProducts.add(p);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return promoProducts;
 	}
 
 	@Override

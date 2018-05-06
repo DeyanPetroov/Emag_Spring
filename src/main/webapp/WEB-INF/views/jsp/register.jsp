@@ -112,24 +112,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								</ul>
 							</li>
 							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Hot offers <b class="caret"></b></a>
-								<ul class="dropdown-menu multi-column columns-3">
-									<div class="row">
-										<div class="col-sm-4">
-											<ul class="multi-column-dropdown">
-												<h6>Home Collection</h6>
-												<li><a href="furniture.html">Cookware</a></li>
-												<li><a href="furniture.html">Sofas</a></li>
-												<li><a href="furniture.html">Dining Tables</a></li>
-												<li><a href="furniture.html">Shoe Racks</a></li>
-												<li><a href="furniture.html">Home Decor</a></li>
-											</ul>
-										</div>
-										<div class="clearfix"></div>
-									</div>
-								</ul>
+								<a href="promo">Hot offers</a>								
 							</li>
-							<li><a href="mail.html">Mail Us</a></li>
+							<li><a href="#">Mail Us</a></li>
 						</ul>
 					</div>
 					</nav>
