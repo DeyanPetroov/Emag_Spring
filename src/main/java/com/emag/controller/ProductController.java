@@ -1,6 +1,7 @@
 package com.emag.controller;
 
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,6 +59,33 @@ public class ProductController {
 		catch (SQLException e) {
 			return "errorPage";
 		}
+	}
+	
+	@RequestMapping(value = "/promo", method = {RequestMethod.GET, RequestMethod.POST})
+	public String viewPromotions(HttpServletRequest request, Model model) throws SQLException{
+		
+		String promo = null;
+		if(request.getParameter("promo") != null){
+			promo = request.getParameter("promo");
+		}
+		else{
+			promo = (String) request.getAttribute("promo");
+		}
+		
+		Collection<Product> promoProducts = this.productDAO.viewPromoProducts();
+		
+		if(!promoProducts.isEmpty()){
+			for (Product product : promoProducts) {
+				System.out.println(product);
+			}
+			
+			model.addAttribute("products", promoProducts);
+		}
+		else{
+			model.addAttribute("message", "No products found.");
+		}
+		return "products";
+		
 	}
 	
 
