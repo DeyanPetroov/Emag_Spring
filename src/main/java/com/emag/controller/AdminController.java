@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -179,7 +180,6 @@ public class AdminController {
         int discountPercent = Integer.valueOf(request.getParameter("discountPercent"));
         if(discountPercent!=0 && !this.productDAO.getSaleStatus()) {
         	price -= price * (Double) (0.01*discountPercent);
-        	this.productDAO.setSaleStatus(!this.productDAO.getSaleStatus());
         }
 		
 		Product updatedProduct = new Product().
@@ -193,6 +193,17 @@ public class AdminController {
 				withDiscountExpiration(product.getDiscountExpiration());
 		this.productDAO.updateProduct(updatedProduct);	
 		
+		Product p = this.productDAO.getAllProducts().get(product.getProductID());
+		ArrayList<Integer> users = this.productDAO.checkForFavProducts(p);
+			for(Entry<String, User> e : this.userDAO.getAllUsers().entrySet()){
+					for (Integer i : users) {	
+							if(e.getValue().getID() == i){
+									new MailSender(e.getValue().getEmail() ,"New SALE at eMAG!", "Product with ID: " + p.getProductID() + 
+											" has been changed! Check out our Hot Offers on our website!");
+							}
+					}
+		}
+			
 		m.addAttribute("product", updatedProduct);
         return "viewProduct";
     }

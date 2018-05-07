@@ -1,5 +1,7 @@
 package com.emag.model.dao;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -22,5 +24,6 @@ public interface IProductDAO {
 	List<Product> getSortedAscendingFromMainCategory(int categoryID) throws Exception; 
 	List<Product> getSortedDescendingFromMainCategory(int categoryID) throws Exception; 
 	List<Product> getSortedAscendingFromSubCategory(int categoryID) throws Exception; 
-	List<Product> getSortedDescendingFromSubCategory(int categoryID) throws Exception; 
+	List<Product> getSortedDescendingFromSubCategory(int categoryID) throws Exception;
+	ArrayList<Integer> checkForFavProducts(Product p) throws SQLException; 
 }

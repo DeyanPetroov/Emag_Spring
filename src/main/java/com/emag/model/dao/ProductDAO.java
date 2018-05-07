@@ -46,6 +46,7 @@ public class ProductDAO implements IProductDAO {
 	private static final String VIEW_FAVOURITE_PRODUCTS = "SELECT product_id FROM favourite_products WHERE user_id = ?";
 	private static final String GET_PRODUCT_PICTURE = "SELECT product_picture FROM products WHERE product_id = ?";
 	private static final String CHANGE_PRODUCT_PICTURE = "UPDATE products SET product_picture = ? WHERE product_id = ?";
+	private static final String CHECK_IF_HAS_FAVOURITE = "SELECT user_id from favourite_products WHERE product_id = ?";
 	private static final String GET_PROMO_PRODUCTS = 
 			"SELECT product_id, brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, category_id "
 			+ "FROM products WHERE discount_percent>0";
@@ -150,6 +151,24 @@ public class ProductDAO implements IProductDAO {
 		}
 	}
 	
+	@Override
+	public ArrayList<Integer> checkForFavProducts(Product p) throws SQLException{
+		ArrayList<Integer> users = new ArrayList<>();
+		ResultSet res = null;
+		try(PreparedStatement st = connection.prepareStatement(CHECK_IF_HAS_FAVOURITE, Statement.RETURN_GENERATED_KEYS); ){
+			st.setLong(1, p.getProductID());
+			res = st.executeQuery();
+			while(res.next()){
+				int userId = res.getInt("user_id");
+				users.add(userId);
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("checkForFavProducts: " + e.getMessage());
+		}
+		
+		return users;
+	}
 
 	@Override
 	public Product getProductById(long productID) throws SQLException {
