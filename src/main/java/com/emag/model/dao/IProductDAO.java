@@ -1,6 +1,5 @@
 package com.emag.model.dao;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
@@ -19,5 +18,9 @@ public interface IProductDAO {
 	Set<Product> viewFavouriteProducts(User user) throws Exception;
 	void changeProductPicture(String productPicture, long productID) throws Exception;
 	public String getProfilePicture(long productID) throws Exception;
-	Set<Product> viewPromoProducts() throws SQLException;
+	Set<Product> viewPromoProducts() throws Exception;
+	List<Product> getSortedAscendingFromMainCategory(int categoryID) throws Exception; 
+	List<Product> getSortedDescendingFromMainCategory(int categoryID) throws Exception; 
+	List<Product> getSortedAscendingFromSubCategory(int categoryID) throws Exception; 
+	List<Product> getSortedDescendingFromSubCategory(int categoryID) throws Exception; 
 }

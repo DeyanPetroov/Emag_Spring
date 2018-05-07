@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>  
+
  <!--
 Author: W3layouts
 Author URL: http://w3layouts.com
@@ -296,21 +297,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<div class="products-right-grids animated wow slideInRight"
 						data-wow-delay=".5s">
 						<div class="sorting">
-							<select id="country" onchange="change_country(this.value)"
-								class="frm-field required sect">
-								<option value="null">Default sorting</option>
-								<option value="null">Sort by popularity</option>
-								<option value="null">Sort by average rating</option>
-								<option value="null">Sort by price</option>
-							</select>
-						</div>
-						<div class="sorting-left">
-							<select id="country1" onchange="change_country(this.value)"
-								class="frm-field required sect">
-								<option value="null">Item on page 9</option>
-								<option value="null">Item on page 18</option>
-								<option value="null">Item on page 32</option>
-								<option value="null">All</option>
+							<select id="country" class="frm-field required sect" onchange="location = this.value";>
+						
+								<option value="">&nbsp;</option>
+								<option value="category/${products[0].category.categoryID}/sort/asc">Sort by ascending price</option>
+								<option value="category/${products[0].category.categoryID}/sort/desc">Sort by descending price</option>
 							</select>
 						</div>
 						<div class="clearfix"></div>

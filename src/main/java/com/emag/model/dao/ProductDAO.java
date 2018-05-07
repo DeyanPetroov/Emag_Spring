@@ -34,7 +34,7 @@ public class ProductDAO implements IProductDAO {
 	private static final String GET_ALL_PRODUCTS = 
 			"SELECT product_id, brand, price, availability, model, description, discount_percent, " +
 			"discount_expiration, product_picture, category_id FROM products";
-	private static final String GET_ALL_BY_SUBCATEGORY = 
+	private static final String GET_ALL_FROM_SUBCATEGORY = 
 			"SELECT product_id, brand, price, availability, model, description, discount_percent, " +
 			"discount_expiration, product_picture, category_id FROM products WHERE category_id = ?";
 	private static final String INSERT_PRODUCT_INTO_FAVOURITES = "INSERT INTO favourite_products (user_id, product_id) VALUES (?,?)";
@@ -46,13 +46,35 @@ public class ProductDAO implements IProductDAO {
 	private static final String GET_PROMO_PRODUCTS = 
 			"SELECT product_id, brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, category_id "
 			+ "FROM products WHERE discount_percent>0";
-	private static final String GET_ALL_BY_MAIN_CATEGORY = 
-			"SELECT c.category_id, c.category_name, p.product_id, p.name, p.brand, p.price, p.availability, p.model, p.description, " +
+	private static final String GET_ALL_FROM_MAIN_CATEGORY = 
+			"SELECT p.product_id, p.name, p.brand, p.price, p.availability, p.model, p.description, " +
 			"p.discount_percent, p.discount_expiration, p.product_picture, p.category_id " +
 			"FROM products AS p " +
 			"JOIN categories AS c " +
 			"WHERE c.category_id = p.category_id " +
 			"AND (c.category_id = ? OR c.parent_category_id = ?)";
+	private static final String SORT_MAIN_CATEGORY_BY_ASCENDING_PRICE = 
+			"SELECT p.product_id, p.brand, p.price, p.availability, p.model, p.description, " + 
+			"p.discount_percent, p.discount_expiration, p.product_picture, p.category_id " + 
+			"FROM products AS p " + 
+			"JOIN categories AS c " + 
+			"WHERE c.category_id = p.category_id " + 
+			"AND (c.category_id = ? OR c.parent_category_id = ?) " + 
+			"ORDER BY p.price";
+	private static final String SORT_MAIN_CATEGORY_BY_DESCENDING_PRICE = 
+			"SELECT p.product_id, p.brand, p.price, p.availability, p.model, p.description, " + 
+			"p.discount_percent, p.discount_expiration, p.product_picture, p.category_id " + 
+			"FROM products AS p " + 
+			"JOIN categories AS c " + 
+			"WHERE c.category_id = p.category_id " + 
+			"AND (c.category_id = ? OR c.parent_category_id = ?) " + 
+			"ORDER BY p.price DESC";
+	private static final String SORT_SUBCATEGORY_BY_ASCENDING_PRICE = 
+			"SELECT product_id, brand, price, availability, model, description, discount_percent, " +
+			"discount_expiration, product_picture, category_id FROM products WHERE category_id = ? ORDER BY price";
+	private static final String SORT_SUBCATEGORY_BY_DESCENDING_PRICE = 
+			"SELECT product_id, brand, price, availability, model, description, discount_percent, " +
+			"discount_expiration, product_picture, category_id FROM products WHERE category_id = ? ORDER BY price DESC";
 	
 	private Connection connection;
 	private static final HashMap<Long, Product> allProducts = new HashMap<>();
@@ -163,7 +185,7 @@ public class ProductDAO implements IProductDAO {
 		List<Product> sameCategoryProducts = new ArrayList<>();
 		Product product = null;
 
-		try (PreparedStatement p = connection.prepareStatement(GET_ALL_BY_SUBCATEGORY);) {
+		try (PreparedStatement p = connection.prepareStatement(GET_ALL_FROM_SUBCATEGORY);) {
 			p.setInt(1, categoryID);
 			try (ResultSet resultSet = p.executeQuery();) {
 				while (resultSet.next()) {
@@ -307,7 +329,7 @@ public class ProductDAO implements IProductDAO {
 		List<Product> mainCategoryProducts = new ArrayList<>();
 		Product product = null;
 
-		try (PreparedStatement p = connection.prepareStatement(GET_ALL_BY_MAIN_CATEGORY);) {
+		try (PreparedStatement p = connection.prepareStatement(GET_ALL_FROM_MAIN_CATEGORY);) {
 			p.setInt(1, categoryID);
 			p.setInt(2, categoryID);		
 			try (ResultSet resultSet = p.executeQuery();) {
@@ -328,5 +350,114 @@ public class ProductDAO implements IProductDAO {
 			}
 		}
 		return mainCategoryProducts;
+	}
+
+	@Override
+	public List<Product> getSortedAscendingFromMainCategory(int categoryID) throws SQLException {
+		List<Product> mainCategorySortedProducts = new ArrayList<>();
+		Product product = null;
+		try (PreparedStatement p = connection.prepareStatement(SORT_MAIN_CATEGORY_BY_ASCENDING_PRICE);) {
+			p.setInt(1, categoryID);
+			p.setInt(2, categoryID);
+			try (ResultSet resultSet = p.executeQuery()) {
+				while (resultSet.next()) {
+					product = new Product().
+							withProductID(resultSet.getLong("product_id")).
+							withCategoryID(categoryID).
+							withBrand(resultSet.getString("brand")).
+							withModel(resultSet.getString("model")).
+							withDescription(resultSet.getString("description")).
+							withProductPicture(resultSet.getString("product_picture")).
+							withPrice(resultSet.getDouble("price")).
+							withAvailability(resultSet.getInt("availability")).
+							withDiscountPercent(resultSet.getInt("discount_percent")).
+							withDiscountExpiration(resultSet.getDate("discount_expiration"));		
+					mainCategorySortedProducts.add(product);
+				}
+			}
+		}
+		return mainCategorySortedProducts;
+	}
+
+	@Override
+	public List<Product> getSortedDescendingFromMainCategory(int categoryID) throws SQLException {
+		List<Product> mainCategorySortedProducts = new ArrayList<>();
+		Product product = null;
+
+		try (PreparedStatement p = connection.prepareStatement(SORT_MAIN_CATEGORY_BY_DESCENDING_PRICE);) {
+			p.setInt(1, categoryID);
+			p.setInt(2, categoryID);		
+			try (ResultSet resultSet = p.executeQuery();) {
+				while (resultSet.next()) {
+					product = new Product().
+							withProductID(resultSet.getLong("product_id")).
+							withCategoryID(categoryID).
+							withBrand(resultSet.getString("brand")).
+							withModel(resultSet.getString("model")).
+							withDescription(resultSet.getString("description")).
+							withProductPicture(resultSet.getString("product_picture")).
+							withPrice(resultSet.getDouble("price")).
+							withAvailability(resultSet.getInt("availability")).
+							withDiscountPercent(resultSet.getInt("discount_percent")).
+							withDiscountExpiration(resultSet.getDate("discount_expiration"));		
+					mainCategorySortedProducts.add(product);
+				}
+			}
+		}
+		return mainCategorySortedProducts;
+	}
+
+	@Override
+	public List<Product> getSortedAscendingFromSubCategory(int categoryID) throws SQLException {
+		List<Product> sameCategoryProducts = new ArrayList<>();
+		Product product = null;
+
+		try (PreparedStatement p = connection.prepareStatement(SORT_SUBCATEGORY_BY_ASCENDING_PRICE)) {
+			p.setInt(1, categoryID);
+			try (ResultSet resultSet = p.executeQuery();) {
+				while (resultSet.next()) {
+					product = new Product().
+							withProductID(resultSet.getLong("product_id")).
+							withCategoryID(categoryID).
+							withBrand(resultSet.getString("brand")).
+							withModel(resultSet.getString("model")).
+							withDescription(resultSet.getString("description")).
+							withProductPicture(resultSet.getString("product_picture")).
+							withPrice(resultSet.getDouble("price")).
+							withAvailability(resultSet.getInt("availability")).
+							withDiscountPercent(resultSet.getInt("discount_percent")).
+							withDiscountExpiration(resultSet.getDate("discount_expiration"));		
+					sameCategoryProducts.add(product);
+				}
+			}
+		}
+		return sameCategoryProducts;
+	}
+
+	@Override
+	public List<Product> getSortedDescendingFromSubCategory(int categoryID) throws SQLException {
+		List<Product> sameCategoryProducts = new ArrayList<>();
+		Product product = null;
+
+		try (PreparedStatement p = connection.prepareStatement(SORT_SUBCATEGORY_BY_DESCENDING_PRICE)) {
+			p.setInt(1, categoryID);
+			try (ResultSet resultSet = p.executeQuery();) {
+				while (resultSet.next()) {
+					product = new Product().
+							withProductID(resultSet.getLong("product_id")).
+							withCategoryID(categoryID).
+							withBrand(resultSet.getString("brand")).
+							withModel(resultSet.getString("model")).
+							withDescription(resultSet.getString("description")).
+							withProductPicture(resultSet.getString("product_picture")).
+							withPrice(resultSet.getDouble("price")).
+							withAvailability(resultSet.getInt("availability")).
+							withDiscountPercent(resultSet.getInt("discount_percent")).
+							withDiscountExpiration(resultSet.getDate("discount_expiration"));		
+					sameCategoryProducts.add(product);
+				}
+			}
+		}
+		return sameCategoryProducts;
 	}
 }

@@ -32,21 +32,47 @@ public class ProductController {
 	@Autowired
 	private CategoryDAO categoryDAO;
 	
-	//get products by category
-	@RequestMapping(value = "/category/{categoryID}", method = RequestMethod.GET)
-	public String getProductsByCategory(Model model, @PathVariable("categoryID") Integer categoryID, HttpSession session, HttpServletRequest request){
+	//sort
+	@RequestMapping(value = "/category/{categoryID}/sort/{order}", method = RequestMethod.GET)
+	public String sortProducts(@PathVariable("categoryID") Integer categoryID, @PathVariable("order") String order, Model model) {
 		List<Product> products = new ArrayList<>();
 		try {
-			System.out.println("category id: " + categoryID);
 			boolean isMain = categoryDAO.isMainCategory(categoryID);
-			System.out.println("after boolean");
+			if(isMain) {
+				if(order.equals("asc")) {
+					products = productDAO.getSortedAscendingFromMainCategory(categoryID);
+				}
+				else if(order.equals("desc")) {
+					products = productDAO.getSortedDescendingFromMainCategory(categoryID);
+				}
+			}
+			else {
+				if(order.equals("asc")) {
+					products = productDAO.getSortedAscendingFromSubCategory(categoryID);
+				}
+				else {
+					products = productDAO.getSortedDescendingFromSubCategory(categoryID);
+				}
+			}
+		}
+		catch(SQLException e) {
+			return "errorPage";
+		}
+		model.addAttribute("products", products);
+		return "products";
+	}
+	
+	//get products by category
+	@RequestMapping(value = "/category/{categoryID}", method = RequestMethod.GET)
+	public String getProductsByCategory(Model model, @PathVariable("categoryID") Integer categoryID){
+		List<Product> products = new ArrayList<>();
+		try {
+			boolean isMain = categoryDAO.isMainCategory(categoryID);
 			if(isMain) {
 				products = productDAO.getProductsFromMainCategory(categoryID);
-				System.out.println("after get from main");
 			}
 			else {
 				products = productDAO.getProductsFromSubCategory(categoryID);
-				System.out.println("after get from sub");
 			}
 			model.addAttribute("products", products);
 			return "products";
@@ -99,10 +125,23 @@ public class ProductController {
 		
 	}
 	
-
 	//TODO
-	//make product page with product characteristics and add to cart and add to favourites buttons
-	//every product should have a picture
-	//make menu with hot offers
+	//-->mandatory
+	
+	//send email when a product is on sale
+	//fix product images
+	//make favourites page design 
+	//make order page & view order page(with better info for the order !fixed date) designs
+	//add finished order to history of orders
+	//make history of orders page + current order with status + design
+	//admin can change order status of a selected user(maybe by username)
+	//every product should have a picture(take from DB)
+	//fix menu with characteristics to contain only the ones for the specific category
+	
+	//-->bonus
+	
+	//send email for forgotten password
+	//ajax for favourites, sorting, characteristics menu
+	//make reviews with raitings, show average raiting
 	//deal with JSON
 }
