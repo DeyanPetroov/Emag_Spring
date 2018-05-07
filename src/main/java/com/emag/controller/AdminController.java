@@ -177,8 +177,9 @@ public class AdminController {
         double price = Double.valueOf(request.getParameter("price"));
         Integer availability = Integer.valueOf(request.getParameter("availability"));
         int discountPercent = Integer.valueOf(request.getParameter("discountPercent"));
-        if(discountPercent!=0) {
+        if(discountPercent!=0 && !this.productDAO.getSaleStatus()) {
         	price -= price * (Double) (0.01*discountPercent);
+        	this.productDAO.setSaleStatus(!this.productDAO.getSaleStatus());
         }
 		
 		Product updatedProduct = new Product().

@@ -9,10 +9,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.emag.controller.MailSender;
 import com.emag.model.*;
 import java.sql.*;
 
@@ -76,8 +79,19 @@ public class ProductDAO implements IProductDAO {
 			"SELECT product_id, brand, price, availability, model, description, discount_percent, " +
 			"discount_expiration, product_picture, category_id FROM products WHERE category_id = ? ORDER BY price DESC";
 	
+	@Autowired
+	private UserDAO userDAO;
 	private Connection connection;
 	private static final HashMap<Long, Product> allProducts = new HashMap<>();
+	private static boolean ON_SALE = false;
+	
+	public boolean getSaleStatus() {
+		return ON_SALE;
+	}
+	
+	public void setSaleStatus(Boolean status) {
+		ON_SALE = status;		
+	}
 
 	private ProductDAO() {
 		connection = DBManager.getInstance().getConnection();
@@ -126,6 +140,13 @@ public class ProductDAO implements IProductDAO {
 			p.setString(8, product.getProductPicture());
 			p.setLong(9, product.getProductID());
 			p.executeUpdate();
+			
+			if(this.getSaleStatus()) {
+				for(Entry<String, User> e : this.userDAO.getAllUsers().entrySet()){
+					new MailSender(e.getValue().getEmail() ,"New products on SALE!", "There are new products on sale on our website! Check them out!");
+					//TODO: send link to website in email
+				}
+			}
 		}
 	}
 	
@@ -460,4 +481,5 @@ public class ProductDAO implements IProductDAO {
 		}
 		return sameCategoryProducts;
 	}
+
 }
