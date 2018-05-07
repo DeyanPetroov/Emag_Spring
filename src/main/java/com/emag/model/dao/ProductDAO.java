@@ -19,23 +19,40 @@ import java.sql.*;
 @Component
 public class ProductDAO implements IProductDAO {
 	
-	private static final String INSERT_PRODUCT = "INSERT INTO products(brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String INSERT_PRODUCT =
+			"INSERT INTO products(brand, price, availability, model, description, discount_percent, discount_expiration, " +
+			"product_picture, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_PRODUCT_BY_ID = 
-			"SELECT p.product_id, p.brand, p.price, p.model, p.availability, p.description, p.discount_percent, p.discount_expiration, p.product_picture, c.category_name FROM products AS p " + 
+			"SELECT p.product_id, p.brand, p.price, p.model, p.availability, p.description, p.discount_percent, p.discount_expiration, " +
+			"p.product_picture, c.category_name FROM products AS p " + 
 			"JOIN categories AS c " + 
 			"ON p.product_id = ? AND p.category_id = c.category_id";
-	private static final String UPDATE_PRODUCT = "UPDATE products SET brand = ?, discount_percent = ?, price = ?, availability = ?, model = ?, description = ?, discount_expiration = ?, product_picture = ? WHERE product_id = ?";
+	private static final String UPDATE_PRODUCT = 
+			"UPDATE products SET brand = ?, discount_percent = ?, price = ?, availability = ?, model = ?, description = ?, " +
+			"discount_expiration = ?, product_picture = ? WHERE product_id = ?";
 	private static final String DELETE_PRODUCT_BY_ID = "DELETE FROM products WHERE product_id = ?";
-	private static final String GET_ALL_PRODUCTS = "SELECT product_id, brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, category_id FROM products";
-	private static final String GET_ALL_BY_CATEGORY = "SELECT product_id, brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, category_id FROM products WHERE category_id = ?";
+	private static final String GET_ALL_PRODUCTS = 
+			"SELECT product_id, brand, price, availability, model, description, discount_percent, " +
+			"discount_expiration, product_picture, category_id FROM products";
+	private static final String GET_ALL_BY_SUBCATEGORY = 
+			"SELECT product_id, brand, price, availability, model, description, discount_percent, " +
+			"discount_expiration, product_picture, category_id FROM products WHERE category_id = ?";
 	private static final String INSERT_PRODUCT_INTO_FAVOURITES = "INSERT INTO favourite_products (user_id, product_id) VALUES (?,?)";
 	private static final String GET_FAVOURITE_BY_USER_ID = "SELECT user_id, product_id FROM favourite_products WHERE user_id = ? AND product_id = ?";
 	private static final String REMOVE_FROM_FAVOURITES = "DELETE FROM favourite_products WHERE user_id = ? AND product_id = ?";
 	private static final String VIEW_FAVOURITE_PRODUCTS = "SELECT product_id FROM favourite_products WHERE user_id = ?";
 	private static final String GET_PRODUCT_PICTURE = "SELECT product_picture FROM products WHERE product_id = ?";
 	private static final String CHANGE_PRODUCT_PICTURE = "UPDATE products SET product_picture = ? WHERE product_id = ?";
-	private static final String GET_PROMO_PRODUCTS = "SELECT product_id, brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, category_id FROM products WHERE discount_percent>0";
-	
+	private static final String GET_PROMO_PRODUCTS = 
+			"SELECT product_id, brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, category_id "
+			+ "FROM products WHERE discount_percent>0";
+	private static final String GET_ALL_BY_MAIN_CATEGORY = 
+			"SELECT c.category_id, c.category_name, p.product_id, p.name, p.brand, p.price, p.availability, p.model, p.description, " +
+			"p.discount_percent, p.discount_expiration, p.product_picture, p.category_id " +
+			"FROM products AS p " +
+			"JOIN categories AS c " +
+			"WHERE c.category_id = p.category_id " +
+			"AND (c.category_id = ? OR c.parent_category_id = ?)";
 	
 	private Connection connection;
 	private static final HashMap<Long, Product> allProducts = new HashMap<>();
@@ -142,11 +159,11 @@ public class ProductDAO implements IProductDAO {
 	}
 
 	@Override
-	public List<Product> getProductsByCategory(int categoryID) throws SQLException {
+	public List<Product> getProductsFromSubCategory(int categoryID) throws SQLException {
 		List<Product> sameCategoryProducts = new ArrayList<>();
 		Product product = null;
 
-		try (PreparedStatement p = connection.prepareStatement(GET_ALL_BY_CATEGORY);) {
+		try (PreparedStatement p = connection.prepareStatement(GET_ALL_BY_SUBCATEGORY);) {
 			p.setInt(1, categoryID);
 			try (ResultSet resultSet = p.executeQuery();) {
 				while (resultSet.next()) {
@@ -283,5 +300,33 @@ public class ProductDAO implements IProductDAO {
 			}
 		}
 		return picture;
+	}
+
+	@Override
+	public List<Product> getProductsFromMainCategory(int categoryID) throws SQLException {
+		List<Product> mainCategoryProducts = new ArrayList<>();
+		Product product = null;
+
+		try (PreparedStatement p = connection.prepareStatement(GET_ALL_BY_MAIN_CATEGORY);) {
+			p.setInt(1, categoryID);
+			p.setInt(2, categoryID);		
+			try (ResultSet resultSet = p.executeQuery();) {
+				while (resultSet.next()) {
+					product = new Product().
+							withProductID(resultSet.getLong("product_id")).
+							withCategoryID(categoryID).
+							withBrand(resultSet.getString("brand")).
+							withModel(resultSet.getString("model")).
+							withDescription(resultSet.getString("description")).
+							withProductPicture(resultSet.getString("product_picture")).
+							withPrice(resultSet.getDouble("price")).
+							withAvailability(resultSet.getInt("availability")).
+							withDiscountPercent(resultSet.getInt("discount_percent")).
+							withDiscountExpiration(resultSet.getDate("discount_expiration"));		
+					mainCategoryProducts.add(product);
+				}
+			}
+		}
+		return mainCategoryProducts;
 	}
 }

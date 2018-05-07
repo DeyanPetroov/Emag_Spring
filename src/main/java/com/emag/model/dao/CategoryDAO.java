@@ -22,6 +22,10 @@ public class CategoryDAO implements ICategoryDAO {
 	private static final String GET_ALL_MAIN_CATEGORIES = "SELECT category_id, category_name FROM categories WHERE parent_category_id IS NULL";
 	private static final String GET_CATEGORY_BY_NAME = "SELECT category_id FROM categories WHERE category_name = ?";
 	
+	private static final String IS_MAIN_CATEGORY = 
+			"SELECT category_id, category_name, parent_category_id FROM categories " + 
+			"WHERE category_id = ? AND parent_category_id IS NULL";
+	
 	private Connection connection;
 	
 	@Autowired
@@ -85,14 +89,24 @@ public class CategoryDAO implements ICategoryDAO {
 			getCategory.setString(1, categoryName);
 			try(ResultSet result = getCategory.executeQuery()){
 				if(result.next()) {
-					System.out.println("before chars");
 					List<Characteristic> characteristics = characteristicDAO.allCategoryCharacteristics(result.getInt("category_id"));
-					System.out.println("after chars");
 					category = new Category(result.getInt("category_id"),categoryName, characteristics);
-					System.out.println("after category");
 				}
 			}
 		}
 		return category;
+	}
+
+	@Override
+	public boolean isMainCategory(int categoryID) throws SQLException {
+		try(PreparedStatement checkMainCategory = connection.prepareStatement(IS_MAIN_CATEGORY);) {
+			checkMainCategory.setInt(1, categoryID);
+			try(ResultSet result = checkMainCategory.executeQuery()) {
+				if(result.next()) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

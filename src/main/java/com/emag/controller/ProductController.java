@@ -1,6 +1,7 @@
 package com.emag.controller;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -32,12 +33,22 @@ public class ProductController {
 	private CategoryDAO categoryDAO;
 	
 	//get products by category
-	@RequestMapping(value = "/category/{category_id}", method = RequestMethod.GET)
-	public String getProductsByCategory(Model model, @PathVariable("category_id") Integer category_id, HttpSession session, HttpServletRequest request){
+	@RequestMapping(value = "/category/{categoryID}", method = RequestMethod.GET)
+	public String getProductsByCategory(Model model, @PathVariable("categoryID") Integer categoryID, HttpSession session, HttpServletRequest request){
+		List<Product> products = new ArrayList<>();
 		try {
-			System.out.println("category id: " + category_id);
-			List<Product> productsByCategory = productDAO.getProductsByCategory(category_id);
-			model.addAttribute("products", productsByCategory);
+			System.out.println("category id: " + categoryID);
+			boolean isMain = categoryDAO.isMainCategory(categoryID);
+			System.out.println("after boolean");
+			if(isMain) {
+				products = productDAO.getProductsFromMainCategory(categoryID);
+				System.out.println("after get from main");
+			}
+			else {
+				products = productDAO.getProductsFromSubCategory(categoryID);
+				System.out.println("after get from sub");
+			}
+			model.addAttribute("products", products);
 			return "products";
 		} 
 		catch (SQLException e) {

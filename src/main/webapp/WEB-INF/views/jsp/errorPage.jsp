@@ -10,6 +10,6 @@
 </head>
 <body>
 <h1 align="center"> Oops, something went wrong!</h1>
-<h2 align="center">Why not go to our <a href="index">main page?</a></h2>
+<h2 align="center">Why not go to our <a href="${pageContext.request.contextPath}/index">main page?</a></h2>
 </body>
 </html>

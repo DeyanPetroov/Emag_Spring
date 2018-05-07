@@ -6,6 +6,7 @@
 <html>
 <head>
 <title>Add product</title>
+<base href="http://localhost:8080/EMAG_Spring/editProduct">
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -73,18 +74,17 @@
     <div id="leftCol">
 			<div class="vertical-menu">
 				<a href="${pageContext.request.contextPath}/index" class="active">Back to main page</a>
-				 <a href="adminPage">Admin page</a>
-				 <a href="addProduct">Add a new product</a> 
-				 <a href="#">Make product on sale</a> 
-				 <a href="#">Delete user</a>
+				 <a href="${pageContext.request.contextPath}/adminPage">Admin page</a>
+				 <a href="${pageContext.request.contextPath}/addProduct">Add a new product</a> 
+				 <a href = "#">Change order status</a>
 			</div>
 			</div>
     <div id="rightCol">
 	<c:if test = "${sessionScope.user != null }">
 	<div id = "profile">
 	<div class="login">
-			<h3>Edit products</h3>
-			</div>
+			<h3>Edit product</h3>
+	</div>
 	<div class="container">
 		<div
 			class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">

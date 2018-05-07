@@ -73,10 +73,9 @@
     <div id="leftCol">
 			<div class="vertical-menu">
 				<a href="${pageContext.request.contextPath}/index" class="active">Back to main page</a>
-				 <a href="adminPage">Admin page</a>
-				 <a href="category/1">Edit products</a> 
-				 <a href="#">Make product on sale</a> 
-				 <a href="#">Delete user</a>
+				 <a href="${pageContext.request.contextPath}/adminPage">Admin page</a>
+				 <a href="${pageContext.request.contextPath}/category/1">Edit products</a>
+				 <a href = "#">Change order status</a> 
 			</div>
 			</div>
     <div id="rightCol">

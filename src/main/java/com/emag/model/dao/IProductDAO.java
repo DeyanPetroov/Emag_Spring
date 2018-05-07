@@ -13,7 +13,8 @@ public interface IProductDAO {
 	void deleteProduct(long productID) throws Exception;
 	void updateProduct(Product product) throws Exception;
 	Product getProductById(long productID) throws Exception;
-	List<Product> getProductsByCategory(int categoryID) throws Exception;
+	List<Product> getProductsFromMainCategory(int categoryID) throws Exception;
+	List<Product> getProductsFromSubCategory(int categoryID) throws Exception;
 	void addOrRemoveFavouriteProduct(User user, Product product) throws Exception;
 	Set<Product> viewFavouriteProducts(User user) throws Exception;
 	void changeProductPicture(String productPicture, long productID) throws Exception;
