@@ -2,6 +2,9 @@ package com.emag.controller;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -20,26 +23,46 @@ import com.emag.model.Product;
 import com.emag.model.User;
 import com.emag.model.dao.DBManager;
 import com.emag.model.dao.OrderDAO;
+import com.emag.model.dao.ProductDAO;
 
 @Controller
 public class OrderController {
 	
 	@Autowired
 	private OrderDAO orderDAO;
+	@Autowired
+	private ProductDAO productDAO;
 	
 	private Connection connection  = DBManager.getInstance().getConnection();
 
 	@RequestMapping(value = "/orderPage", method = RequestMethod.GET)
-	public String orderProducts(HttpSession session) {
+	public String orderProducts(HttpSession session, Model model) {
+		if(session.getAttribute("user") == null) {
+			model.addAttribute("invalidSession", "Please log in to view this page.");	
+			return "redirect:/login";
+		}	
 		return "orderPage";
+	}
+	
+	@RequestMapping(value = "/finalizeOrder", method = RequestMethod.GET)
+	public String finalize(HttpSession session, Model model) {
+		if(session.getAttribute("user") == null) {
+			model.addAttribute("invalidSession", "Please log in.");	
+			return "redirect:/login";
+		}	
+		return "index";
 	}
 	 
 	@RequestMapping(value = "/finalizeOrder", method = RequestMethod.POST)
 	public String finalizeOrder(Model model, HttpSession session, HttpServletRequest request) throws SQLException {
+		if(session.getAttribute("user") == null) {
+			model.addAttribute("invalidSession", "Please log in.");	
+			return "redirect:/login";
+		}	
 		User user = (User) session.getAttribute("user");
 		String deliveryAddress = request.getParameter("address");
 
-		Order order = new Order(user, deliveryAddress);
+		Order order = new Order(user, deliveryAddress, user.getCart().getTotalCost(), user.getCart().getProducts());
 		
 		try {
 			connection.setAutoCommit(false);
@@ -48,20 +71,44 @@ public class OrderController {
 			connection.commit();
 		} catch (SQLException e) {
 			connection.rollback();
-			throw new SQLException("the transaction is not made" + e.getMessage());
+			throw new SQLException("The transaction is not completed. The reason is: " + e.getMessage());
 		} finally {
 			connection.setAutoCommit(true);
 		}
 
 		model.addAttribute("order", order);
-		Map<Product, Integer> productss = order.getProducts();
-		for(Entry<Product,Integer> entry : productss.entrySet()) {
-			System.out.println(entry.getKey().getModel());
-			System.out.println(entry.getKey().getPrice());
-			System.out.println(entry.getValue());
-		}
 		user.addToHistory(order);
 		user.getCart().emptyCart();
 		return "viewOrder";
+	}
+	
+	@RequestMapping(value = "/orderHistory", method = RequestMethod.GET)
+	public String viewHistory(HttpSession session, Model model) {
+		if(session.getAttribute("user") == null) {
+			model.addAttribute("invalidSession", "Please log in.");	
+			return "redirect:/login";
+		}	
+		User user = (User) session.getAttribute("user");
+		if(user == null) {
+			model.addAttribute("invalidSession", "Please log in.");	
+			return "redirect:/login";
+		}
+		try {
+			//get orders for this user
+			List<Order> orders = orderDAO.getAllUserOrders(user.getID());
+			//get products for order
+			Map<Order, Map<Product, Integer>> products = new HashMap<>();
+			for(Order order: orders) {
+				System.out.println("status: " + order.getStatus());
+				Map<Product, Integer> p = productDAO.orderProducts(order.getOrderID());
+				products.put(order, p);
+			}
+			
+			model.addAttribute("orders", orders);
+			model.addAttribute("products", products);
+		} catch (SQLException e) {
+			return "errorPage";
+		}
+		return "orderHistory";
 	}
 }

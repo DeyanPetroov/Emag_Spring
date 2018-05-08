@@ -1,6 +1,7 @@
 package com.emag.controller;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -261,7 +262,7 @@ public class UserController {
 			model.addAttribute("invalidSession", "Please log in to view this page.");
 			return "redirect:/login";
 		}
-		Set<Product> products = null;
+		List<Product> products = null;
 		try {
 			products = this.productDAO.viewFavouriteProducts((User) session.getAttribute("user"));
 		} catch (Exception e) {
@@ -281,10 +282,12 @@ public class UserController {
 		User user = (User) session.getAttribute("user");
 		Product product = null;
 		
+		List<Product> favouriteProducts = null;
 		try {
 			product = productDAO.getProductById(productID);
 			productDAO.addOrRemoveFavouriteProduct(user, product);
 			user.addOrRemoveFavourites(product);			
+			favouriteProducts = this.productDAO.viewFavouriteProducts((User) session.getAttribute("user"));
 		
 			MailSender mailSender = new MailSender(user.getEmail() ,"Subscription", "You successfully subscribed for item N:" + product.getProductID() + ".");
 			mailSender.start();
@@ -295,7 +298,6 @@ public class UserController {
 			return "errorPage";
 		}
 		
-		Set<Product> favouriteProducts = user.getFavouriteProducts();
 		model.addAttribute("favourites", favouriteProducts);
 		return "favourites";
 	}

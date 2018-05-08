@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.emag.hashing.BCrypt;
@@ -24,10 +25,18 @@ public class User {
 	private boolean admin;
 	
 	private Cart cart = new Cart();
-	private Order order = new Order(this, address);
+	private Order order = new Order(this, address, this.getCart().getTotalCost(), this.getCart().getProducts());
 	
-	private ArrayList<Order> orderHistory = new ArrayList<>();
 	private HashSet<Product> favouriteProducts = new HashSet<>();
+	private List<Order> orderHistory = new ArrayList<>();
+	
+	public User(long userID, String username, String firstName, String lastName, String email) {
+		this.userID = userID;
+		this.username = username;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+	}
 
 	public User(long id, String username, String password, String firstName, String lastName, String email, String phone, int age, String profilePicture, String address) {
 		this(username, password, firstName, lastName, email);
@@ -105,6 +114,10 @@ public class User {
 	
 	public Set<Product> getFavouriteProducts() {
 		return Collections.unmodifiableSet(this.favouriteProducts);
+	}
+	
+	public List<Order> getOrderHistory() {
+		return Collections.unmodifiableList(this.orderHistory);
 	}
 	
 	// -----------SETTERS-----------
@@ -218,5 +231,4 @@ public class User {
 			this.favouriteProducts.add(product);		
 		}
 	}
-	
 }

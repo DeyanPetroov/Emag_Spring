@@ -129,17 +129,16 @@ public class ProductController {
 	//-->mandatory
 	
 	//send email when a product is on sale
-	//fix product images
-	//make favourites page design 
-	//make order page & view order page(with better info for the order !fixed date) designs
-	//add finished order to history of orders
-	//make history of orders page + current order with status + design
-	//admin can change order status of a selected user(maybe by username)
 	//every product should have a picture(take from DB)
 	//fix menu with characteristics to contain only the ones for the specific category
+	//format order date
+	//can add more characteristics for a product
+	//better error page + 404 + exceptions
+	//change favourite button when already in favourites
 	
 	//-->bonus
 	
+	//slider for prices
 	//send email for forgotten password
 	//ajax for favourites, sorting, characteristics menu
 	//make reviews with raitings, show average raiting

@@ -15,23 +15,17 @@ import com.mysql.jdbc.Statement;
 @Component
 public class CharacteristicDAO implements ICharacteristicDAO {
 	
-	private static final String INSERT_CHARACTERISTIC = "INSERT INTO characteristics (name, unit) VALUES(?,?)";
+	private static final String INSERT_CHARACTERISTIC = "INSERT INTO characteristics (name, unit, value) VALUES(?,?, ?)";
 	private static final String REMOVE_CHARACTERISTIC = "DELETE FROM characteristics WHERE characteristic_id = ?";
-	private static final String EDIT_CHARACTERISTIC = "UPDATE characteristics SET name = ?, unit = ? WHERE characteristic_id = ?";
+	private static final String EDIT_CHARACTERISTIC = "UPDATE characteristics SET name = ?, unit = ?, value = ? WHERE characteristic_id = ?";
 	
-	private static final String INSERT_CATEGORY_CHARACTERISTICS = "INSERT INTO category_characteristics (category_id, characteristic_id, value) VALUES(?,?,?)";
+	private static final String INSERT_CATEGORY_CHARACTERISTICS = "INSERT INTO category_characteristics (category_id, characteristic_id) VALUES(?,?)";
 	private static final String REMOVE_CATEGORY_CHARACTERISTIC = "DELETE FROM category_characteristics WHERE category_id = ? AND characteristic_id = ?";
 	private static final String GET_ALL_CATEGORY_CHARACTERISTICS = 
-			"SELECT cat.category_id, chars.name,chars.unit, cc.value FROM categories AS cat " + 
-			"JOIN category_characteristics AS cc " + 
-			"ON cat.category_id = cc.category_id " +
-			"JOIN characteristics AS chars " +
-			"ON chars.characteristic_id = cc.characteristic_id " +
-			"WHERE cat.category_id = ?";
-	private static final String GET_ALL_CHARACTERISTICS =
-			"SELECT c.characteristic_id, c.name, c.unit, cc.value FROM characteristics AS c " + 
-			"JOIN category_characteristics AS cc " + 
-		    "ON c.characteristic_id = cc.characteristic_id";
+			"SELECT cat.characteristic_id, c.name, c.unit, c.value FROM characteristics AS c " +
+			"JOIN category_characteristics AS cat " +
+			"WHERE cat.category_id = ? AND c.characteristic_id = cat.characteristic_id ";
+	private static final String GET_ALL_CHARACTERISTICS = "SELECT characteristic_id, name, unit, value FROM characteristics";
 
 	private Connection connection;
 	
@@ -44,6 +38,7 @@ public class CharacteristicDAO implements ICharacteristicDAO {
 		try(PreparedStatement addCharacteristic = connection.prepareStatement(INSERT_CHARACTERISTIC, Statement.RETURN_GENERATED_KEYS)){
 			addCharacteristic.setString(1, characteristic.getName());
 			addCharacteristic.setString(2, characteristic.getUnit());
+			addCharacteristic.setString(3, characteristic.getValue());
 			addCharacteristic.executeUpdate();
 			try(ResultSet result = addCharacteristic.getGeneratedKeys()){
 				if(result.next()) {
@@ -59,7 +54,6 @@ public class CharacteristicDAO implements ICharacteristicDAO {
 			try (PreparedStatement add = connection.prepareStatement(INSERT_CATEGORY_CHARACTERISTICS);) {
 				add.setInt(1, categoryID);
 				add.setLong(2, c.getCharacteristicID());
-				add.setString(3, c.getValue());
 				add.executeUpdate();
 			}
 		}
@@ -78,6 +72,7 @@ public class CharacteristicDAO implements ICharacteristicDAO {
 		try(PreparedStatement edit = connection.prepareStatement(EDIT_CHARACTERISTIC);){
 			edit.setString(1, characteristic.getName());
 			edit.setString(2, characteristic.getUnit());
+			edit.setString(3, characteristic.getValue());
 			edit.setLong(4, characteristic.getCharacteristicID());
 			edit.executeUpdate();
 		}
@@ -91,13 +86,12 @@ public class CharacteristicDAO implements ICharacteristicDAO {
 			try(ResultSet result = getAllChars.executeQuery()) {
 				while(result.next()) {
 					Characteristic characteristic = new Characteristic(
+							result.getLong("characteristic_id"),
 							result.getString("name"),
 							result.getString("unit"),
-							result.getInt("category_id"),
 							result.getString("value"));
 					categoryCharacteristics.add(characteristic);
 				}
-				System.out.println("finished dao");
 			}
 		}
 		return categoryCharacteristics;
@@ -118,7 +112,11 @@ public class CharacteristicDAO implements ICharacteristicDAO {
 		try(PreparedStatement getAll = connection.prepareStatement(GET_ALL_CHARACTERISTICS);){
 			try(ResultSet result = getAll.executeQuery()){
 				while(result.next()) {
-					Characteristic characteristic = new Characteristic(result.getLong("characteristic_id"),result.getString("name"), result.getString("unit"), result.getString("value"));
+					Characteristic characteristic = new Characteristic(
+							result.getLong("characteristic_id"),
+							result.getString("name"), 
+							result.getString("unit"), 
+							result.getString("value"));
 					characteristics.add(characteristic);
 				}
 			}

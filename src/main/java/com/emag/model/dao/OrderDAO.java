@@ -5,11 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,23 +25,24 @@ import com.mysql.jdbc.Statement;
 @Component
 public class OrderDAO implements IOrderDAO {
 	
-	private static final String UPDATE_ORDER_STATUS_FOR_USER = "UPDATE orders SET status_id = ? WHERE user_id = ?";
+	private static final String UPDATE_ORDER_STATUS_FOR_USER = "UPDATE orders SET status_id = ? WHERE user_id = ? AND order_id = ?";
 	private static final String DELETE_ORDER_BY_ID = "DELETE FROM orders WHERE order_id = ?";
 	private static final String NEW_ORDER = "INSERT INTO orders (date, total_cost, delivery_address, user_id, status_id) VALUES (?,?,?,?,?)"; 
 	private static final String GET_ORDER_BY_ID = 
-			"SELECT o.order_id, o.date, o.total_cost, o.delivery_address, CONCAT(u.first_name, ' ', u.last_name) AS Name, s.status_description" + 
-			"FROM orders AS o" +  
-			"JOIN statuses AS s" + 
-			"ON s.status_id = o.status_id" + 
-			"JOIN users AS u" + 
+			"SELECT o.order_id, o.date, o.total_cost, o.delivery_address, CONCAT(u.first_name, ' ', u.last_name) AS Name, s.status_description, s.status_id " + 
+			"FROM orders AS o " +  
+			"JOIN statuses AS s " + 
+			"ON s.status_id = o.status_id " + 
+			"JOIN users AS u " + 
 			"ON o.user_id = u.user_id AND o.order_id  = ?";
 	private static final String GET_USER_BY_ORDER_ID = 
-			"SELECT u.username, u.password, u.first_name, u.last_name, u.email, u.age " + 
-			"FROM users as u" + 
-			"JOIN orders as o" + 
-			"WHERE o.order_id = ?";
+			"SELECT u.user_id, u.username, u.first_name, u.last_name, u.email, u.age " + 
+			"FROM users as u " + 
+			"JOIN orders as o " + 
+			"ON u.user_id = o.user_id " + 
+			"AND o.order_id = ?";
 	private static final String INSERT_ORDERED_PRODUCT = "INSERT INTO ordered_products(order_id, product_id, quantity) VALUES(?, ?, ?)";
-	private static final String GET_ORDERS_FOR_USER = "SELECT date, total_cost, status_id FROM orders WHERE user_id = ?";
+	private static final String GET_ORDERS_FOR_USER = "SELECT order_id, date, total_cost, status_id FROM orders WHERE user_id = ? order by date";
 	
 	private Connection connection;
 	
@@ -67,14 +72,20 @@ public class OrderDAO implements IOrderDAO {
 	}
 
 	@Override
-	public Order getOrderByID(long userID) throws SQLException {
+	public Order getOrderByID(long orderID) throws SQLException {
 		Order order = null;
 		try (PreparedStatement getOrderById = connection.prepareStatement(GET_ORDER_BY_ID);) {
-			getOrderById.setLong(1, userID);
+			getOrderById.setLong(1, orderID);
 			try (ResultSet resultSet = getOrderById.executeQuery()) {
 				while (resultSet.next()) {
-					User user = getUserByOrderID(userID);
-					order = new Order(user, resultSet.getString("delivery_address"));
+					User user = getUserByOrderID(orderID);
+					LocalDateTime date =  LocalDateTime.ofInstant(Instant.ofEpochMilli(resultSet.getTimestamp("date").getTime()), 
+                            TimeZone.getDefault().toZoneId()); 
+					order = new Order(resultSet.getLong("order_id"), 
+							date,
+							user, 
+							resultSet.getDouble("total_cost"), 
+							resultSet.getInt("status_id"));
 				}
 			}
 		}	
@@ -90,10 +101,11 @@ public class OrderDAO implements IOrderDAO {
 	}
 
 	@Override
-	public void updateOrderStatus(User user, int statusID) throws SQLException {
+	public void updateOrderStatus(User user, int statusID, long orderID) throws SQLException {
 		try (PreparedStatement updateOrder = connection.prepareStatement(UPDATE_ORDER_STATUS_FOR_USER);) {
 			updateOrder.setInt(1, statusID);
 			updateOrder.setLong(2, user.getID());
+			updateOrder.setLong(3, orderID);
 			updateOrder.executeUpdate();
 		}
 	}
@@ -106,8 +118,8 @@ public class OrderDAO implements IOrderDAO {
 			try (ResultSet result = getUser.executeQuery();) {
 				while (result.next()) {
 					user = new User(
-							result.getString("username"), 
-							result.getString("column"),
+							result.getLong("user_id"),
+							result.getString("username"),
 							result.getString("first_name"), 
 							result.getString("last_name"), 
 							result.getString("email"));
@@ -139,7 +151,10 @@ public class OrderDAO implements IOrderDAO {
 			try (ResultSet result = getOrders.executeQuery();) {
 				while (result.next()) {
 					User user = userDAO.getUserByID(userID);
-					Order order = new Order(user, user.getAddress());
+					Map<Product, Integer> products = user.getCart().getProducts();
+					LocalDateTime date =  LocalDateTime.ofInstant(Instant.ofEpochMilli(result.getTimestamp("date").getTime()), 
+					                                TimeZone.getDefault().toZoneId()); 
+					Order order = new Order(result.getInt("order_id"), date, user, result.getDouble("total_cost"), result.getInt("status_id"));
 					userOrders.add(order);
 				}
 			}

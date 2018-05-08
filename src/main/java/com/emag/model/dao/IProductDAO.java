@@ -3,6 +3,7 @@ package com.emag.model.dao;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.emag.model.Product;
@@ -17,7 +18,7 @@ public interface IProductDAO {
 	List<Product> getProductsFromMainCategory(int categoryID) throws Exception;
 	List<Product> getProductsFromSubCategory(int categoryID) throws Exception;
 	void addOrRemoveFavouriteProduct(User user, Product product) throws Exception;
-	Set<Product> viewFavouriteProducts(User user) throws Exception;
+	List<Product> viewFavouriteProducts(User user) throws Exception;
 	void changeProductPicture(String productPicture, long productID) throws Exception;
 	public String getProfilePicture(long productID) throws Exception;
 	Set<Product> viewPromoProducts() throws Exception;
@@ -25,5 +26,6 @@ public interface IProductDAO {
 	List<Product> getSortedDescendingFromMainCategory(int categoryID) throws Exception; 
 	List<Product> getSortedAscendingFromSubCategory(int categoryID) throws Exception; 
 	List<Product> getSortedDescendingFromSubCategory(int categoryID) throws Exception;
-	ArrayList<Integer> checkForFavProducts(Product p) throws SQLException; 
+	List<Long> checkForFavProducts(long productID) throws Exception; 
+	Map<Product, Integer> orderProducts(long orderID) throws Exception;
 }

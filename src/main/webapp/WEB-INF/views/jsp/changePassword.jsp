@@ -77,7 +77,7 @@
 				<a href="${pageContext.request.contextPath}/index" class="active">Back to main page</a>
 				 <a href="profile">Your profile</a>
 				 <a href="editProfile">Edit profile</a> 
-				 <a href="#">Your orders</a> 
+				 <a href="orderHistory">Your orders</a> 
 			</div>
 			</div>
     <div id="rightCol">
@@ -90,7 +90,7 @@
 			class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
 			<div class="panel panel-info">
 				<div class="panel-heading">
-					<h2 style="color: white; padding-top: 10px">Hello ${user.username} :) </h2>
+					<h2 style="color: white; padding-top: 10px">Change password </h2>
 			</div>
 				<div class="panel-body">
 					<div class="row">

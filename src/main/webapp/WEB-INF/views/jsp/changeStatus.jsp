@@ -84,23 +84,39 @@
 	<c:if test = "${sessionScope.user != null }">
 	<div id = "profile">
 	<div class="login">
-			<h3>Admin page</h3>
+			<h3>Manage order</h3>
 			</div>
 	<div class="container">
 		<div
 			class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
 			<div class="panel panel-info">
 				<div class="panel-heading">
-					<h2 style="color: white; padding-top: 10px">Statistics</h2>
+					<h2 style="color: white; padding-top: 10px">Change status</h2>
 				</div>
 				<div class="panel-body">
 					<div class="row">
 						<div class=" col-md-9 col-lg-9 ">
 							<table class="table table-user-information">
 								<tbody>
+									<c:if test="${order == null}">
+									Sorry. There isn't order with this id. <a href= "${pageContext.request.contextPath}/searchOrder">Try again</a>
+									</c:if>
+									<c:if test="${order != null}">
 									<tr>
-										<td>Registered users: ${totalUsers}</td>
+										<td>Order ID: ${order.orderID}, Total cost: ${order.totalCost} <br>
+										Order status ID: ${order.status }, ${order.statusDescription}</td>
 									</tr>
+									<tr>
+									<td>
+									<form action = "changeStatus" method = "POST">
+										New order status: 
+										<input type = "number" min = 1 max = 4 required placeholder = "status" name = "status">
+										<input type = "hidden" name = "orderID" value = "${order.orderID}">
+										<input type = "submit">
+									</form>
+									</td>
+									</tr>
+									</c:if>
 								</tbody>
 							</table>
 						</div>

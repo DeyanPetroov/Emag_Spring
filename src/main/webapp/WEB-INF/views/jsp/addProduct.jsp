@@ -75,7 +75,7 @@
 				<a href="${pageContext.request.contextPath}/index" class="active">Back to main page</a>
 				 <a href="${pageContext.request.contextPath}/adminPage">Admin page</a>
 				 <a href="${pageContext.request.contextPath}/category/1">Edit products</a>
-				 <a href = "#">Change order status</a> 
+				 <a href = "${pageContext.request.contextPath}/searchOrder">Change order status</a> 
 			</div>
 			</div>
     <div id="rightCol">
@@ -109,7 +109,7 @@
 									</tr>
 									<tr>
 										<td>
-										Description: <input type="text" name="description" placeholder="Description" title="Enter the product description" /> <br> 
+										<textarea rows="5" name= "description" placeholder = "Description" title = "Enter the product description"></textarea><br>
 										</td>
 									</tr>
 									<tr>
@@ -144,7 +144,7 @@
 										<select name="characteristic" id="chars">
 										<c:forEach items ="${characteristics}" var = "characteristic">
 											<option value = "">${characteristic.name}</option>
-											</c:forEach>
+										</c:forEach>
 										</select>
 									</td>
 								</tr>
@@ -156,7 +156,7 @@
 									</td>
 									<td>		
 									Enter characteristic value:	 
-									<input type="text" name="value" placeholder="Value" required title="Enter the characteristic value" /> <br> 
+									<input type="text" name="value" placeholder="Value" title="Enter the characteristic value" /> <br> 
 									</td>
 								</tr>
 								<tr>

@@ -42,7 +42,11 @@ public class CategoryDAO implements ICategoryDAO {
 			try(ResultSet result = parentCategories.executeQuery()){
 				while (result.next()) {
 					List<Characteristic> characteristics = characteristicDAO.allCategoryCharacteristics(result.getInt("category_id"));
-					allCategories.put(new Category(result.getInt("category_id"),result.getString("category_name"), characteristics),  new ArrayList<Category>(getSubCategoriesByParentID(result.getInt("category_id"))));
+					allCategories.put(new Category(
+							result.getInt("category_id"),
+							result.getString("category_name"),
+							characteristics), 
+							new ArrayList<Category>(getSubCategoriesByParentID(result.getInt("category_id"))));
 				}
 			}
 		}

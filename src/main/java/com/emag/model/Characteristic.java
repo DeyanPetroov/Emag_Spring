@@ -10,17 +10,16 @@ public class Characteristic {
 	
 	//===========CONSTRUCTORS===========
 	
-	public Characteristic(String name, String unit, int categoryID, String value) {
+	public Characteristic(long characteristicID, int categoryID, String name, String unit, String value) {
+		this(characteristicID, name, unit, value);
 		this.categoryID = categoryID;
-		setName(name);
-		setUnit(unit);
-		this.value = value;
 	}
 	
 	public Characteristic(long characteristicID, String name, String unit, String value) {
 		setName(name);
 		setUnit(unit);
 		this.characteristicID = characteristicID;
+		this.value = value;
 	}
 	
 	//===========GETTERS===========

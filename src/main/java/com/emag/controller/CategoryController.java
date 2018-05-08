@@ -33,7 +33,6 @@ public class CategoryController {
 		try {
 			categories = categoryDAO.allCategories();
 			context.setAttribute("categories", categories);
-			System.out.println("added categories");
 		} catch (SQLException e) {
 			return "errorPage";
 		}

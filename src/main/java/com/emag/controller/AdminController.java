@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -21,12 +22,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.emag.model.Category;
 import com.emag.model.Characteristic;
+import com.emag.model.Order;
 import com.emag.model.Product;
 import com.emag.model.User;
 import com.emag.model.dao.CategoryDAO;
 import com.emag.model.dao.CharacteristicDAO;
+import com.emag.model.dao.OrderDAO;
 import com.emag.model.dao.ProductDAO;
 import com.emag.model.dao.UserDAO;
+
 
 @Controller
 public class AdminController {
@@ -39,6 +43,8 @@ public class AdminController {
 	private UserDAO userDAO;
 	@Autowired
 	private CharacteristicDAO characteristicDAO;
+	@Autowired
+	private OrderDAO orderDAO;
 	
 	@RequestMapping(value = "/addProduct", method = RequestMethod.GET)
 	public String addProductPage(Model m, HttpSession session) {
@@ -172,6 +178,7 @@ public class AdminController {
 		}	
 		
 		Product product = this.productDAO.getProductById(productID);		
+		String categoryName = request.getParameter("categoryName");
 		String brand = request.getParameter("brand");
         String productModel = request.getParameter("model");
         String description = request.getParameter("description");        
@@ -191,15 +198,16 @@ public class AdminController {
 				withAvailability(availability).
 				withDiscountPercent(discountPercent).
 				withDiscountExpiration(product.getDiscountExpiration());
+				updatedProduct.setCategoryName(categoryName);
 		this.productDAO.updateProduct(updatedProduct);	
 		
 		Product p = this.productDAO.getAllProducts().get(product.getProductID());
-		ArrayList<Integer> users = this.productDAO.checkForFavProducts(p);
+		List<Long> users = this.productDAO.checkForFavProducts(p.getProductID());
 			for(Entry<String, User> e : this.userDAO.getAllUsers().entrySet()){
-					for (Integer i : users) {	
+					for (Long i : users) {	
 							if(e.getValue().getID() == i){
-									new MailSender(e.getValue().getEmail() ,"New SALE at eMAG!", "Product with ID: " + p.getProductID() + 
-											" has been changed! Check out our Hot Offers on our website!");
+									MailSender mailSender = new MailSender(e.getValue().getEmail() ,"New SALE at eMAG!", "Product with ID: " +
+									p.getProductID() + " has been changed! Check out our Hot Offers on our website!");
 							}
 					}
 		}
@@ -208,7 +216,7 @@ public class AdminController {
         return "viewProduct";
     }
 	
-	@RequestMapping(value = "adminPage", method = RequestMethod.GET)
+	@RequestMapping(value = "/adminPage", method = RequestMethod.GET)
 	public String viewAdminPage(HttpSession session, Model model) {
 		if(session.getAttribute("user") == null) {
 			model.addAttribute("invalidSession", "Please log in to view this page.");
@@ -222,5 +230,23 @@ public class AdminController {
 			return "errorPage";
 		}
 		return "adminPage";
+	}
+	
+	@RequestMapping(value = "/changeStatus", method = RequestMethod.POST)
+	public String changeStatus(HttpServletRequest request) {
+		int newStatusID = Integer.valueOf(request.getParameter("status"));
+		long orderID = Long.valueOf(request.getParameter("orderID"));
+		
+		if(newStatusID>=1 && newStatusID <=4) {
+			try {
+				Order order = orderDAO.getOrderByID(orderID);
+				//TODO transaction
+				order.setStatus(newStatusID);
+				orderDAO.updateOrderStatus(order.getUser(), newStatusID, order.getOrderID());
+			} catch (SQLException e) {
+				return "errorPage";
+			}
+		}
+		return "index";
 	}
 }

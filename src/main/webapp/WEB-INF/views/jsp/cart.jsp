@@ -50,7 +50,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							</c:if>
 							<li><a href="favourite">Favourites</a>
 							<li><a href="profile">My account</a>
-							<li><a href="#">Your orders</a>			
 							<li><a href="logout">Logout</a>
 						</c:if>
 					</ul>
@@ -116,8 +115,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				<div class="logo-nav-right">
 					<div class="search-box">
 						<div id="sb-search" class="sb-search">
-							<form>
-								<input class="sb-search-input" placeholder="Enter your search term..." type="search" id="search">
+							<form action="search" method="GET">
+								<input class="sb-search-input" placeholder="Enter your search term..." type="text" name="search" id="search">
 								<input class="sb-search-submit" type="submit" value="">
 								<span class="sb-icon-search"> </span>
 							</form>
@@ -162,17 +161,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				<table class="timetable_sub">
 					<thead>
 						<tr>
-							<th>SL No.</th>	
-							<th>Quantity</th>
-							<th>Product Name</th>
-							<th>Price</th>
-							<th>Add</th>
-							<th>Remove</th>
+<!-- 						<th style = "background-color: #31708f">SL No.</th>	
+ -->						<th style = "background-color: #31708f">Quantity</th>
+							<th style = "background-color: #31708f">Product Name</th>
+							<th style = "background-color: #31708f">Price</th>
+							<th style = "background-color: #31708f">Add</th>
+							<th style = "background-color: #31708f">Remove</th>
 						</tr>
 					</thead>
 					<c:forEach var="entry" items="${cart.products}">
 						<tr class="rem1">
-						<td class="invert">1</td>
 <!-- 					<td class="invert-image"><a href="single.html"><img src="images/22.jpg" alt=" " class="img-responsive" /></a></td> -->
 						<td class="invert">
 							 <div class="quantity"> 
@@ -200,7 +198,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			</div>
 			<div class="checkout-left">	
 				<div class="checkout-left-basket animated wow slideInLeft" data-wow-delay=".5s">
-					<a href = "orderPage"><h4>Continue to order</h4></a>
+					<a href = "orderPage"><h4 style = "background-color: #31708f">Continue to order</h4></a>
 					<ul>
 					<c:forEach var="entry" items="${cart.products}">
 						<li>${entry.key.brand} ${entry.key.model}

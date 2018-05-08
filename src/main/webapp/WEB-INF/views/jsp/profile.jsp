@@ -77,7 +77,7 @@
 				<a href="${pageContext.request.contextPath}/index" class="active">Back to main page</a>
 				 <a href="editProfile">Edit profile</a>
 				 <a href="changePassword">Change password</a> 
-				 <a href="#">Your orders</a> 
+				 <a href="orderHistory">Your orders</a> 
 			</div>
 			</div>
     <div id="rightCol">

@@ -2,16 +2,12 @@ package com.emag;
 
 import java.util.Locale;
 
-import javax.servlet.MultipartConfigElement;
-
-import org.springframework.boot.context.embedded.MultipartConfigFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -52,12 +48,6 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
 	    multipartResolver.setMaxUploadSize(10000000);
 	    return multipartResolver;
 	}
-	
-    
-	/*@Bean(name = "multipartResolver")
-	public StandardServletMultipartResolver multipartResolver() {
-		return new StandardServletMultipartResolver();
-	}*/
 
 	@Bean
 	public MessageSource messageSource() {

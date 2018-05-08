@@ -48,7 +48,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							</c:if>
 							<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="favourite">Favourites</a>
 							<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="profile">My account</a>
-							<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="#">Order history</a>				
 							<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="logout">Logout</a>
 						</c:if>
 					</ul>

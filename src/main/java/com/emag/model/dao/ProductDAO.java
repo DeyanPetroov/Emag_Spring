@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -79,6 +80,13 @@ public class ProductDAO implements IProductDAO {
 	private static final String SORT_SUBCATEGORY_BY_DESCENDING_PRICE = 
 			"SELECT product_id, brand, price, availability, model, description, discount_percent, " +
 			"discount_expiration, product_picture, category_id FROM products WHERE category_id = ? ORDER BY price DESC";
+	private static final String GET_PRODUCTS_BY_ORDER_ID = 
+			"SELECT op.quantity, p.product_id, p.brand, p.price, p.availability, p.model, p.description, p.discount_percent, p.discount_expiration, " +
+			"p.product_picture, p.category_id " + 
+			"FROM products as p " + 
+			"JOIN ordered_products AS op " + 
+			"ON op.product_id = p.product_id " + 
+			"AND op.order_id = ?";
 	
 	@Autowired
 	private UserDAO userDAO;
@@ -152,19 +160,20 @@ public class ProductDAO implements IProductDAO {
 	}
 	
 	@Override
-	public ArrayList<Integer> checkForFavProducts(Product p) throws SQLException{
-		ArrayList<Integer> users = new ArrayList<>();
-		ResultSet res = null;
-		try(PreparedStatement st = connection.prepareStatement(CHECK_IF_HAS_FAVOURITE, Statement.RETURN_GENERATED_KEYS); ){
-			st.setLong(1, p.getProductID());
-			res = st.executeQuery();
-			while(res.next()){
-				int userId = res.getInt("user_id");
-				users.add(userId);
+	public ArrayList<Long> checkForFavProducts(long productID) throws SQLException {
+		ArrayList<Long> users = new ArrayList<>();
+		try (PreparedStatement st = connection.prepareStatement(CHECK_IF_HAS_FAVOURITE,
+				Statement.RETURN_GENERATED_KEYS);) {
+			st.setLong(1, productID);
+			try (ResultSet result = st.executeQuery()) {
+				while (result.next()) {
+					long userID = result.getLong("user_id");
+					users.add(userID);
+				}
 			}
-			
+
 		} catch (SQLException e) {
-			System.out.println("checkForFavProducts: " + e.getMessage());
+			System.out.println("Problem while checking for users that liked the product: " + e.getMessage());
 		}
 		
 		return users;
@@ -307,8 +316,8 @@ public class ProductDAO implements IProductDAO {
 	}
 
 	@Override
-	public Set<Product> viewFavouriteProducts(User user) throws SQLException {
-		Set<Product> favProducts = new HashSet<>();
+	public List<Product> viewFavouriteProducts(User user) throws SQLException {
+		List<Product> favProducts = new ArrayList<>();
 		try (PreparedStatement st = connection.prepareStatement(VIEW_FAVOURITE_PRODUCTS);) {
 			st.setLong(1, user.getID());
 			try (ResultSet result = st.executeQuery();) {
@@ -501,4 +510,30 @@ public class ProductDAO implements IProductDAO {
 		return sameCategoryProducts;
 	}
 
+	@Override
+	public Map<Product, Integer> orderProducts(long orderID) throws SQLException {
+		Map<Product, Integer> products = new HashMap<>();
+		Product product = null;
+		
+		try(PreparedStatement getProductsForOrder = connection.prepareStatement(GET_PRODUCTS_BY_ORDER_ID);) {
+			getProductsForOrder.setLong(1, orderID);
+			try(ResultSet result = getProductsForOrder.executeQuery()){
+				while(result.next()) {
+					product = new Product().
+							withProductID(result.getLong("product_id")).
+							withCategoryID(result.getInt("category_id")).
+							withBrand(result.getString("brand")).
+							withModel(result.getString("model")).
+							withDescription(result.getString("description")).
+							withProductPicture(result.getString("product_picture")).
+							withPrice(result.getDouble("price")).
+							withAvailability(result.getInt("availability")).
+							withDiscountPercent(result.getInt("discount_percent")).
+							withDiscountExpiration(result.getDate("discount_expiration"));	
+					products.put(product, result.getInt("quantity"));
+				}
+			}
+		}
+		return products;
+	}
 }

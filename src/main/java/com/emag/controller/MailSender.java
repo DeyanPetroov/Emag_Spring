@@ -3,7 +3,6 @@ package com.emag.controller;
 import java.security.GeneralSecurityException;
 import java.util.Properties;
 
-import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -13,15 +12,15 @@ import javax.mail.internet.MimeMessage;
 
 import com.sun.mail.util.MailSSLSocketFactory;
 
-public class MailSender extends Thread{
+public class MailSender extends Thread {
 	
-	final String senderEmailID = "emag.ittalents@gmail.com";
-	final String senderPassword = "emagittalents";
-	final String emailSMTPserver = "smtp.gmail.com";
-	final String emailServerPort = "465";
-	String receiverEmailID = null;
-	static String emailSubject=null;
-	static String emailBody=null;
+	private final String senderEmailID = "emag.ittalents@gmail.com";
+	private final String senderPassword = "emagittalents";
+	private final String emailSMTPserver = "smtp.gmail.com";
+	private final String emailServerPort = "465";
+	private String receiverEmailID = null;
+	private String emailSubject=null;
+	private String emailBody=null;
 	
 	public MailSender(String receiverEmailID, String emailSubject, String emailBody) {
 		this.receiverEmailID= receiverEmailID;
