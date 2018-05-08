@@ -21,7 +21,7 @@ public interface IProductDAO {
 	List<Product> viewFavouriteProducts(User user) throws Exception;
 	void changeProductPicture(String productPicture, long productID) throws Exception;
 	public String getProfilePicture(long productID) throws Exception;
-	Set<Product> viewPromoProducts() throws Exception;
+	List<Product> viewPromoProducts() throws Exception;
 	List<Product> getSortedAscendingFromMainCategory(int categoryID) throws Exception; 
 	List<Product> getSortedDescendingFromMainCategory(int categoryID) throws Exception; 
 	List<Product> getSortedAscendingFromSubCategory(int categoryID) throws Exception; 

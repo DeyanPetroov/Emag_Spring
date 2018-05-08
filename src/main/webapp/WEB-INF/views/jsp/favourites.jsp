@@ -15,6 +15,51 @@
 <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
 <style>
 
+#my-button {
+    display: inline-block;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    cursor: pointer;
+    padding: 10px 20px;
+    border: 1px solid white;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    font: normal medium/normal Arial, Helvetica, sans-serif;
+    color: rgba(255,255,255,0.9);
+    -o-text-overflow: clip;
+    text-overflow: clip;
+    background: #286090;
+    -webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2);
+    box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2);
+    text-shadow: -1px -1px 0 rgba(15,73,168,0.66);
+    -webkit-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+    -moz-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+    -o-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+    transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+#input-button {
+ display: inline-block;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  padding: 10px 20px;
+  border: 1px solid #b7b7b7;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  font: normal medium/normal Arial, Helvetica, sans-serif;
+  color: rgba(0,142,198,1);
+  -o-text-overflow: clip;
+  text-overflow: clip;
+  -webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+  box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.66) ;
+  -webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  -moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+}
 .banner-bottom, .new-collections, .checkout, .collections-bottom, .timer, .register, .products, .typo, .mail, .single, .login, .single-related-products {
     padding: 3em 0;
 }
@@ -74,7 +119,7 @@
     <div id="rightCol">
 	<div id = "profile">
 	<div class="login">
-			<h3>View order</h3>
+			<h3>Favourites</h3>
 	</div>
 	<div class="container">
 		<div
@@ -91,10 +136,10 @@
 								<td>
 									<c:if test="${requestScope.favourites != null}">
 		<c:forEach var="product" items="${favourites}">
-				<a href="single.html"><img src="images/19.jpg" alt=" "
-					class="img-responsive" width=150px height=150px]></a>
+				<img src="download/product_picture/${product.productPicture}" alt=" "
+					class="img-responsive" width=150px height=150px]> 
 			<div>
-				<a href="single.html">${product.brand} ${product.model}</a>
+				<a href="${pageContext.request.contextPath}/viewProduct/${product.productID}">${product.brand} ${product.model}</a>
 				<p>${product.description}</p>
 				<div class="simpleCart_shelfItem products-right-grid1-add-cart">
 					<p>
@@ -106,8 +151,8 @@
 						method="POST">
 						<input type="hidden" name="productID" value="${product.productID}">
 						<input type="number" name="quantity" min=1 placeholder="quantity"
-							required><br> <input type="submit"
-							value="Add to cart">
+							required id = "input-button"><br> <input type="submit"
+							value="Add to cart" id = "my-button">
 					</form>
 				</div>
 				<div>
@@ -115,20 +160,20 @@
 						method="POST">
 						<input type="hidden" name="favouriteProduct"
 							value="${product.productID}"> 
-							<input type="submit" value = "remove">
+							<input type="submit" value = "remove" id = "my-button">
 					</form>
 				</div>
 				<div>
 					<c:if test="${sessionScope.user.admin == true}">
 						<a
-							href="${pageContext.request.contextPath}/editProduct/${product.productID}"><button>Edit</button></a>
+							href="${pageContext.request.contextPath}/editProduct/${product.productID}"><button id = "my-button">Edit</button></a>
 					</c:if>
 				</div>
 				</div>
 		</c:forEach>
 	</c:if>
-	<a href="${pageContext.request.contextPath}/index">Go to the main
-		page</a>
+	<br>
+	<a href="${pageContext.request.contextPath}/index" id = "my-button">Go to the main page</a>
 								</td>
 								</tr>
 							</table>

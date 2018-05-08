@@ -8,14 +8,94 @@
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<link rel="stylesheet" type="text/css" href="css/my.css">
+<link rel="stylesheet" type="text/css" href="css/my.css" media="all"/>
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
 <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
 
 <style>
 
-.upload-wrap {
-    position: relative;
+#my-button {
+    display: inline-block;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    cursor: pointer;
+    padding: 10px 20px;
+    border: 1px solid white;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    font: normal medium/normal Arial, Helvetica, sans-serif;
+    color: rgba(255,255,255,0.9);
+    -o-text-overflow: clip;
+    text-overflow: clip;
+    background: #286090;
+    -webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2);
+    box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2);
+    text-shadow: -1px -1px 0 rgba(15,73,168,0.66);
+    -webkit-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+    -moz-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+    -o-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+    transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+#input-button {
+ display: inline-block;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  padding: 10px 20px;
+  border: 1px solid #b7b7b7;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  font: normal medium/normal Arial, Helvetica, sans-serif;
+  color: rgba(0,142,198,1);
+  -o-text-overflow: clip;
+  text-overflow: clip;
+  -webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+  box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.66) ;
+  -webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  -moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.btn {
+     display: inline-block;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    cursor: pointer;
+    padding: 10px 20px;
+    border: 1px solid white;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    font: normal medium/normal Arial, Helvetica, sans-serif;
+    color: rgba(255,255,255,0.9);
+    -o-text-overflow: clip;
+    text-overflow: clip;
+    background: #286090;
+    -webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2);
+    box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2);
+    text-shadow: -1px -1px 0 rgba(15,73,168,0.66);
+    -webkit-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+    -moz-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+    -o-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+    transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
 }
 
 .banner-bottom, .new-collections, .checkout, .collections-bottom, .timer, .register, .products, .typo, .mail, .single, .login, .single-related-products {
@@ -45,7 +125,7 @@
 
 #profile {
 	padding-right: 260px;
-}
+} 
 
 .vertical-menu {
     width: 300px;
@@ -106,7 +186,7 @@
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-md-3 col-lg-3 " align="center">
-							<img src="download/${profilePicture}" width="200px"
+							<img src="download/user-profile/${profilePicture}" width="200px"
 								height="200px" class="img-circle img-responsive">
 						</div>
 						<div class=" col-md-9 col-lg-9 ">
@@ -114,10 +194,11 @@
 								<h4 style="color: red">${error}</h4>
 							</c:if>
 						<form action = "./uploadProfilePicture" method = "POST" enctype="multipart/form-data" accept="image/*">
-							<div class="upload-wrap">
-								<input type = "file" name = "image" class="upload-btn">
+							<div class="upload-btn-wrapper">
+								<button class="btn">Upload a file</button>
+								<input type = "file" name = "image">
 							</div>					
-							<input type = "submit" value = "Change picture" class = "submit-btn">
+							<input type = "submit" value = "Change picture" id = "my-button" style = "position: absolute">
 						</form>
 						<div class=" col-md-9 col-lg-9 ">
 							<form action="editProfile" method="POST">
@@ -125,31 +206,31 @@
 							<tr>
 								<td>
 								First name:
-								<input type="text" name="firstname" value="${user.firstName}" pattern="^[a-zA-Z'-]{3,31}$"
+								<input type="text" id = "input-button" name="firstname" value="${user.firstName}" pattern="^[a-zA-Z'-]{3,31}$"
 									title="From 3 to 31 lower and uppercase characters. ' and - are also allowed" /><br>
 								</td>		
 							</tr>
 							<tr>
 								<td>
 									Last name:
-									<input type="text" name="lastname" value="${user.lastName}" pattern="^[a-zA-Z'-]{3,31}$"
+									<input type="text" id = "input-button" name="lastname" value="${user.lastName}" pattern="^[a-zA-Z'-]{3,31}$"
 									title="From 3 to 31 lower and uppercase characters. ' and - are also allowed" /> <br> 
 								</td> 
 							</tr>
 						
 							<tr>
 								<td>
-									Address: <input type="text" name="address" value="${user.address}" /> <br>
+									Address: <input type="text" id = "input-button"  name="address" value="${user.address}" /> <br>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									Email address: <input type="email" name="email" value="${user.email}" /> <br>
+									Email address: <input type="email" id = "input-button"  name="email" value="${user.email}" /> <br>
 								</td>					
 							</tr>
 							<tr>
 								<td>
-									Phone: <input type="text" name="phone" value="${user.phone}" /> <br>
+									Phone: <input type="text" id = "input-button"  name="phone" value="${user.phone}" /> <br>
 								</td>
 							</tr>
 							<tr>	
@@ -158,7 +239,7 @@
 							</table>	
 							<td>
 									<input type="hidden" value="${user.email}" name="oldEmail" /> <br>	
-									<input type="submit" value="Submit"/> <br> <br> 
+									<input type="submit" value="Submit" id = "my-button"/> <br> <br> 
 							</form>	
 						</div>
 						</div>

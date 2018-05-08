@@ -106,7 +106,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							<li class="dropdown">
 								<a href="promo">Hot offers</a>								
 							</li>
-							<li><a href="#">Mail Us</a></li>
 						</ul>
 					</div>
 					</nav>

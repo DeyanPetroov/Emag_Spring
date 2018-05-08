@@ -73,6 +73,10 @@ public class ProductController {
 			}
 			else {
 				products = productDAO.getProductsFromSubCategory(categoryID);
+				
+			}
+			for(Product p : products) {
+				System.out.println(p.getProductPicture());
 			}
 			model.addAttribute("products", products);
 			return "products";
@@ -99,7 +103,7 @@ public class ProductController {
 	}
 	
 	@RequestMapping(value = "/promo", method = {RequestMethod.GET, RequestMethod.POST})
-	public String viewPromotions(HttpServletRequest request, Model model) throws SQLException{
+	public String viewPromotions(HttpServletRequest request, Model model) {
 		
 		String promo = null;
 		if(request.getParameter("promo") != null){
@@ -109,7 +113,12 @@ public class ProductController {
 			promo = (String) request.getAttribute("promo");
 		}
 		
-		Collection<Product> promoProducts = this.productDAO.viewPromoProducts();
+		List<Product> promoProducts = new ArrayList<>();
+		try {
+			promoProducts = this.productDAO.viewPromoProducts();
+		} catch (SQLException e) {
+			return "errorPage";
+		}
 		
 		if(!promoProducts.isEmpty()){
 			for (Product product : promoProducts) {
@@ -128,8 +137,7 @@ public class ProductController {
 	//TODO
 	//-->mandatory
 	
-	//send email when a product is on sale
-	//every product should have a picture(take from DB)
+	//price of products when on sale
 	//fix menu with characteristics to contain only the ones for the specific category
 	//format order date
 	//can add more characteristics for a product

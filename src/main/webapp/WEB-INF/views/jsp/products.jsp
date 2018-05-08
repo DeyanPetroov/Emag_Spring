@@ -27,6 +27,54 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- //for bootstrap working -->
 <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
 <link href='//fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+<style>
+#my-button {
+    display: inline-block;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    cursor: pointer;
+    padding: 10px 20px;
+    border: 1px solid white;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    font: normal medium/normal Arial, Helvetica, sans-serif;
+    color: rgba(255,255,255,0.9);
+    -o-text-overflow: clip;
+    text-overflow: clip;
+    background: #286090;
+    -webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2);
+    box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2);
+    text-shadow: -1px -1px 0 rgba(15,73,168,0.66);
+    -webkit-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+    -moz-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+    -o-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+    transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+#input-button {
+ display: inline-block;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  padding: 10px 20px;
+  border: 1px solid #b7b7b7;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  font: normal medium/normal Arial, Helvetica, sans-serif;
+  color: rgba(0,142,198,1);
+  -o-text-overflow: clip;
+  text-overflow: clip;
+  -webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+  box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.66) ;
+  -webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  -moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+}
+</style>
 </head>
 	
 <body>
@@ -40,12 +88,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							<h4>${loggedUser}</h4>
 						</c:if>
 						<c:if test="${sessionScope.user == null }">
-							<li></i><a href="login">Login</a></li>
-							<li></i><a href="register">Register</a></li>
+							<li><a href="login">Login</a></li>
+							<li><a href="register">Register</a></li>
 						</c:if>
 						<c:if test="${sessionScope.user != null }">
 							<c:if test="${sessionScope.user.admin == true}">
-								<li></i><a href="adminPage">Admin page</a>
+								<li><a href="adminPage">Admin page</a>
 							</c:if>
 							<li><a href="favourite">Favourites</a>
 							<li><a href="profile">My account</a>
@@ -106,7 +154,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							<li class="dropdown">
 								<a href="promo">Hot offers</a>								
 							</li>
-							<li><a href="#">Mail Us</a></li>
 						</ul>
 					</div>
 					</nav>
@@ -196,94 +243,33 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					</ul>
 				</div>
 				<div class="new-products animated wow slideInUp" data-wow-delay=".5s">
-					<h3>New Products</h3>
 					<div class="new-products-grids">
 						<div class="new-products-grid">
 							<div class="new-products-grid-left">
-								<a href="single.html"><img src="images/6.jpg" alt=" " class="img-responsive" /></a>
+								
 							</div>
 							<div class="new-products-grid-right">
-								<h4><a href="single.html">occaecat cupidatat</a></h4>
-								<div class="rating">
-									<div class="rating-left">
-										<img src="images/2.png" alt=" " class="img-responsive">
-									</div>
-									<div class="rating-left">
-										<img src="images/2.png" alt=" " class="img-responsive">
-									</div>
-									<div class="rating-left">
-										<img src="images/2.png" alt=" " class="img-responsive">
-									</div>
-									<div class="rating-left">
-										<img src="images/1.png" alt=" " class="img-responsive">
-									</div>
-									<div class="rating-left">
-										<img src="images/1.png" alt=" " class="img-responsive">
-									</div>
-									<div class="clearfix"> </div>
-								</div>
+								
 								<div class="simpleCart_shelfItem new-products-grid-right-add-cart">
-									<p> <span class="item_price">$180</span><a class="item_add" href="#">add to cart </a></p>
 								</div>
 							</div>
 							<div class="clearfix"> </div>
 						</div>
 						<div class="new-products-grid">
 							<div class="new-products-grid-left">
-								<a href="single.html"><img src="images/26.jpg" alt=" " class="img-responsive" /></a>
+								
 							</div>
 							<div class="new-products-grid-right">
-								<h4><a href="single.html">eum fugiat quo</a></h4>
-								<div class="rating">
-									<div class="rating-left">
-										<img src="images/2.png" alt=" " class="img-responsive">
-									</div>
-									<div class="rating-left">
-										<img src="images/2.png" alt=" " class="img-responsive">
-									</div>
-									<div class="rating-left">
-										<img src="images/2.png" alt=" " class="img-responsive">
-									</div>
-									<div class="rating-left">
-										<img src="images/1.png" alt=" " class="img-responsive">
-									</div>
-									<div class="rating-left">
-										<img src="images/1.png" alt=" " class="img-responsive">
-									</div>
-									<div class="clearfix"> </div>
-								</div>
-								<div class="simpleCart_shelfItem new-products-grid-right-add-cart">
-									<p> <span class="item_price">$250</span><a class="item_add" href="#">add to cart </a></p>
-								</div>
+								
 							</div>
 							<div class="clearfix"> </div>
 						</div>
 						<div class="new-products-grid">
 							<div class="new-products-grid-left">
-								<a href="single.html"><img src="images/11.jpg" alt=" " class="img-responsive" /></a>
 							</div>
 							<div class="new-products-grid-right">
-								<h4><a href="single.html">officia deserunt</a></h4>
-								<div class="rating">
-									<div class="rating-left">
-										<img src="images/2.png" alt=" " class="img-responsive">
-									</div>
-									<div class="rating-left">
-										<img src="images/2.png" alt=" " class="img-responsive">
-									</div>
-									<div class="rating-left">
-										<img src="images/2.png" alt=" " class="img-responsive">
-									</div>
-									<div class="rating-left">
-										<img src="images/1.png" alt=" " class="img-responsive">
-									</div>
-									<div class="rating-left">
-										<img src="images/1.png" alt=" " class="img-responsive">
-									</div>
-									<div class="clearfix"> </div>
-								</div>
+								
 								<div class="simpleCart_shelfItem new-products-grid-right-add-cart">
-									<p> <span class="item_price">$259</span><a class="item_add" href="#">add to cart </a></p>
 								</div>
 							</div>
 							<div class="clearfix"> </div>
@@ -325,7 +311,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				<div class="col-md-4 products-right-grids-bottom-grid">
 					<div class="new-collections-grid1 products-right-grid1 animated wow slideInUp" data-wow-delay=".5s">
 						<div class="new-collections-grid1-image">
-							<a href="single.html" class="product-image"><img src="images/19.jpg" alt=" " class="img-responsive"></a>
+							<a href="single.html" class="product-image"><img src="download/product_picture/${product.productPicture}" alt=" " class="img-responsive"></a>
 								<div class="new-collections-grid1-image-pos products-right-grids-pos">
 									<a href="${pageContext.request.contextPath}/viewProduct/${product.productID}">Quick View</a>
 								</div>
@@ -361,9 +347,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								<form action="${pageContext.request.contextPath}/addToCart"
 									method="POST">
 									<input type="hidden" name="productID"
-										value="${product.productID}"> <input type="number"
-										name="quantity" min=1 placeholder="quantity" required><br>
-									<input type="submit" value="Add to cart">
+										value="${product.productID}"> 
+										<input type="number" name="quantity" min=1 placeholder="quantity" id = "input-button" required><br>
+									<input type="submit" id = "my-button" value="Add to cart">
 								</form>
 							</div>
 							<div>
@@ -371,12 +357,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 									method="POST">
 									<input type="hidden" name="favouriteProduct"
 										value="${product.productID}"> <input type="submit"
-										value="&#9829;">
+										id = "my-button" value="&#9829;">
 								</form>
 							</div>
 							<div>
 								<c:if test="${sessionScope.user.admin == true}">
-								<a href="${pageContext.request.contextPath}/editProduct/${product.productID}"><button>Edit</button></a>
+								<a href="${pageContext.request.contextPath}/editProduct/${product.productID}"><button id = "my-button">Edit</button></a>
 								</c:if>
 							</div>
 						</div>

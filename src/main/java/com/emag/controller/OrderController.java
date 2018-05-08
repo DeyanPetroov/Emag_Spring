@@ -3,10 +3,12 @@ package com.emag.controller;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -64,6 +66,11 @@ public class OrderController {
 
 		Order order = new Order(user, deliveryAddress, user.getCart().getTotalCost(), user.getCart().getProducts());
 		
+		if(user.getCart().getTotalCost() == 0) {
+			model.addAttribute("invalidOrder");	
+			return "redirect:/index";
+		}
+		
 		try {
 			connection.setAutoCommit(false);
 			orderDAO.addNewOrder(order);
@@ -97,9 +104,19 @@ public class OrderController {
 			//get orders for this user
 			List<Order> orders = orderDAO.getAllUserOrders(user.getID());
 			//get products for order
-			Map<Order, Map<Product, Integer>> products = new HashMap<>();
+			Map<Order, Map<Product, Integer>> products = new TreeMap<Order, Map<Product,Integer>>(new Comparator<Order>() {
+				@Override
+				public int compare(Order o1, Order o2) {
+					if(o1.getDate().isBefore(o2.getDate())) {
+						return -1;
+					}
+					else if(o1.getDate().isAfter(o2.getDate())) {
+						return 1;
+					}
+					return o1.getDate().compareTo(o2.getDate());
+				}		
+			});
 			for(Order order: orders) {
-				System.out.println("status: " + order.getStatus());
 				Map<Product, Integer> p = productDAO.orderProducts(order.getOrderID());
 				products.put(order, p);
 			}

@@ -288,12 +288,6 @@ public class UserController {
 			productDAO.addOrRemoveFavouriteProduct(user, product);
 			user.addOrRemoveFavourites(product);			
 			favouriteProducts = this.productDAO.viewFavouriteProducts((User) session.getAttribute("user"));
-		
-			MailSender mailSender = new MailSender(user.getEmail() ,"Subscription", "You successfully subscribed for item N:" + product.getProductID() + ".");
-			mailSender.start();
-			model.addAttribute("message", "You successfully subscribed for this product!");
-			
-			
 		} catch (SQLException e) {
 			return "errorPage";
 		}

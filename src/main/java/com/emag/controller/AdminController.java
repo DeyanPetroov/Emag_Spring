@@ -185,9 +185,13 @@ public class AdminController {
         double price = Double.valueOf(request.getParameter("price"));
         Integer availability = Integer.valueOf(request.getParameter("availability"));
         int discountPercent = Integer.valueOf(request.getParameter("discountPercent"));
-        if(discountPercent!=0 && !this.productDAO.getSaleStatus()) {
+        if(discountPercent!=0) {
         	price -= price * (Double) (0.01*discountPercent);
         }
+        
+        String picture = request.getParameter("productPicture");
+		System.out.println("picture" + picture);
+		System.out.println("test====================");
 		
 		Product updatedProduct = new Product().
 				withProductID(product.getProductID()).
@@ -197,22 +201,29 @@ public class AdminController {
 				withPrice(price).
 				withAvailability(availability).
 				withDiscountPercent(discountPercent).
-				withDiscountExpiration(product.getDiscountExpiration());
+				withDiscountExpiration(product.getDiscountExpiration()).
+				withProductPicture(picture);
 				updatedProduct.setCategoryName(categoryName);
 		this.productDAO.updateProduct(updatedProduct);	
 		
 		Product p = this.productDAO.getAllProducts().get(product.getProductID());
 		List<Long> users = this.productDAO.checkForFavProducts(p.getProductID());
+		
 			for(Entry<String, User> e : this.userDAO.getAllUsers().entrySet()){
 					for (Long i : users) {	
 							if(e.getValue().getID() == i){
-									MailSender mailSender = new MailSender(e.getValue().getEmail() ,"New SALE at eMAG!", "Product with ID: " +
+								System.out.println("User from all users: " + e.getValue().getID());
+								System.out.println("User from fav: " + i);
+								System.out.println("email: " + e.getValue().getEmail());
+								MailSender mailSender = new MailSender(e.getValue().getEmail() ,"New SALE at eMAG!", "Product with ID: " +
 									p.getProductID() + " has been changed! Check out our Hot Offers on our website!");
+									mailSender.start();
 							}
 					}
 		}
 			
 		m.addAttribute("product", updatedProduct);
+		m.addAttribute("productPicture", picture);
         return "viewProduct";
     }
 	

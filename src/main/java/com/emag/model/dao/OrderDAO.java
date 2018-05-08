@@ -42,7 +42,7 @@ public class OrderDAO implements IOrderDAO {
 			"ON u.user_id = o.user_id " + 
 			"AND o.order_id = ?";
 	private static final String INSERT_ORDERED_PRODUCT = "INSERT INTO ordered_products(order_id, product_id, quantity) VALUES(?, ?, ?)";
-	private static final String GET_ORDERS_FOR_USER = "SELECT order_id, date, total_cost, status_id FROM orders WHERE user_id = ? order by date";
+	private static final String GET_ORDERS_FOR_USER = "SELECT order_id, date, total_cost, status_id FROM orders WHERE user_id = ? ORDER BY date DESC";
 	
 	private Connection connection;
 	

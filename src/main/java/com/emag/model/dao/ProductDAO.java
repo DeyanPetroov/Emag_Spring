@@ -334,8 +334,8 @@ public class ProductDAO implements IProductDAO {
 	}
 	
 	@Override
-	public Set<Product> viewPromoProducts() throws SQLException {
-		Set<Product> promoProducts = new HashSet<>();
+	public List<Product> viewPromoProducts() throws SQLException {
+		List<Product> promoProducts = new ArrayList<>();
 		try (PreparedStatement st = connection.prepareStatement(GET_PROMO_PRODUCTS);) {
 			try (ResultSet result = st.executeQuery();) {
 				while (result.next()) {

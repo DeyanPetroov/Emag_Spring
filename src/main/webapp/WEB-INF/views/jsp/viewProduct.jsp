@@ -11,7 +11,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Best Store a Ecommerce Online Shopping Category Flat Bootstrap Responsive Website Template | Single :: w3layouts</title>
+<title>Products</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <base href="http://localhost:8080/EMAG_Spring/viewProduct">
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
@@ -28,6 +28,54 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- //for bootstrap working -->
 <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
 <link href='//fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+<style>
+#my-button {
+    display: inline-block;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    cursor: pointer;
+    padding: 10px 20px;
+    border: 1px solid white;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    font: normal medium/normal Arial, Helvetica, sans-serif;
+    color: rgba(255,255,255,0.9);
+    -o-text-overflow: clip;
+    text-overflow: clip;
+    background: #286090;
+    -webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2);
+    box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2);
+    text-shadow: -1px -1px 0 rgba(15,73,168,0.66);
+    -webkit-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+    -moz-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+    -o-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+    transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+#input-button {
+ display: inline-block;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  padding: 10px 20px;
+  border: 1px solid #b7b7b7;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  font: normal medium/normal Arial, Helvetica, sans-serif;
+  color: rgba(0,142,198,1);
+  -o-text-overflow: clip;
+  text-overflow: clip;
+  -webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+  box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.66) ;
+  -webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  -moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+}
+</style>
 </head>
 	
 <body>
@@ -50,7 +98,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							</c:if>
 							<li></i><a href="favourite">Favourites</a>
 							<li></i><a href="profile">My account</a>
-							<li></i><a href="#">Order history</a>		
 							<li></i><a href="logout">Logout</a>
 						</c:if>
 					</ul>
@@ -123,7 +170,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 									</div>
 								</ul>
 							</li>
-							<li><a href="#">Mail Us</a></li>
 						</ul>
 					</div>
 					</nav>
@@ -194,14 +240,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<div class="flexslider">
 						<ul class="slides">
 							<li data-thumb="images/si.jpg">
-								<div class="thumb-image"> <img src="images/si.jpg" data-imagezoom="true" class="img-responsive"> </div>
+								<div class="thumb-image"> <img src="download/product_picture/${product.productPicture}" data-imagezoom="true" class="img-responsive"> </div>
 							</li>
-							<li data-thumb="images/si1.jpg">
-								 <div class="thumb-image"> <img src="images/si1.jpg" data-imagezoom="true" class="img-responsive"> </div>
-							</li>
-							<li data-thumb="images/si2.jpg">
-							   <div class="thumb-image"> <img src="images/si2.jpg" data-imagezoom="true" class="img-responsive"> </div>
-							</li> 
 						</ul>
 					</div>
 					<!-- flixslider -->
@@ -242,15 +282,15 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<div class="occasion-cart">
 						<form action="${pageContext.request.contextPath}/addToCart" method="POST">
 							<input type="hidden" name="productID" value="${product.productID}">
-							<input type="number" name="quantity" min=1 placeholder="quantity"
+							<input type="number" id = "input-button" name="quantity" min=1 placeholder="quantity"
 							required><br>
-							<input type="submit" class = "item_add" value = "Add to cart"></a>
+							<input type="submit" id = "my-button" value = "Add to cart"></a>
 						</form>
 						<form action="${pageContext.request.contextPath}/favourite"
 							method="POST">
 							<input type="hidden" name="favouriteProduct"
 								value="${product.productID}"> <input type="submit"
-								value="&#9829;">
+								id = "my-button" value="&#9829;">
 						</form> 
 					</div>
 					

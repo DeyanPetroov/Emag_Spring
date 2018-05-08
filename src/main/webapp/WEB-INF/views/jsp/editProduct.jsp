@@ -10,10 +10,94 @@
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<link rel="stylesheet" type="text/css" href="css/my.css">
+<link href = "css/my.css" rel = "sylesheet" type = "text/css" media = "all"/>
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
 <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
 <style>
+
+#my-button {
+    display: inline-block;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    cursor: pointer;
+    padding: 10px 20px;
+    border: 1px solid white;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    font: normal medium/normal Arial, Helvetica, sans-serif;
+    color: rgba(255,255,255,0.9);
+    -o-text-overflow: clip;
+    text-overflow: clip;
+    background: #286090;
+    -webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2);
+    box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2);
+    text-shadow: -1px -1px 0 rgba(15,73,168,0.66);
+    -webkit-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+    -moz-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+    -o-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+    transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+#input-button {
+ display: inline-block;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  padding: 10px 20px;
+  border: 1px solid #b7b7b7;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  font: normal medium/normal Arial, Helvetica, sans-serif;
+  color: rgba(0,142,198,1);
+  -o-text-overflow: clip;
+  text-overflow: clip;
+  -webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+  box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.66) ;
+  -webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  -moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.btn {
+     display: inline-block;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    cursor: pointer;
+    padding: 10px 20px;
+    border: 1px solid white;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    font: normal medium/normal Arial, Helvetica, sans-serif;
+    color: rgba(255,255,255,0.9);
+    -o-text-overflow: clip;
+    text-overflow: clip;
+    background: #286090;
+    -webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2);
+    box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2);
+    text-shadow: -1px -1px 0 rgba(15,73,168,0.66);
+    -webkit-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+    -moz-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+    -o-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+    transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
 
 .banner-bottom, .new-collections, .checkout, .collections-bottom, .timer, .register, .products, .typo, .mail, .single, .login, .single-related-products {
     padding: 3em 0;
@@ -96,50 +180,56 @@
 					<div class="row">
 						<div class=" col-md-9 col-lg-9 ">
 						<c:if test="${sessionScope.user != null}">
-						<img src="download/${productPicture}" height = 200px width = 200px>
+						<img src="download/product_picture/${product.productPicture}" height = 200px width = 200px>
+						
 							<form action = "${pageContext.request.contextPath}/uploadProductPicture" method = "POST" enctype="multipart/form-data" accept="image/*">
-								<input type = "file" name = "image"><br>
+								<div class="upload-btn-wrapper">
+									<button class="btn">Upload a file</button>
+									<input type = "file" name = "image"><br>
+								</div>	
 								<input type = "hidden" name = "productID" value ="${product.productID}">
-								<input type = "submit" value = "Change picture">
+								<input type = "submit" id = "my-button" style = "position: absolute" value = "Change picture">
 							</form>
 							<form action="${pageContext.request.contextPath}/editProduct/${product.productID}" method="POST">
 							<table class="table table-user-information">
 								<tbody>
 									<tr>
 										<td>Brand:
+										<input type = "hidden" id = "input-button" name = "productPicture" value = "${product.productPicture}">
 										 <input type="text" name="brand" value="${product.brand}" placeholder="Brand"
 										required title="Enter the product brand"/> <br>
 									   </td>
 									</tr>
 									<tr>
 										<td>
-		 								Model: <input type="text" name="model" value="${product.model}" placeholder="Model" 
+		 								Model: <input type="text" id = "input-button" name="model" value="${product.model}" placeholder="Model" 
 		 								required title="Enter the product model" />
 										</td>
 									</tr>
 									<tr>
 										<td>
-											<textarea rows="5" name= "description" placeholder = "Description"
-											 title = "Enter the product description"></textarea><br>
+											<textarea rows="5" id = "input-button" name= "description" placeholder = "Description"
+											 title = "Enter the product description" value = "${product.description}">
+											 </textarea><br>
 										</td>
 									</tr>
 									<tr>
 										<td>
-										Price: <input type="number" name="price" step = "0.01" value="${product.price}"
+										Price: <input type="number" id = "input-button" name="price" step = "0.01" value="${product.price}"
 										placeholder="Price" required min=1
 										title="Enter a price for the product" /> <br> 
 										</td>
 									</tr>
 									<tr>
 										<td>
-											Discount percent: <input type="number" name="discountPercent" 
+											Discount percent: <input type="number" id = "input-button" name="discountPercent" 
 											value="${product.discountPercent}" placeholder="Discount %"
 											title="Enter discount % for this product" /> <br>
 										</td>
 									</tr>
 									<tr>
 										<td>
-											Availability: <input type = "number" name = "availability" value = "${product.availability}" placeholder = "Availability" 
+											Availability: <input type = "number" id = "input-button" name = "availability" value = "${product.availability}" placeholder = "Availability" 
 											required min = 0 title = "Enter the product availability"> <br>
 										</td>
 									</tr>
@@ -170,17 +260,17 @@
 								<tr>
 									<td>
 									Enter characteristic unit:
-									<input type="text" name="unit" placeholder="Unit" title="Enter the characteristic unit" 
+									<input type="text" id = "input-button" name="unit" placeholder="Unit" title="Enter the characteristic unit" 
 									style = "margin-right: 10px;"/> <br>
 									</td>
 									<td>		
 									Enter characteristic value:	 
-									<input type="text" name="value" placeholder="Value" title="Enter the characteristic value" /> <br> 
+									<input type="text" id = "input-button" name="value" placeholder="Value" title="Enter the characteristic value" /> <br> 
 									</td>
 								</tr>
 								<tr>
 									<td>
-									<input type="submit" value="Save product" /> <br>
+									<input type="submit" id = "my-button" value="Save product" id = "my-button"/> <br>
 									</td>
 								</tr>
 							</table>

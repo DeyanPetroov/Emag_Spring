@@ -96,7 +96,7 @@
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-md-3 col-lg-3 " align="center">
-							<img src="download/${profilePicture}" width="200px"
+							<img src="download/user-profile/${profilePicture}" width="200px"
 								height="200px" class="img-circle img-responsive">
 						</div>
 						<div class=" col-md-9 col-lg-9 ">
