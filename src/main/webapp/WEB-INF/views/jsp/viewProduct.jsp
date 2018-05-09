@@ -241,7 +241,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				</div>
 				<div class="col-md-7 single-right-left simpleCart_shelfItem animated wow slideInRight">
 					<h3>${product.brand}  ${product.model }</h3>
-					<h4>${product.price}</h4>
+					<h4>$${product.price}</h4>
 					<div class="description">
 						<h5><i>Description</i></h5>
 						<p>${product.description}</p>
@@ -249,12 +249,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<div>
 						<form action="${pageContext.request.contextPath}/addToCart" method="POST">
 							<input type="hidden" name="productID" value="${product.productID}">
-							<input type="number" id = "input-button" name="quantity" min=1 placeholder="quantity"
+							<input type="number" id = "input-button" name="quantity" min=1 max=10 placeholder="quantity"
 							required><br>
 							<input type="submit" id = "my-button" value = "Add to cart"></a>
 						</form>
-						<form action="${pageContext.request.contextPath}/favourite"
-							method="POST">
+						<form action="${pageContext.request.contextPath}/favourite" method="POST">
 							<input type="hidden" name="favouriteProduct"
 								value="${product.productID}"> <input type="submit"
 								id = "my-button" value="&#9829;">
@@ -271,7 +270,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
 						<ul id="myTab" class="nav nav-tabs" role="tablist">
 							<li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Description</a></li>
-							<li role="presentation"><a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile">Reviews(2)</a></li>
+							<li role="presentation">
 						</ul>
 						<div id="myTabContent" class="tab-content">
 							<div role="tabpanel" class="tab-pane fade in active bootstrap-tab-text" id="home" aria-labelledby="home-tab">
@@ -281,38 +280,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 									${characteristic.unit} ${characteristic.value}
 									<br>
 								</c:forEach>
-							</div>
-							<div role="tabpanel" class="tab-pane fade bootstrap-tab-text" id="profile" aria-labelledby="profile-tab">
-								<div class="bootstrap-tab-text-grids">
-									<div class="bootstrap-tab-text-grid">
-										<div class="bootstrap-tab-text-grid-left">
-											<img src="images/4.png" alt=" " class="img-responsive" />
-										</div>
-										<div class="bootstrap-tab-text-grid-right">
-											<ul>
-												<li><a href="#">Admin</a></li>
-												<li><a href="#"><span class="glyphicon glyphicon-share" aria-hidden="true"></span>Reply</a></li>
-											</ul>
-										</div>
-										<div class="clearfix"> </div>
-									</div>
-									<div class="add-review">
-										<h4>add a review</h4>
-										<form>
-											<input type="text" value="Name" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Name';}" required="">
-											<input type="email" value="Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Email';}" required="">
-											<input type="text" value="Subject" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Subject';}" required="">
-											<textarea type="text"  onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Message...';}" required="">Message...</textarea>
-											<input type="submit" value="Send" >
-										</form>
-									</div>
-								</div>
-							</div>
-							<div role="tabpanel" class="tab-pane fade bootstrap-tab-text" id="dropdown1" aria-labelledby="dropdown1-tab">
-								<p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>
-							</div>
-							<div role="tabpanel" class="tab-pane fade bootstrap-tab-text" id="dropdown2" aria-labelledby="dropdown2-tab">
-								<p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater. Lomo wolf viral, mustache readymade thundercats keffiyeh craft beer marfa ethical. Wolf salvia freegan, sartorial keffiyeh echo park vegan.</p>
 							</div>
 						</div>
 					</div>

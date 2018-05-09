@@ -3,23 +3,19 @@ package com.emag.controller;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.eclipse.jdt.internal.compiler.parser.diagnose.DiagnoseParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.emag.model.Category;
 import com.emag.model.Characteristic;
@@ -214,12 +210,14 @@ public class AdminController {
 		this.productDAO.updateProduct(updatedProduct);	
 		
 		Product p = this.productDAO.getAllProducts().get(product.getProductID());
-		List<Long> users = this.productDAO.checkForFavProducts(p.getProductID());
 		
 		if (discountPercent != 0) {
+			System.out.println("mails");;
+			List<Long> users = this.productDAO.checkForFavProducts(p.getProductID());
 			for (Entry<String, User> e : this.userDAO.getAllUsers().entrySet()) {
 				for (Long i : users) {
 					if (e.getValue().getID() == i) {
+						System.out.println("user mail: " + e.getValue().getEmail());
 						MailSender mailSender = new MailSender(e.getValue().getEmail(), "New SALE at eMAG!",
 								"Product with ID: " + p.getProductID()
 										+ " has been changed! Check out our Hot Offers on our website!");
@@ -259,7 +257,6 @@ public class AdminController {
 		if(newStatusID>=1 && newStatusID <=4) {
 			try {
 				Order order = orderDAO.getOrderByID(orderID);
-				//TODO transaction
 				order.setStatus(newStatusID);
 				orderDAO.updateOrderStatus(order.getUser(), newStatusID, order.getOrderID());
 			} catch (SQLException e) {

@@ -68,11 +68,15 @@ public class ProductController {
 		List<Product> products = new ArrayList<>();
 		try {
 			boolean isMain = categoryDAO.isMainCategory(categoryID);
+			System.out.println(categoryID);
+			System.out.println(isMain);
 			if(isMain) {
 				products = productDAO.getProductsFromMainCategory(categoryID);
+				System.out.println("dao");
 			}
 			else {
 				products = productDAO.getProductsFromSubCategory(categoryID);
+				System.out.println("dao1");
 				
 			}
 			for(Product p : products) {
@@ -93,8 +97,6 @@ public class ProductController {
 			product = productDAO.getProductById(productID);
 			Category category = categoryDAO.getCategoryByName(product.getCategory().getCategoryName());
 			List<Characteristic> characteristics = characteristicDAO.allCategoryCharacteristics(category.getCategoryID());
-					
-			model.addAttribute("available", product.getAvailability());
 			model.addAttribute("characteristics", characteristics);
 			model.addAttribute("product", product);
 			return "viewProduct";
@@ -135,21 +137,4 @@ public class ProductController {
 		return "products";
 		
 	}
-	
-	//TODO
-	//-->mandatory
-	
-	//price of products when on sale
-	//fix menu with characteristics to contain only the ones for the specific category
-	//format order date
-	//can add more characteristics for a product
-	//change favourite button when already in favourites
-	
-	//-->bonus
-	
-	//slider for prices
-	//send email for forgotten password
-	//ajax for favourites, sorting, characteristics menu
-	//make reviews with raitings, show average raiting
-	//deal with JSON
 }

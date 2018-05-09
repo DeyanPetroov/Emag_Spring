@@ -220,40 +220,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							</c:forEach>
 					</ul>
 				</div>
-				<div class="new-products animated wow slideInUp" data-wow-delay=".5s">
-					<div class="new-products-grids">
-						<div class="new-products-grid">
-							<div class="new-products-grid-left">
-								
-							</div>
-							<div class="new-products-grid-right">
-								
-								<div class="simpleCart_shelfItem new-products-grid-right-add-cart">
-								</div>
-							</div>
-							<div class="clearfix"> </div>
-						</div>
-						<div class="new-products-grid">
-							<div class="new-products-grid-left">
-								
-							</div>
-							<div class="new-products-grid-right">
-								
-							</div>
-							<div class="clearfix"> </div>
-						</div>
-						<div class="new-products-grid">
-							<div class="new-products-grid-left">
-							</div>
-							<div class="new-products-grid-right">
-								
-								<div class="simpleCart_shelfItem new-products-grid-right-add-cart">
-								</div>
-							</div>
-							<div class="clearfix"> </div>
-						</div>
-					</div>
-				</div>
+				
 			</div>
 			<div class="col-md-8 products-right">
 				<div class="products-right-grid">
@@ -289,7 +256,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				<div class="col-md-4 products-right-grids-bottom-grid">
 					<div class="new-collections-grid1 products-right-grid1 animated wow slideInUp" data-wow-delay=".5s" style="width: 210px;">
 						<div class="new-collections-grid1-image">
-							<img src="download/product_picture/${product.productPicture}" alt=" " class="img-responsive" width = 250px height= 250px></a>
+							<img src="download/product_picture/${product.productPicture}" alt=" " class="img-responsive" ></a>
 								<div class="new-collections-grid1-image-pos products-right-grids-pos">
 									<a href="${pageContext.request.contextPath}/viewProduct/${product.productID}">Quick View</a>
 								</div>
@@ -310,7 +277,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 									method="POST">
 									<input type="hidden" name="productID"
 										value="${product.productID}"> 
-										<input type="number" name="quantity" min=1 placeholder="quantity" id = "input-button" required><br>
+										<input type="number" name="quantity" min=1 max=10 placeholder="quantity" id = "input-button" required><br>
 									<input type="submit" id = "my-button" value="Add to cart">
 								</form>
 							</div>

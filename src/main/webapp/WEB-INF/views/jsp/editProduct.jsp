@@ -250,9 +250,9 @@
 									<td>
 									<h3>Characteristics menu </h3><br>
 										Choose characteristic: 
-										<select name="characteristic" id="chars">
+										<select name = "chars">
 										<c:forEach items ="${characteristics}" var = "characteristic">
-											<option value = "">${characteristic.name}</option>
+											<option>${characteristic.name}</option>
 											</c:forEach>
 										</select>
 									</td>

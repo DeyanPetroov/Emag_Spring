@@ -150,7 +150,7 @@
 					<form action="${pageContext.request.contextPath}/addToCart"
 						method="POST">
 						<input type="hidden" name="productID" value="${product.productID}">
-						<input type="number" name="quantity" min=1 placeholder="quantity"
+						<input type="number" name="quantity" min=1 max=10 placeholder="quantity"
 							required id = "input-button"><br> <input type="submit"
 							value="Add to cart" id = "my-button">
 					</form>

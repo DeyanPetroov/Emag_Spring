@@ -102,7 +102,6 @@ public class SearchController {
 		Long orderID = Long.valueOf(request.getParameter("search"));
 		try {
 			Order order = orderDAO.getOrderByID(orderID);
-			System.out.println("after dao");
 			model.addAttribute("order", order);
 			return "changeStatus";
 		} catch (SQLException e) {

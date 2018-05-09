@@ -160,9 +160,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<input type="email" name="email" placeholder="E-mail" required title="Enter a valid email" /> <br> 
 					<input type="password" name="password" placeholder="Password" required pattern=".{5,20}"
 					title="Between 5 and 20 characters" /> <br>
-					<input type="submit" name="signup_submit" value="Sign me up" /> <br> <br>
-					<a href="login">
-					<input type="button" value="Already have an account? Sign in!" class="login-button" /></a>
+					<input type="submit" name="signup_submit" value="Sign me up" style="background-color: #286090;"/> <br> <br>
+					<a href="login" style="background-color: #286090;">
+					<input type="button" value="Already have an account? Sign in!" class="login-button" style="background-color: #286090;" /></a>
 				</form>
 				<!-- //REGISTER FORM -->
 			</div>

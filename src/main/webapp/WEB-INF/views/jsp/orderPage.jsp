@@ -81,7 +81,7 @@
 			class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
 			<div class="panel panel-info" style="right: 200px;width: 170%;position: relative;left: 5;">
 				<div class="panel-heading">
-					<h2 style="color: white; padding-top: 10px">Congratulations!</h2>
+					<h2 style="color: white; padding-top: 10px">Your order</h2>
 				</div>
 				<div class="panel-body">
 					<div class="row">

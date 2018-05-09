@@ -7,11 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -52,7 +50,7 @@ public class ProductDAO implements IProductDAO {
 			"SELECT product_id, brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, category_id "
 			+ "FROM products WHERE discount_percent>0";
 	private static final String GET_ALL_FROM_MAIN_CATEGORY = 
-			"SELECT p.product_id, p.name, p.brand, p.price, p.availability, p.model, p.description, " +
+			"SELECT p.product_id, p.brand, p.price, p.availability, p.model, p.description, " +
 			"p.discount_percent, p.discount_expiration, p.product_picture, p.category_id " +
 			"FROM products AS p " +
 			"JOIN categories AS c " +
