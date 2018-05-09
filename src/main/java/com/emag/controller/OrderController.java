@@ -75,6 +75,7 @@ public class OrderController {
 			connection.setAutoCommit(false);
 			orderDAO.addNewOrder(order);
 			orderDAO.addOrderedProduct(order);
+			
 			connection.commit();
 		} catch (SQLException e) {
 			connection.rollback();

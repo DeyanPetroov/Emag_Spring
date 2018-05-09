@@ -13,6 +13,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <head>
 <title>Welcome to eMAG</title>
 <title>Insert title here</title>
+<base href="http://localhost:8080/EMAG_Spring/index">
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
 <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
 <!-- js -->

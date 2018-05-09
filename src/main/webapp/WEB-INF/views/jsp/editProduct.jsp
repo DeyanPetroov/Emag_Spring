@@ -270,6 +270,7 @@
 								</tr>
 								<tr>
 									<td>
+									<a href = "${pageContext.request.contextPath}/deleteProduct/${product.productID}">Delete product</a>
 									<input type="submit" id = "my-button" value="Save product" id = "my-button"/> <br>
 									</td>
 								</tr>

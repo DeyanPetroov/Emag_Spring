@@ -43,6 +43,17 @@ public class AdminController {
 	@Autowired
 	private OrderDAO orderDAO;
 	
+	@RequestMapping(value = "/deleteProduct/{productID}", method = RequestMethod.GET)
+	public String deleteProduct(@PathVariable("productID") Long productID) {
+		try {
+			productDAO.deleteProduct(productID);
+		} 
+		catch (SQLException e) {
+			return "errorPage";
+		}
+		return "index";
+	}
+	
 	@RequestMapping(value = "/addProduct", method = RequestMethod.GET)
 	public String addProductPage(Model m, HttpSession session) {
 		if(session.getAttribute("user") == null) {
