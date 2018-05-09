@@ -75,7 +75,11 @@ public class OrderController {
 			connection.setAutoCommit(false);
 			orderDAO.addNewOrder(order);
 			orderDAO.addOrderedProduct(order);
-			
+			for(Entry<Product, Integer> orderedProducts : user.getCart().getProducts().entrySet()) {
+				Product product = orderedProducts.getKey();
+				product.setAvailability(product.getAvailability() - orderedProducts.getValue());
+				productDAO.updateProduct(product);
+			}
 			connection.commit();
 		} catch (SQLException e) {
 			connection.rollback();
