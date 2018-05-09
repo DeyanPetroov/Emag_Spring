@@ -46,6 +46,7 @@ public class ProductDAO implements IProductDAO {
 	private static final String GET_PRODUCT_PICTURE = "SELECT product_picture FROM products WHERE product_id = ?";
 	private static final String CHANGE_PRODUCT_PICTURE = "UPDATE products SET product_picture = ? WHERE product_id = ?";
 	private static final String CHECK_IF_HAS_FAVOURITE = "SELECT user_id from favourite_products WHERE product_id = ?";
+	private static final String DELETE_FAVOURITE_PRODUCT = "DELETE FROM favourite_products WHERE product_id=?";
 	private static final String GET_PROMO_PRODUCTS = 
 			"SELECT product_id, brand, price, availability, model, description, discount_percent, discount_expiration, product_picture, category_id "
 			+ "FROM products WHERE discount_percent>0";
@@ -529,5 +530,13 @@ public class ProductDAO implements IProductDAO {
 			}
 		}
 		return products;
+	}
+
+	@Override
+	public void deleteFavouriteProduct(long productID) throws SQLException {
+		try(PreparedStatement delete = connection.prepareStatement(DELETE_FAVOURITE_PRODUCT);){
+			delete.setLong(1, productID);
+			delete.executeUpdate();
+		}
 	}
 }

@@ -28,4 +28,5 @@ public interface IProductDAO {
 	List<Product> getSortedDescendingFromSubCategory(int categoryID) throws Exception;
 	List<Long> checkForFavProducts(long productID) throws Exception; 
 	Map<Product, Integer> orderProducts(long orderID) throws Exception;
+	void deleteFavouriteProduct(long productID) throws Exception;
 }

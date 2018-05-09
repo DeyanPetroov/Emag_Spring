@@ -1,5 +1,6 @@
 package com.emag.controller;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ import com.emag.model.Product;
 import com.emag.model.User;
 import com.emag.model.dao.CategoryDAO;
 import com.emag.model.dao.CharacteristicDAO;
+import com.emag.model.dao.DBManager;
 import com.emag.model.dao.OrderDAO;
 import com.emag.model.dao.ProductDAO;
 import com.emag.model.dao.UserDAO;
@@ -43,14 +45,23 @@ public class AdminController {
 	@Autowired
 	private OrderDAO orderDAO;
 	
+	private Connection connection  = DBManager.getInstance().getConnection();
+	
 	@RequestMapping(value = "/deleteProduct/{productID}", method = RequestMethod.GET)
-	public String deleteProduct(@PathVariable("productID") Long productID) {
+	public String deleteProduct(@PathVariable("productID") Long productID) throws SQLException {		
 		try {
-			productDAO.deleteProduct(productID);
-		} 
-		catch (SQLException e) {
-			return "errorPage";
+			connection.setAutoCommit(false);
+			orderDAO.deleteOrderedProduct(productID);
+			productDAO.deleteFavouriteProduct(productID);
+			productDAO.deleteProduct(productID);		
+			connection.commit();
+		} catch (SQLException e) {
+			connection.rollback();
+			throw new SQLException("The transaction is not completed. The reason is: " + e.getMessage());
+		} finally {
+			connection.setAutoCommit(true);
 		}
+		
 		return "index";
 	}
 	
@@ -131,7 +142,6 @@ public class AdminController {
         }        
                 
 		m.addAttribute("product", product);
-		System.out.println("availability" + product.getAvailability());
 		m.addAttribute("available", availability);
         return "viewProduct";
     }

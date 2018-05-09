@@ -13,4 +13,5 @@ public interface IOrderDAO {
 	User getUserByOrderID(long userID) throws Exception;	
 	void addOrderedProduct(Order order) throws Exception;
 	List<Order> getAllUserOrders(long userID) throws Exception;
+	void deleteOrderedProduct(long productID) throws Exception;
 }

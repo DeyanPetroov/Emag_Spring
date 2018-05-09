@@ -275,11 +275,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<div id="myTabContent" class="tab-content">
 							<div role="tabpanel" class="tab-pane fade in active bootstrap-tab-text" id="home" aria-labelledby="home-tab">
 								<h5>Product Brief Description</h5>
-								<c:forEach items="${requestScope.characteristics}" var="characteristic">
-									${characteristic.name} :
-									${characteristic.unit} ${characteristic.value}
-									<br>
-								</c:forEach>
+								${product.description}
 							</div>
 						</div>
 					</div>

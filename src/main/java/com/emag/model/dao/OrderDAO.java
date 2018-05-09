@@ -25,6 +25,7 @@ import com.mysql.jdbc.Statement;
 @Component
 public class OrderDAO implements IOrderDAO {
 	
+	private static final String DELETE_ORDERED_PRODUCT = "DELETE FROM ordered_products WHERE product_id=?";
 	private static final String UPDATE_ORDER_STATUS_FOR_USER = "UPDATE orders SET status_id = ? WHERE user_id = ? AND order_id = ?";
 	private static final String DELETE_ORDER_BY_ID = "DELETE FROM orders WHERE order_id = ?";
 	private static final String NEW_ORDER = "INSERT INTO orders (date, total_cost, delivery_address, user_id, status_id) VALUES (?,?,?,?,?)"; 
@@ -160,5 +161,13 @@ public class OrderDAO implements IOrderDAO {
 			}
 		}
 		return userOrders;
+	}
+
+	@Override
+	public void deleteOrderedProduct(long productID) throws SQLException {
+		try(PreparedStatement delete = connection.prepareStatement(DELETE_ORDERED_PRODUCT);){
+			delete.setLong(1, productID);
+			delete.executeUpdate();
+		}
 	}
 }

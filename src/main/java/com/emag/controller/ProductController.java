@@ -99,6 +99,7 @@ public class ProductController {
 			List<Characteristic> characteristics = characteristicDAO.allCategoryCharacteristics(category.getCategoryID());
 			model.addAttribute("characteristics", characteristics);
 			model.addAttribute("product", product);
+			model.addAttribute("available", product.getAvailability());
 			return "viewProduct";
 		} 
 		catch (SQLException e) {
