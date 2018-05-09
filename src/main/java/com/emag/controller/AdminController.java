@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.eclipse.jdt.internal.compiler.parser.diagnose.DiagnoseParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -99,6 +100,7 @@ public class AdminController {
         String description = request.getParameter("description");
         double price = Double.valueOf(request.getParameter("price"));
         Integer availability = Integer.valueOf(request.getParameter("availability"));
+        String picture = request.getParameter("productPicture");
         Product product = null;   
         String unit = request.getParameter("unit");
         String value = request.getParameter("value");
@@ -112,7 +114,8 @@ public class AdminController {
 					withDescription(description).
 					withModel(productModel).
 					withPrice(price).
-					withAvailability(availability);
+					withAvailability(availability).
+					withProductPicture(picture);
 			this.productDAO.addProduct(product);
 			m.addAttribute("productId", product.getProductID());
 		}
@@ -121,6 +124,8 @@ public class AdminController {
         }        
                 
 		m.addAttribute("product", product);
+		System.out.println("availability" + product.getAvailability());
+		m.addAttribute("available", availability);
         return "viewProduct";
     }
 	
@@ -140,6 +145,7 @@ public class AdminController {
 		} catch (SQLException e1) {
 			return "errorPage";
 		}
+		
 		
 		ArrayList<Category> categories=null;
 		List<Characteristic> characteristics = null;
@@ -185,13 +191,14 @@ public class AdminController {
         double price = Double.valueOf(request.getParameter("price"));
         Integer availability = Integer.valueOf(request.getParameter("availability"));
         int discountPercent = Integer.valueOf(request.getParameter("discountPercent"));
-        if(discountPercent!=0) {
-        	price -= price * (Double) (0.01*discountPercent);
+        
+        if(discountPercent!=0 && discountPercent != product.getDiscountPercent()) {
+			if (product.getDiscountPercent() < discountPercent) {
+				price -= price * (Double) (0.01 * (discountPercent - product.getDiscountPercent()));
+			}
         }
         
         String picture = request.getParameter("productPicture");
-		System.out.println("picture" + picture);
-		System.out.println("test====================");
 		
 		Product updatedProduct = new Product().
 				withProductID(product.getProductID()).
@@ -209,21 +216,22 @@ public class AdminController {
 		Product p = this.productDAO.getAllProducts().get(product.getProductID());
 		List<Long> users = this.productDAO.checkForFavProducts(p.getProductID());
 		
-			for(Entry<String, User> e : this.userDAO.getAllUsers().entrySet()){
-					for (Long i : users) {	
-							if(e.getValue().getID() == i){
-								System.out.println("User from all users: " + e.getValue().getID());
-								System.out.println("User from fav: " + i);
-								System.out.println("email: " + e.getValue().getEmail());
-								MailSender mailSender = new MailSender(e.getValue().getEmail() ,"New SALE at eMAG!", "Product with ID: " +
-									p.getProductID() + " has been changed! Check out our Hot Offers on our website!");
-									mailSender.start();
-							}
+		if (discountPercent != 0) {
+			for (Entry<String, User> e : this.userDAO.getAllUsers().entrySet()) {
+				for (Long i : users) {
+					if (e.getValue().getID() == i) {
+						MailSender mailSender = new MailSender(e.getValue().getEmail(), "New SALE at eMAG!",
+								"Product with ID: " + p.getProductID()
+										+ " has been changed! Check out our Hot Offers on our website!");
+						mailSender.start();
 					}
+				}
+			}
 		}
 			
 		m.addAttribute("product", updatedProduct);
 		m.addAttribute("productPicture", picture);
+		m.addAttribute("available", availability);
         return "viewProduct";
     }
 	

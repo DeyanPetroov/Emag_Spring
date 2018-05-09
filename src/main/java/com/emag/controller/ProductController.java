@@ -93,6 +93,8 @@ public class ProductController {
 			product = productDAO.getProductById(productID);
 			Category category = categoryDAO.getCategoryByName(product.getCategory().getCategoryName());
 			List<Characteristic> characteristics = characteristicDAO.allCategoryCharacteristics(category.getCategoryID());
+					
+			model.addAttribute("available", product.getAvailability());
 			model.addAttribute("characteristics", characteristics);
 			model.addAttribute("product", product);
 			return "viewProduct";
@@ -141,7 +143,6 @@ public class ProductController {
 	//fix menu with characteristics to contain only the ones for the specific category
 	//format order date
 	//can add more characteristics for a product
-	//better error page + 404 + exceptions
 	//change favourite button when already in favourites
 	
 	//-->bonus

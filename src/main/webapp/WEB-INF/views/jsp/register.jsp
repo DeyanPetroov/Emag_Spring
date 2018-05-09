@@ -40,16 +40,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							<h4>${loggedUser}</h4>
 						</c:if>
 						<c:if test="${sessionScope.user == null }">
-							<li><i class="glyphicon glyphicon-log-in" aria-hidden="true"></i><a href="login">Login</a></li>
-							<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="register">Register</a></li>
+							<li><a href="login">Login</a></li>
+							<li><a href="register">Register</a></li>
 						</c:if>
 						<c:if test="${sessionScope.user != null }">
 							<c:if test="${sessionScope.user.admin == true}">
 								<li><i class="glyphicon glyphicon-log-in" aria-hidden="true"></i><a href="adminPage">Admin page</a>
 							</c:if>
-							<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="favourite">Favourites</a>
-							<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="profile">My account</a>
-							<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="logout">Logout</a>
+							<li><a href="favourite">Favourites</a>
+							<li><a href="profile">My account</a>
+							<li><a href="logout">Logout</a>
 						</c:if>
 					</ul>
 				</div>

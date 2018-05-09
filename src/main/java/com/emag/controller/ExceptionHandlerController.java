@@ -12,5 +12,4 @@ public class ExceptionHandlerController {
 		request.setAttribute("exception", e);
 		return "errorPage";
 	}
-
 }

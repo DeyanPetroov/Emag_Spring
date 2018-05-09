@@ -32,7 +32,7 @@ public class CartController {
 	public String removeFromCart(Model model, HttpServletRequest request, HttpSession session) {
 		if (session.getAttribute("user") == null) {
 			model.addAttribute("invalidSession", "Please log in to add items to your cart.");
-			return "products";
+			return "redirect:/login";
 		}
 
 		Long productID = Long.valueOf(request.getParameter("productID"));
@@ -53,7 +53,7 @@ public class CartController {
 	public String addToCart(Model model, HttpServletRequest request, HttpSession session) {
 		if (session.getAttribute("user") == null) {
 			model.addAttribute("invalidSession", "Please log in to add items to your cart.");
-			return "products";
+			return "redirect:/login";
 		}
 		Long productID = Long.valueOf(request.getParameter("productID"));
 		Cart cart = (Cart) session.getAttribute("cart");

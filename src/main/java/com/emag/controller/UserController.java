@@ -295,7 +295,4 @@ public class UserController {
 		model.addAttribute("favourites", favouriteProducts);
 		return "favourites";
 	}
-
-	//TODO
-	//exceptions!! now everything goes to error page with same message :/
 }

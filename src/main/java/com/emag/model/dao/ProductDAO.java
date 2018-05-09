@@ -279,7 +279,7 @@ public class ProductDAO implements IProductDAO {
 		return Collections.unmodifiableList(searchResults);
 	}
 
-	// add product to favourites in the database
+	//add or remove products from favourites in the database
 	@Override
 	public void addOrRemoveFavouriteProduct(User user, Product product) throws SQLException {
 		if (favouriteExists(user, product)) {
@@ -287,7 +287,6 @@ public class ProductDAO implements IProductDAO {
 				removeFromFav.setLong(1, user.getID());
 				removeFromFav.setLong(2, product.getProductID());
 				removeFromFav.executeUpdate();
-				System.out.println("removed from fav");
 			}
 		} 
 		else {
@@ -295,7 +294,6 @@ public class ProductDAO implements IProductDAO {
 				addToFav.setLong(1, user.getID());
 				addToFav.setLong(2, product.getProductID());
 				addToFav.executeUpdate();
-				System.out.println("added to fav");
 			}
 		}
 	}
@@ -306,12 +304,10 @@ public class ProductDAO implements IProductDAO {
 			getFav.setLong(2, product.getProductID());
 			try (ResultSet result = getFav.executeQuery()) {
 				if (result.next()) {
-					System.out.println("Favourite exists");
 					return true;
 				}
 			}
 		}
-		System.out.println("Favourite doesn't exist");
 		return false;
 	}
 

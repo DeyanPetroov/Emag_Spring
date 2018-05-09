@@ -153,22 +153,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								</ul>
 							</li>
 							<li class="dropdown">
-								<a href="/promo" class="dropdown-toggle" data-toggle="dropdown">Hot offers <b class="caret"></b></a>
-								<ul class="dropdown-menu multi-column columns-3">
-									<div class="row">
-										<div class="col-sm-4">
-											<ul class="multi-column-dropdown">
-												<h6>Home Collection</h6>
-												<li><a href="#">Cookware</a></li>
-												<li><a href="#">Sofas</a></li>
-												<li><a href="#">Dining Tables</a></li>
-												<li><a href="#">Shoe Racks</a></li>
-												<li><a href="#">Home Decor</a></li>
-											</ul>
-										</div>
-										<div class="clearfix"></div>
-									</div>
-								</ul>
+								<a href="promo">Hot offers <b class="caret"></b></a>
 							</li>
 						</ul>
 					</div>
@@ -209,7 +194,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	<div class="breadcrumbs">
 		<div class="container">
 			<ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
-				<li><a href="index.html"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
+				<li><a href="index"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
 				<li class="active">Single Page</li>
 			</ol>
 		</div>
@@ -244,42 +229,24 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							</li>
 						</ul>
 					</div>
-					<!-- flixslider -->
-						<script defer src="js/jquery.flexslider.js"></script>
-						<link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen" />
-						<script>
-						// Can also be used with $(document).ready()
-						$(window).load(function() {
-						  $('.flexslider').flexslider({
-							animation: "slide",
-							controlNav: "thumbnails"
-						  });
-						});
-						</script>
-					<!-- flixslider -->
+					<c:if test="${available > 0}">
+						<img src= "images/light-bulb-6-green.png" width = 30px height = 30px>
+						The product is available.
+					</c:if>
+					
+					<c:if test="${available == 0}">
+						<img src= "images/light-bulb-6-xxl.png" width = 30px height = 30px>
+						Sorry. The product is not available.
+					</c:if>
 				</div>
 				<div class="col-md-7 single-right-left simpleCart_shelfItem animated wow slideInRight">
 					<h3>${product.brand}  ${product.model }</h3>
-					<h4><span class="item_price">${product.price}</h4>
-					<div class="rating1">
-						<span class="starRating">
-							<input id="rating5" type="radio" name="rating" value="5">
-							<label for="rating5">5</label>
-							<input id="rating4" type="radio" name="rating" value="4">
-							<label for="rating4">4</label>
-							<input id="rating3" type="radio" name="rating" value="3">
-							<label for="rating3">3</label>
-							<input id="rating2" type="radio" name="rating" value="2">
-							<label for="rating2">2</label>
-							<input id="rating1" type="radio" name="rating" value="1">
-							<label for="rating1">1</label>
-						</span>
-					</div>
+					<h4>${product.price}</h4>
 					<div class="description">
 						<h5><i>Description</i></h5>
 						<p>${product.description}</p>
 					</div>
-					<div class="occasion-cart">
+					<div>
 						<form action="${pageContext.request.contextPath}/addToCart" method="POST">
 							<input type="hidden" name="productID" value="${product.productID}">
 							<input type="number" id = "input-button" name="quantity" min=1 placeholder="quantity"
@@ -292,6 +259,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								value="${product.productID}"> <input type="submit"
 								id = "my-button" value="&#9829;">
 						</form> 
+						<c:if test="${sessionScope.user.admin == true}">
+							<a href="${pageContext.request.contextPath}/editProduct/${product.productID}">
+							<button id = "my-button">Edit</button></a>
+						</c:if>
 					</div>
 					
 				</div>
@@ -351,55 +322,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		</div>
 	</div>
 <!-- //single -->
-<!-- single-related-products -->
-	<div class="single-related-products">
-		<div class="container">
-			<h3 class="animated wow slideInUp" data-wow-delay=".5s">Related Products</h3>
-			<p class="est animated wow slideInUp" data-wow-delay=".5s">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
-				deserunt mollit anim id est laborum.</p>
-			<div class="new-collections-grids">
-				<div class="col-md-3 new-collections-grid">
-					<div class="new-collections-grid1 animated wow slideInLeft" data-wow-delay=".5s">
-						<div class="new-collections-grid1-image">
-							<a href="single.html" class="product-image"><img src="images/8.jpg" alt=" " class="img-responsive"></a>
-							<div class="new-collections-grid1-image-pos">
-								<a href="single.html">Quick View</a>
-							</div>
-							<div class="new-collections-grid1-right">
-								<div class="rating">
-									<div class="rating-left">
-										<img src="images/2.png" alt=" " class="img-responsive">
-									</div>
-									<div class="rating-left">
-										<img src="images/2.png" alt=" " class="img-responsive">
-									</div>
-									<div class="rating-left">
-										<img src="images/1.png" alt=" " class="img-responsive">
-									</div>
-									<div class="rating-left">
-										<img src="images/1.png" alt=" " class="img-responsive">
-									</div>
-									<div class="rating-left">
-										<img src="images/1.png" alt=" " class="img-responsive">
-									</div>
-									<div class="clearfix"> </div>
-								</div>
-							</div>
-						</div>
-						<h4><a href="single.html">Running Shoes</a></h4>
-						<p>Vel illum qui dolorem eum fugiat.</p>
-						<div class="new-collections-grid1-left simpleCart_shelfItem">
-							<p><i>$280</i> <span class="item_price">$150</span><a class="item_add" href="#">add to cart </a></p>
-						</div>
-					</div>
-				</div>
-					<div class="clearfix"> </div>
-				</div>
-				<div class="clearfix"> </div>
-			</div>
-		</div>
-	</div>
-<!-- //single-related-products -->
 <%@include file = "footer.jsp" %>
 <!-- zooming-effect -->
 	<script src="js/imagezoom.js"></script>

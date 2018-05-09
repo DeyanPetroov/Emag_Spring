@@ -152,7 +152,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								</ul>
 							</li>
 							<li class="dropdown">
-								<a href="promo">Hot offers</a>								
+								<a href="promo">Hot offers</a>		
 							</li>
 						</ul>
 					</div>
@@ -202,29 +202,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		<div class="container">
 			<div class="col-md-4 products-left">
 				<div class="filter-price animated wow slideInUp" data-wow-delay=".5s">
-					<h3>Filter By Price</h3>
-					<ul class="dropdown-menu1">
-							<li><a href="">								               
-							<div id="slider-range"></div>							
-							<input type="text" id="amount" style="border: 0" />
-							</a></li>	
-					</ul>
-						<script type='text/javascript'>//<![CDATA[ 
-						$(window).load(function(){
-						 $( "#slider-range" ).slider({
-								range: true,
-								min: 0,
-								max: 100000,
-								values: [ 20000, 80000 ],
-								slide: function( event, ui ) {  $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-								}
-					 });
-					$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) + " - $" + $( "#slider-range" ).slider( "values", 1 ) );
-
-
-						});//]]>
-						</script>
-						<script type="text/javascript" src="js/jquery-ui.min.js"></script>
+				
 					 <!---->
 				</div>
 				<div class="categories animated wow slideInUp" data-wow-delay=".5s">
@@ -284,7 +262,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<div class="sorting">
 							<select id="country" class="frm-field required sect" onchange="location = this.value";>
 						
-								<option value="">&nbsp;</option>
+								<option value="">&nbsp;Sort</option>
 								<option value="category/${products[0].category.categoryID}/sort/asc">Sort by ascending price</option>
 								<option value="category/${products[0].category.categoryID}/sort/desc">Sort by descending price</option>
 							</select>
@@ -303,46 +281,30 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<c:if test="${invalidSession == null }">
 				<c:if test="${requestScope.unavailable != null }">
 				<h4>${unavailable}</h4>
-				<a href = "${pageContext.request.contextPath}/index">Go to the main page</a>
+				<a href = "${pageContext.request.contextPath}/category/2">Go back to our catalog</a>
 			</c:if>
 			</c:if>
 			<c:if test="${requestScope.unavailable == null }">
 			<c:forEach var="product" items="${products}">
 				<div class="col-md-4 products-right-grids-bottom-grid">
-					<div class="new-collections-grid1 products-right-grid1 animated wow slideInUp" data-wow-delay=".5s">
+					<div class="new-collections-grid1 products-right-grid1 animated wow slideInUp" data-wow-delay=".5s" style="width: 210px;">
 						<div class="new-collections-grid1-image">
-							<a href="single.html" class="product-image"><img src="download/product_picture/${product.productPicture}" alt=" " class="img-responsive"></a>
+							<img src="download/product_picture/${product.productPicture}" alt=" " class="img-responsive" width = 250px height= 250px></a>
 								<div class="new-collections-grid1-image-pos products-right-grids-pos">
 									<a href="${pageContext.request.contextPath}/viewProduct/${product.productID}">Quick View</a>
 								</div>
 								<div class="new-collections-grid1-right products-right-grids-pos-right">
-									<div class="rating">
-										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
-										</div>
-										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
-										</div>
-										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
-										</div>
-										<div class="rating-left">
-											<img src="images/1.png" alt=" " class="img-responsive">
-										</div>
-										<div class="rating-left">
-											<img src="images/1.png" alt=" " class="img-responsive">
-										</div>
-										<div class="clearfix"> </div>
-									</div>
+									
 								</div>
 							</div>
-							<h4><a href="single.html">${product.brand} ${product.model}</a></h4>
+							<h4><a href="${pageContext.request.contextPath}/viewProduct/${product.productID}">${product.brand} ${product.model}</a></h4>
 							<p>${product.description}</p>
 							<div class="simpleCart_shelfItem products-right-grid1-add-cart">
-								<p><i>reduced</i> <span class="item_price">$${product.price}</span>
+								<p><span class="item_price">$${product.price}</span>
 							</p>
 							</div>
 						</div>
+						<div>
 							<div>
 								<form action="${pageContext.request.contextPath}/addToCart"
 									method="POST">
@@ -353,6 +315,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								</form>
 							</div>
 							<div>
+									
 								<form action="${pageContext.request.contextPath}/favourite"
 									method="POST">
 									<input type="hidden" name="favouriteProduct"
@@ -366,30 +329,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								</c:if>
 							</div>
 						</div>
+					</div>
 					</c:forEach>
 				</c:if>
 				</div>				
 					<div class="clearfix"> </div>
 				</div>
-				<nav class="numbering animated wow slideInRight" data-wow-delay=".5s">
-				  <ul class="pagination paging">
-					<li>
-					  <a href="#" aria-label="Previous">
-						<span aria-hidden="true">&laquo;</span>
-					  </a>
-					</li>
-					<li class="active"><a href="#">1<span class="sr-only">(current)</span></a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li>
-					<li>
-					  <a href="#" aria-label="Next">
-						<span aria-hidden="true">&raquo;</span>
-					  </a>
-					</li>
-				  </ul>
-				</nav>
 			</div>
 			<div class="clearfix"> </div>
 <!-- //breadcrumbs -->

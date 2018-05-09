@@ -209,7 +209,7 @@
 									<tr>
 										<td>
 											<textarea rows="5" id = "input-button" name= "description" placeholder = "Description"
-											 title = "Enter the product description" value = "${product.description}">
+											 title = "Enter the product description">${product.description}
 											 </textarea><br>
 										</td>
 									</tr>

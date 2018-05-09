@@ -73,7 +73,7 @@ public class ImageController {
 	
 	@RequestMapping(value = "/uploadProductPicture", method = RequestMethod.POST)
 	public String uploadProductPicture(@RequestParam("image") MultipartFile uploadedFile, Model model, HttpServletRequest request) {
-		long productID = Integer.valueOf(request.getParameter("productID"));
+		long productID = Long.valueOf(request.getParameter("productID"));
 		String productPicture = productID + uploadedFile.getOriginalFilename();
 		File serverFile = new File(PRODUCT_IMAGE_FILE_PATH + productPicture);
 		Product product = null;

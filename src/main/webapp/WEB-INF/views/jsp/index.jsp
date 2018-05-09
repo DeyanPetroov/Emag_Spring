@@ -39,7 +39,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				<div class="header-grid-left animated wow slideInLeft">
 					<ul>
 						<c:if test="${requestScope.loggedUser != null }">
-							<h4>${loggedUser}</h4>
+							<div class="alert alert-danger" role="alert">${loggedUser}</div>
 						</c:if>
 						<c:if test="${sessionScope.user == null }">
 							<li><a href="login">Login</a></li>
@@ -236,55 +236,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		</div>
 	</div>
 <!-- //banner-bottom -->
-<!-- collections -->
-	<div class="new-collections">
-		<div class="container">
-			<h3 class="animated wow zoomIn" data-wow-delay=".5s">New Collections</h3>
-			<p class="est animated wow zoomIn" data-wow-delay=".5s">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
-				deserunt mollit anim id est laborum.</p>
-			<div class="new-collections-grids">
-				<div class="col-md-3 new-collections-grid">
-					<div>
-
-					</div>
-					<div class="new-collections-grid1 animated wow slideInUp" data-wow-delay=".5s">
-						<div class="new-collections-grid1-image">
-							<a href="single.html" class="product-image"><img src="images/8.jpg" alt=" " class="img-responsive" /></a>
-							<div class="new-collections-grid1-image-pos">
-								<a href="single.html">Quick View</a>
-							</div>
-						</div>
-						<h4><a href="single.html">Running Shoes</a></h4>
-						<p>Vel illum qui dolorem eum fugiat.</p>
-						<div class="new-collections-grid1-left simpleCart_shelfItem">
-							<p><i>$280</i> <span class="item_price">$150</span><a class="item_add" href="#">add to cart </a></p>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 new-collections-grid">
-					<div class="new-collections-grid1 new-collections-grid1-image-width animated wow slideInUp" data-wow-delay=".5s">
-						<div class="new-collections-grid1-image">
-							<a href="single.html" class="product-image"><img src="images/5.jpg" alt=" " class="img-responsive" /></a>
-							<div class="new-collections-grid1-image-pos new-collections-grid1-image-pos1">
-								<a href="single.html">Quick View</a>
-							</div>
-							<div class="new-one">
-								<p>New</p>
-							</div>
-						</div>
-						<h4><a href="single.html">Dining Table</a></h4>
-						<p>Vel illum qui dolorem eum fugiat.</p>
-						<div class="new-collections-grid1-left simpleCart_shelfItem">
-							<p><i>$580</i> <span class="item_price">$550</span><a class="item_add" href="#">add to cart </a></p>
-						</div>
-					</div>
-						<div class="clearfix"> </div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-<!-- //collections -->
 <%@include file = "footer.jsp" %>
 </body>
 </html>

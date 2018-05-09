@@ -39,16 +39,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							<h4>${loggedUser}</h4>		
 						</c:if>
 						<c:if test="${sessionScope.user == null }">
-							<li><i class="glyphicon glyphicon-log-in" aria-hidden="true"></i><a href="login">Login</a></li>
-							<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="register">Register</a></li>
+							<li><a href="login">Login</a></li>
+							<li><a href="register">Register</a></li>
 						</c:if>
 						<c:if test="${sessionScope.user != null }">
 							<c:if test="${sessionScope.user.admin == true}">
-								<li><i class="glyphicon glyphicon-log-in" aria-hidden="true"></i><a href="adminPage">Admin page</a>
+								<li></i><a href="adminPage">Admin page</a>
 							</c:if>
-							<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="favourite">Favourites</a>
-							<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="profile">My account</a>
-							<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="logout">Logout</a>
+							<li><a href="favourite">Favourites</a>
+							<li><a href="profile">My account</a>
+							<li></i><a href="logout">Logout</a>
 						</c:if>
 					</ul>
 				</div>
@@ -166,9 +166,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<input type="text" name="username" placeholder="Username"
 						value="nadyapetrova" required /> <br> <input type="password"
 						name="password" placeholder="Password" value="12345" required />
-					<br> <input type="submit" value="Login"/>
+					<br> <input type="submit" value="Login" style=" background:  #286090;"/>
 					<br>
-					<!--<h6 class="no-access">Can't access your account?</h6>  -->
 				</form>
 			</div>
 			<h4 class="animated wow slideInUp">For New People</h4>
